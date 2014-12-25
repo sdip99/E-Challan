@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 25, 2014 10:46:23 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.User" table="USER">
+        <id name="userID_pkey" type="integer">
+            <column name="USERID_PKEY" />
+            <generator class="increment" />
+        </id>
+        <property name="userID" type="java.lang.String">
+            <column name="USERID" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="PASSWORD" />
+        </property>
+        <property name="userType" type="int">
+            <column name="USERTYPE" />
+        </property>
+        <one-to-one name="userDetail" class="org.echallan.valueObject.UserDetail" cascade="save-update"></one-to-one>
+    </class>
+</hibernate-mapping>

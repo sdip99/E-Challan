@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 25, 2014 10:46:23 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.UserDetail" table="USERDETAIL">
+        <id name="userID_pkey" type="int" access="field">
+            <column name="USERID_PKEY" />
+            <generator class="foreign">
+            	<param name="property">user</param>
+            </generator>
+        </id>
+        <property name="firstName" type="java.lang.String">
+            <column name="FIRSTNAME" />
+        </property>
+        <property name="lastName" type="java.lang.String">
+            <column name="LASTNAME" />
+        </property>
+        <property name="mobileNo" type="java.lang.String">
+            <column name="MOBILENO" />
+        </property>
+        <one-to-one name="user" class="org.echallan.valueObject.User"></one-to-one>
+    </class>
+</hibernate-mapping>
