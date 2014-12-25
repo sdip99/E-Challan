@@ -31,6 +31,9 @@
         <property name="pincode" type="int">
             <column name="PINCODE" />
         </property>
+        <property name="currentPosting" type="int">
+            <column name="CURRENT_POSTING" />
+        </property>
         <one-to-one name="user" class="org.echallan.valueObject.User"></one-to-one>
     </class>
 </hibernate-mapping>

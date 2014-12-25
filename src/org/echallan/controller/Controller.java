@@ -83,7 +83,7 @@ public class Controller extends HttpServlet {
 			String cityAssign = request.getParameter("city_drop");
 			String areaAssign = request.getParameter("area_drop");
 			int subAreaAssign = Integer.parseInt(request.getParameter("subarea_drop"));
-			UserDetail userDetail = new UserDetail(fname, lname, mobileNo, street, city, state, pincode);
+			UserDetail userDetail = new UserDetail(fname, lname, subAreaAssign, mobileNo, street, city, state, pincode);
 			User user = new User(email, pass, 0);
 			user.setUserDetail(userDetail);
 			userDetail.setUser(user);

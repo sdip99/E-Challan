@@ -8,19 +8,29 @@ public class UserDetail {
 	private String city;
 	private String state;
 	private int pincode;
+	private int currentPosting;
 	private int userID_pkey;
 	private User user;
 	
 	public UserDetail() { }
 
-	public UserDetail(String firstname, String lastname, String mobileNo, String street, String city, String state, int pincode) {
+	public UserDetail(String firstname, String lastname, int currentPosting, String mobileNo, String street, String city, String state, int pincode) {
 		this.firstName = firstname;
 		this.lastName = lastname;
+		this.currentPosting = currentPosting;
 		this.mobileNo = mobileNo;
 		this.street = street;
 		this.city = city;
 		this.state = state;
-		this.pincode = pincode;
+		this.pincode = pincode;		
+	}
+
+	public int getCurrentPosting() {
+		return currentPosting;
+	}
+
+	public void setCurrentPosting(int currentPosting) {
+		this.currentPosting = currentPosting;
 	}
 
 	public String getStreet() {
