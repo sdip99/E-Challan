@@ -19,6 +19,18 @@
         <property name="mobileNo" type="java.lang.String">
             <column name="MOBILENO" />
         </property>
+        <property name="city" type="java.lang.String">
+            <column name="CITY" />
+        </property>
+        <property name="street" type="java.lang.String">
+            <column name="STREET" />
+        </property>
+        <property name="state" type="java.lang.String">
+            <column name="STATE" />
+        </property>
+        <property name="pincode" type="int">
+            <column name="PINCODE" />
+        </property>
         <one-to-one name="user" class="org.echallan.valueObject.User"></one-to-one>
     </class>
 </hibernate-mapping>

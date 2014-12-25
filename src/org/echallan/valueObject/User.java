@@ -14,7 +14,7 @@ public class User {
 		this.password = pass;
 		this.userType = userType;
 	}
-	
+
 	public void setUserID_pkey(int userID_pkey) {
 		this.userID_pkey = userID_pkey;
 	}
