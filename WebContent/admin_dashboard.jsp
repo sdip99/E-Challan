@@ -2,6 +2,7 @@
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
@@ -122,32 +123,14 @@
       </div>
     </div>
     
-
-    <div class="sidebar-nav">
-    	<ul>
-    	<li><a href="#" data-target=".dashboard-menu" class="nav-header" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Staff<i class="fa fa-collapse"></i></a></li>
-	    <li>
-	    	<ul class="dashboard-menu nav nav-list collapse in">
-	            <li><a href="add_officer.jsp"><span class="fa fa-caret-right"></span> Add Officer</a></li>
-	            <li ><a href="#"><span class="fa fa-caret-right"></span> List Officers</a></li>
-	        </ul>
-	    </li>
-
-    	<li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Complaints<i class="fa fa-collapse"></i></a></li>
-        <li>
-        	<ul class="legal-menu nav nav-list collapse">
-	            <li ><a href="privacy-policy.html"><span class="fa fa-caret-right"></span> View Complaints</a></li>
-            </ul>
-        </li>
-    </div>
+	<c:import url="stub_admin_sidebar.jsp"></c:import>
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">Dashboard</h1>
+	        <h1 class="page-title">Home</h1>
 	       	<ul class="breadcrumb">
-	            <li><a href="index.jsp">Home</a> </li>
-	            
-	            <li class="active">Dashboard</li>
+	            <li class="active">Home</li>
+	            <li></li>
 	        </ul>
         </div>
         <div class="main-content">

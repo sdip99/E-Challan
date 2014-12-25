@@ -2,6 +2,7 @@
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
@@ -134,34 +135,7 @@
       </div>
     </div>
     
-
-    <div class="sidebar-nav">
-    	<ul>
-	    <li>
-	    	<ul class="dashboard-menu nav nav-list collapse in">
-	    		<%
-	    			if(user == null) {
-	    		%>
-	            <li><a href="login.jsp"><span class="fa fa-caret-right"></span> Log In</a></li>
-	            <%
-	    			} else {
-	            %>
-	            <li><a href="index.jsp"><span class="fa fa-caret-right"></span> Home</a></li>
-	            <% 
-	            	}
-	            %>
-	            <li><a href="#"><span class="fa fa-caret-right"></span> View Violation History</a></li>
-	            <li><a href="#"><span class="fa fa-caret-right"></span> Register Complaint</a></li>
-	            <%
-		        	if(isAdmin) {
-		        %>
-		        <li><a href="admin_dashboard.jsp"><span class="fa fa-caret-right"></span> DashBoard</a></li>
-		        <%
-		        	}
-		        %>
-	        </ul>
-	    </li>
-    </div>
+    <c:import url="stub_sidebar.jsp"></c:import>
 
     <div class="content">
         <div class="header">
