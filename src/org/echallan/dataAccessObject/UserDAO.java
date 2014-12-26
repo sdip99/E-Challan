@@ -9,21 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class UserDAO {
-	
-	@SuppressWarnings("deprecation")
-	public void insert(User obj) {
-		SessionFactory factory = null;
-		Session session;
-		try {
-			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
-			Transaction transaction = session.beginTransaction();
-			session.save(obj);
-			transaction.commit();
-			session.close();
-		} catch (Exception ex) { System.err.println(ex); }
-	}
+public class UserDAO extends GenericDAO {
 	
 	@SuppressWarnings({ "deprecation", "unchecked" })
 	public User search(User vo) {
