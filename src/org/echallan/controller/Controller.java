@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.echallan.Common;
+import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.UserDAO;
+import org.echallan.valueObject.City;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
 
@@ -91,6 +93,14 @@ public class Controller extends HttpServlet {
 			dao.insert(user);
 			session.setAttribute("success", true);
 			response.sendRedirect("add_officer.jsp");
+		} else if(request.getParameter("submit").equals("Insert City")) {
+			HttpSession session = request.getSession();
+			String name = request.getParameter("city_name");
+			City city = new City(name);
+			CityDAO dao = new CityDAO();
+			dao.insert(city);
+			session.setAttribute("success", true);
+			response.sendRedirect("insert_city.jsp");
 		}
 	}
 

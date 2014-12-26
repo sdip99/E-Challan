@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 26, 2014 9:38:39 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.City" table="CITY">
+        <id name="cityID" type="int">
+            <column name="CITYID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String" unique="true" not-null="true">
+            <column name="NAME" />
+        </property>
+    </class>
+</hibernate-mapping>
