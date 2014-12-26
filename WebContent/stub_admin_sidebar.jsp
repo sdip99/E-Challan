@@ -12,7 +12,8 @@
 	    <li><a href="#" data-target=".area-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Checkposts<i class="fa fa-collapse"></i></a></li>
 	    <li>
 	       	<ul class="area-menu nav nav-list collapse">
-				<li ><a href="insert_area.jsp"><span class="fa fa-caret-right"></span> Insert Area</a></li>
+	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> List Checkposts</a></li>
+				<li ><a href="insert_checkpost.jsp"><span class="fa fa-caret-right"></span> Insert Checkpost</a></li>
 			</ul>
 		</li>
 	    <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Complaints<i class="fa fa-collapse"></i></a></li>
