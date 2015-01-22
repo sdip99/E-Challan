@@ -128,7 +128,7 @@ public class Controller extends HttpServlet {
 			SubAreaDAO dao = new SubAreaDAO();
 			dao.insert(subArea);
 			session.setAttribute("success", true);
-			response.sendRedirect("insert_area.jsp");
+			response.sendRedirect("insert_checkpost.jsp");
 		}
 	}
 
