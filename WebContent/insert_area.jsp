@@ -1,3 +1,6 @@
+<%@page import="org.echallan.dataAccessObject.CityDAO"%>
+<%@page import="org.echallan.valueObject.City"%>
+<%@page import="java.util.List"%>
 <%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -158,8 +161,11 @@
 								<p class="pull-right"><a href="insert_city.jsp" style="font-size: 12px">Click here to add new city</a></p>
 								<label>City Assigned:</label>
 								<select class="form-control " name="subarea_drop">
-									<option value="1">Maninagar Cross Road</option>
-									<option value="2">Railway Station</option>
+								<%
+									List<City> city = new CityDAO().getAll();
+									for(City c : city)
+										out.println("<option value='" + c.getCityID() + "'>" + c.getName() + "</option>");
+								%>
 								</select>
 							</p>
 							<p>
