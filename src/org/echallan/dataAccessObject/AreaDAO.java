@@ -16,6 +16,22 @@ import org.hibernate.Transaction;
 
 @SuppressWarnings("unchecked")
 public class AreaDAO extends GenericDAO {
+	
+	public Area getAreaById(int areaID) {
+		Session session = getSession();
+		Area area = null;
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from Area where areaID = '" + areaID + "'");
+			transaction.commit();
+			List<Area> ret = query.list();
+			if(ret != null && ret.size() > 0)
+				area = ret.get(0);		// Area name has unique constraint so there must be only one result
+			session.close();
+		}
+		return area;
+	}
+	
 	public List<Area> getAll() {
 		List<Area> ret = null;
 		Session session = getSession();
