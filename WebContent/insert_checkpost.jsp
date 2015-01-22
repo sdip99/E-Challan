@@ -1,3 +1,5 @@
+<%@page import="org.echallan.dataAccessObject.AreaDAO"%>
+<%@page import="org.echallan.valueObject.Area"%>
 <%@page import="org.echallan.dataAccessObject.CityDAO"%>
 <%@page import="org.echallan.valueObject.City"%>
 <%@page import="java.util.List"%>
@@ -172,7 +174,11 @@
 								<p class="pull-right"><a href="insert_area.jsp" style="font-size: 12px">Click here to add new area</a></p>
 								<label>Area Assigned:</label>
 								<select class="form-control " name="subarea_drop">
-									
+								<%
+									List<Area> area = new AreaDAO().getAll();
+									for(Area a : area)
+										out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+								%>	
 								</select>
 							</p>
 							<p>
