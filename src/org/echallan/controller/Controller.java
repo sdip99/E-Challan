@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.echallan.Common;
+import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.UserDAO;
+import org.echallan.valueObject.Area;
 import org.echallan.valueObject.City;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
@@ -101,6 +103,18 @@ public class Controller extends HttpServlet {
 			dao.insert(city);
 			session.setAttribute("success", true);
 			response.sendRedirect("insert_city.jsp");
+		} else if(request.getParameter("submit").equals("Insert Area")) {
+			HttpSession session = request.getSession();
+			String name = request.getParameter("area_name");
+			int cityID = Integer.parseInt(request.getParameter("subarea_drop"));
+			City city = new CityDAO().getCityById(cityID);
+			Area area = new Area();
+			area.setName(name);
+			area.setCity(city);
+			AreaDAO dao = new AreaDAO();
+			dao.insert(area);
+			session.setAttribute("success", true);
+			response.sendRedirect("insert_area.jsp");
 		}
 	}
 
