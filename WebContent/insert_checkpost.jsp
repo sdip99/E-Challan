@@ -162,7 +162,7 @@
 							<p>
 								<p class="pull-right"><a href="insert_city.jsp" style="font-size: 12px">Click here to add new city</a></p>
 								<label>City Assigned:</label>
-								<select class="form-control " name="subarea_drop">
+								<select class="form-control " name="city_drop">
 								<%
 									List<City> city = new CityDAO().getAll();
 									for(City c : city)
@@ -173,7 +173,7 @@
 							<p>
 								<p class="pull-right"><a href="insert_area.jsp" style="font-size: 12px">Click here to add new area</a></p>
 								<label>Area Assigned:</label>
-								<select class="form-control " name="subarea_drop">
+								<select class="form-control " name="area_drop">
 								<%
 									List<Area> area = new AreaDAO().getAll();
 									for(Area a : area)

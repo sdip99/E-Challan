@@ -22,7 +22,7 @@ public class AreaDAO extends GenericDAO {
 		Area area = null;
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from Area where areaID = '" + areaID + "'");
+			Query query = session.createQuery("from Area where area_id = '" + areaID + "'");
 			transaction.commit();
 			List<Area> ret = query.list();
 			if(ret != null && ret.size() > 0)

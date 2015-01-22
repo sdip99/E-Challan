@@ -120,7 +120,7 @@ public class Controller extends HttpServlet {
 		} else if(request.getParameter("submit").equals("Insert CheckPost")) {
 			HttpSession session = request.getSession();
 			String name = request.getParameter("subarea_name");
-			int areaID = Integer.parseInt(request.getParameter("subarea_drop"));
+			int areaID = Integer.parseInt(request.getParameter("area_drop"));
 			Area area = new AreaDAO().getAreaById(areaID);
 			SubArea subArea = new SubArea();
 			subArea.setName(name);
