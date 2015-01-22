@@ -12,18 +12,17 @@ import java.util.List;
 import org.echallan.valueObject.City;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
+@SuppressWarnings("unchecked")
 public class CityDAO extends GenericDAO {
+	
 	public City search(City city) {
-		SessionFactory factory = null;
-		Session session;
+		Session session = getSession();
+		if(session == null)
+			return null;
 		City rCity = null;
 		try {
-			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
 			Transaction transaction = session.beginTransaction();
 			Query query = session.createQuery("from City where name = '" + city.getName() + "'");
 			transaction.commit();
@@ -33,5 +32,18 @@ public class CityDAO extends GenericDAO {
 			session.close();
 		} catch (Exception ex) { System.err.println(ex); }
 		return rCity;
+	}
+	
+	public List<City> getAll() {
+		List<City> ret = null;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from City");
+			transaction.commit();
+			ret = query.list();
+			session.close();
+		}
+		return ret;
 	}
 }

@@ -12,18 +12,24 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+@SuppressWarnings("deprecation")
 public class GenericDAO {
-	@SuppressWarnings("deprecation")
-	public void insert(Object obj) {
+	
+	public Session getSession() {
 		SessionFactory factory = null;
-		Session session;
+		Session session = null;
 		try {
 			factory = new Configuration().configure().buildSessionFactory();
 			session = factory.openSession();
-			Transaction transaction = session.beginTransaction();
-			session.save(obj);
-			transaction.commit();
-			session.close();
 		} catch (Exception ex) { System.err.println(ex); }
+		return session;
+	}
+	
+	public void insert(Object obj) {
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		session.save(obj);
+		transaction.commit();
+		session.close();
 	}
 }
