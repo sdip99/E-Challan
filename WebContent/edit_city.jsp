@@ -33,11 +33,30 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
+<%
+	String str = request.getParameter("delete");
+	if(str != null && str.equals("true")) {
+		String param = request.getParameter("paramid");
+		if(param != null) {
+			int id = Integer.parseInt(param);
+			new CityDAO().removeCity(id);
+%>
+		<div class="panel panel-default">
+			        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+		        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+		        		<center>City deleted successfully...!</center>
+		        	</div>
+		</div>
+<%
+		}
+	}
+%>
 <body class=" theme-blue">
 
     <!-- Demo page code -->
 
     <script type="text/javascript">
+    	var paramid;
         $(function() {
             var match = document.cookie.match(new RegExp('color=([^;]+)'));
             if(match) var color = match[1];
@@ -51,6 +70,14 @@
             $('[data-popover="true"]').popover({html: true});
             
         });
+        
+        function setParamID(id) {
+        	paramid = id;
+        }
+        
+        function redirectAfterConfirm() {
+        	window.location.href = "edit_city.jsp?delete=true&paramid=" + paramid;
+        }
     </script>
     <style type="text/css">
         #line-chart {
@@ -184,7 +211,7 @@
 			  	for(City c : city) {
 			  		out.println("<tr><td>" + i + "</td><td>" + c.getName() + "</td>");
 			  		out.println("<td><a href='update_city.jsp?paramid=" + c.getCityID() + "'><i class='fa fa-pencil'></i></a>");
-			  		out.println("<a href='#myModal' role='button' data-toggle='modal'><i class='fa fa-trash-o'></i></a></td></tr>");
+			  		out.println("<a href='#myModal' role='button' data-toggle='modal' onclick='setParamID(" + c.getCityID() + ")'><i class='fa fa-trash-o'></i></a></td></tr>");
 			  		i++;
 			  	}
 			  %>
@@ -215,7 +242,7 @@
 			        </div>
 			        <div class="modal-footer">
 			            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
-			            <button class="btn btn-danger" data-dismiss="modal">Delete</button>
+			            <button class="btn btn-danger" data-dismiss="modal" onclick='redirectAfterConfirm()'>Delete</button>
 			        </div>
 			      </div>
 			    </div>

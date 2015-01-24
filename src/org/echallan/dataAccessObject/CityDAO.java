@@ -72,4 +72,15 @@ public class CityDAO extends GenericDAO {
 			session.close();
 		}
 	}
+	
+	public void removeCity(int cityID) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("DELETE from City WHERE cityID='" + cityID + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
 }
