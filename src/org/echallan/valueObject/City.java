@@ -7,9 +7,12 @@
  *******************************************************************************/
 package org.echallan.valueObject;
 
+import java.util.Set;
+
 public class City {
 	private int cityID;
 	private String name;
+	private Set<Area> area;
 	
 	// For hibernate
 	public City() { }
@@ -32,5 +35,13 @@ public class City {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Set<Area> getArea() {
+		return area;
+	}
+
+	public void setArea(Set<Area> area) {
+		this.area = area;
 	}
 }

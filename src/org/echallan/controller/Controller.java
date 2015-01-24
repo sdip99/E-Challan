@@ -113,8 +113,8 @@ public class Controller extends HttpServlet {
 			Area area = new Area();
 			area.setName(name);
 			area.setCity(city);
-			AreaDAO dao = new AreaDAO();
-			dao.insert(area);
+			city.getArea().add(area);
+			new AreaDAO().insert(area);
 			session.setAttribute("success", true);
 			response.sendRedirect("insert_area.jsp");
 		} else if(request.getParameter("submit").equals("Insert CheckPost")) {

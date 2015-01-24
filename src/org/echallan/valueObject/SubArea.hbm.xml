@@ -12,7 +12,7 @@
    <column name="NAME"/>
   </property>
   <many-to-one class="org.echallan.valueObject.Area" fetch="join" name="area">
-   <column name="AREA"/>
+   <column name="AREA_ID"/>
   </many-to-one>
  </class>
 </hibernate-mapping>

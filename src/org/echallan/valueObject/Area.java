@@ -7,10 +7,13 @@
  *******************************************************************************/
 package org.echallan.valueObject;
 
+import java.util.Set;
+
 public class Area {
 	private int area_id;
 	private String name;
 	private City city;
+	private Set<SubArea> subarea;
 	
 	public int getArea_id() {
 		return area_id;
@@ -29,5 +32,11 @@ public class Area {
 	}
 	public void setCity(City city) {
 		this.city = city;
+	}
+	public Set<SubArea> getSubarea() {
+		return subarea;
+	}
+	public void setSubarea(Set<SubArea> subarea) {
+		this.subarea = subarea;
 	}
 }

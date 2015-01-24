@@ -1,19 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 22, 2015 2:31:15 PM by Hibernate Tools 3.4.0.CR1 -->
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2015 5:53:52 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
- <import class="org.echallan.valueObject.City"/>
- <class name="org.echallan.valueObject.Area" table="AREA">
-  <id name="area_id" type="int">
-   <column name="AREA_ID"/>
-   <generator class="native"/>
-  </id>
-  <property generated="never" lazy="false" name="name" type="java.lang.String">
-   <column name="NAME"/>
-  </property>
-  <many-to-one class="org.echallan.valueObject.City" fetch="join" name="city">
-   <column name="CITY"/>
-  </many-to-one>
- </class>
+    <class name="org.echallan.valueObject.Area" table="AREA">
+        <id name="area_id" type="int">
+            <column name="AREA_ID" />
+            <generator class="native" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME" />
+        </property>
+        <many-to-one name="city" class="org.echallan.valueObject.City" fetch="join">
+            <column name="CITYID" />
+        </many-to-one>
+        <set name="subarea" table="SUBAREA" inverse="false" lazy="false">
+            <key>
+                <column name="AREA_ID" />
+            </key>
+            <one-to-many class="org.echallan.valueObject.SubArea" />
+        </set>
+    </class>
 </hibernate-mapping>
