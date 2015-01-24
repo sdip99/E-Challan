@@ -129,6 +129,13 @@ public class Controller extends HttpServlet {
 			dao.insert(subArea);
 			session.setAttribute("success", true);
 			response.sendRedirect("insert_checkpost.jsp");
+		} else if(request.getParameter("submit").equals("Update City")) {
+			HttpSession session = request.getSession();
+			String name = request.getParameter("city_name");
+			int id = Integer.parseInt((String) session.getAttribute("city_id"));
+			session.setAttribute("success", true);
+			new CityDAO().updateCity(id, name);
+			response.sendRedirect("update_city.jsp");
 		}
 	}
 

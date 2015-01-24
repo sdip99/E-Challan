@@ -61,4 +61,15 @@ public class CityDAO extends GenericDAO {
 		}
 		return ret;
 	}
+	
+	public void updateCity(int cityID, String newName) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("UPDATE City set name='" + newName + "' WHERE cityID='" + cityID + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
 }
