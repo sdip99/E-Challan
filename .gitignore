@@ -35,3 +35,6 @@ build/*
 # libs
 WebContent/WEB-INF/lib/*
 WebContent/WEB-INF/lib/*
+
+# eclipse configs
+.classpath
