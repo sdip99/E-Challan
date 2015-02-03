@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 25, 2014 10:46:23 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.RuleDetail" table="RULEDETAIL">
+        <id name="ruleid" type="integer">
+            <column name="RULEID" />
+       </id>
+        <property name="catname" type="java.lang.String">
+            <column name="CATNAME" />
+        </property>
+        <property name="rulename" type="java.lang.String">
+            <column name="RULENAME" />
+        </property>
+        <property name="fine" type="integer">
+            <column name="FINE" />
+        </property>
+        <property name="ruledesc" type="java.lang.String">
+            <column name="RULEDESC" />
+        </property>
+        
+    </class>
+</hibernate-mapping>
