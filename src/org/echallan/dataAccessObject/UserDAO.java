@@ -2,6 +2,7 @@ package org.echallan.dataAccessObject;
 
 import java.util.List;
 
+import org.echallan.Common;
 import org.echallan.valueObject.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,5 +29,27 @@ public class UserDAO extends GenericDAO {
 			session.close();
 		} catch (Exception ex) { System.err.println(ex); }
 		return user;
+	}
+	
+	public List<User> getAllUsers() {
+		return getAllUsers(false);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<User> getAllUsers(boolean withAdmin) {
+		List<User> ret = null;
+		Query query;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			if(withAdmin)
+				query = session.createQuery("from User");
+			else
+				query = session.createQuery("from User where userType=" + Common.USER_TYPE_NORMAL);
+			transaction.commit();
+			ret = query.list();
+			session.close();
+		}
+		return ret;
 	}
 }
