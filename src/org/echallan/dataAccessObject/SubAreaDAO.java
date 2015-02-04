@@ -28,4 +28,17 @@ public class SubAreaDAO extends GenericDAO {
 		}
 		return ret;
 	}
+	
+	public SubArea getSubArea(int id) {
+		SubArea ret = null;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from SubArea where subarea_id=" + id);
+			transaction.commit();
+			ret = (SubArea) query.list().get(0);
+			session.close();
+		}
+		return ret;
+	}
 }
