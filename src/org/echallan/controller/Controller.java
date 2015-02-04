@@ -86,8 +86,6 @@ public class Controller extends HttpServlet {
 			String email = request.getParameter("email");
 			String pass = request.getParameter("password");
 			int pincode = Integer.parseInt(request.getParameter("pincode"));
-			int cityAssign = Integer.parseInt(request.getParameter("city_assigned"));
-			int areaAssign = Integer.parseInt(request.getParameter("area_assigned"));
 			int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
 			UserDetail userDetail = new UserDetail(fname, lname, subAreaAssign, mobileNo, street, city, state, pincode);
 			User user = new User(email, pass, 0);
