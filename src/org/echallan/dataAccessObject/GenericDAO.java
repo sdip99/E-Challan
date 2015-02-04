@@ -32,4 +32,12 @@ public class GenericDAO {
 		transaction.commit();
 		session.close();
 	}
+	
+	public void update(Object obj) {
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		session.update(obj);
+		transaction.commit();
+		session.close();
+	}
 }
