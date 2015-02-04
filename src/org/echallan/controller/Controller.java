@@ -14,6 +14,7 @@ import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.SubAreaDAO;
 import org.echallan.dataAccessObject.UserDAO;
+import org.echallan.dataAccessObject.UserDetailDAO;
 import org.echallan.valueObject.Area;
 import org.echallan.valueObject.City;
 import org.echallan.valueObject.SubArea;
@@ -134,6 +135,42 @@ public class Controller extends HttpServlet {
 			session.setAttribute("success", true);
 			new CityDAO().updateCity(id, name);
 			response.sendRedirect("update_city.jsp");
+		} else if(request.getParameter("submit").equals("Update Officer")) {
+			HttpSession session = request.getSession();
+			String uid = (String) session.getAttribute("uid");
+			String fname = request.getParameter("first_name");
+			String lname = request.getParameter("last_name");
+			String mobileNo = request.getParameter("mobile_no");
+			String street = request.getParameter("street");
+			String state = request.getParameter("state");
+			String city = request.getParameter("city");
+			String email = request.getParameter("email");
+			String pass = request.getParameter("password");
+			int pincode = Integer.parseInt(request.getParameter("pincode"));
+			int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
+			
+			User oldUser = new UserDAO().getUser(uid);
+			
+			User user = new User(email, pass, Common.USER_TYPE_NORMAL);
+			user.setUserID_pkey(Integer.parseInt(uid));
+			if(pass != null && pass == "")
+				user.setPassword(oldUser.getPassword());
+			new UserDAO().update(user);
+			
+			UserDetail uDetail = oldUser.getUserDetail();
+			uDetail.setCity(city);
+			uDetail.setCurrentPosting(subAreaAssign);
+			uDetail.setFirstName(fname);
+			uDetail.setLastName(lname);
+			uDetail.setMobileNo(mobileNo);
+			uDetail.setPincode(pincode);
+			uDetail.setState(state);
+			uDetail.setStreet(street);
+			new UserDetailDAO().update(uDetail);
+			
+			session.setAttribute("success", true);
+			// TODO: Redirect back to same page
+			response.sendRedirect("manage_officer.jsp");
 		}
 	}
 

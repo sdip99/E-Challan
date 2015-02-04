@@ -6,7 +6,7 @@
 	    <li>
 	    	<ul class="dashboard-menu nav nav-list collapse in">
 	            <li><a href="add_officer.jsp"><span class="fa fa-caret-right"></span> Add Officer</a></li>
-	            <li ><a href="#"><span class="fa fa-caret-right"></span> List Officers</a></li>
+	            <li ><a href="manage_officer.jsp"><span class="fa fa-caret-right"></span> Manage Officers</a></li>
 	        </ul>
 	    </li>
 	    <li><a href="#" data-target=".area-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Checkposts<i class="fa fa-collapse"></i></a></li>
