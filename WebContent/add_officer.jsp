@@ -1,3 +1,10 @@
+<%@page import="org.echallan.dataAccessObject.SubAreaDAO"%>
+<%@page import="org.echallan.valueObject.SubArea"%>
+<%@page import="org.echallan.dataAccessObject.AreaDAO"%>
+<%@page import="org.echallan.valueObject.Area"%>
+<%@page import="org.echallan.dataAccessObject.CityDAO"%>
+<%@page import="org.echallan.valueObject.City"%>
+<%@page import="java.util.List"%>
 <%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -105,21 +112,31 @@
 							</p>
 							<p class="inline-field">
 								<label>City Assigned:</label>
-								<select class="form-control" name="city_drop">
-									<option value="1">Ahmedabad</option>
+								<select class="form-control " name="city_assigned">
+								<%
+									List<City> city = new CityDAO().getAll();
+									for(City c : city)
+										out.println("<option value='" + c.getCityID() + "'>" + c.getName() + "</option>");
+								%>
 								</select>
 							</p>
 							<p class="inline-field" >
 								<label>Area Assigned:</label>
-								<select class="form-control" name="area_drop">
-									<option value="1">Maninagar</option>
-									<option value="2">Kankaria</option>
+								<select class="form-control " name="area_assigned">
+								<%
+									List<Area> area = new AreaDAO().getAll();
+									for(Area a : area)
+										out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+								%>
 								</select>
 							</p>
 								<label>SubArea Assigned:</label>
-								<select class="form-control " name="subarea_drop">
-									<option value="1">Maninagar Cross Road</option>
-									<option value="2">Railway Station</option>
+								<select class="form-control " name="subarea_assigned">
+								<%
+									List<SubArea> sarea = new SubAreaDAO().getAll();
+									for(SubArea a : sarea)
+										out.println("<option value='" + a.getSubarea_id() + "'>" + a.getName() + "</option>");
+								%>
 								</select>
 							</p>
 							<input type="submit" name="submit" class="btn btn-primary form-control" value="Insert Officer" name="submit"/>
