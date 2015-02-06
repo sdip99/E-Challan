@@ -148,7 +148,7 @@
 			            <h3 id="myModalLabel">Delete Confirmation</h3>
 			        </div>
 			        <div class="modal-body">
-			            <p class="error-text"><i class="fa fa-warning modal-icon"></i>Are you sure you want to delete the city?<br>This cannot be undone.</p>
+			            <p class="error-text"><i class="fa fa-warning modal-icon"></i>Deleting City will delete all Areas and Subareas associated with it. Are you sure you want to delete the city?</p>
 			        </div>
 			        <div class="modal-footer">
 			            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>
