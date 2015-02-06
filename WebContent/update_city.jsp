@@ -43,7 +43,7 @@
 		
 		// Save city id to session scope for updating record in database
 		session.setAttribute("city_id", id);
-	} else response.sendRedirect("insert_city.jsp");
+	} else response.sendRedirect("manage_city.jsp");
 %>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
