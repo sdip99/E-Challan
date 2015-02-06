@@ -44,24 +44,6 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<%
-	String str = request.getParameter("delete");
-	if(str != null && str.equals("true")) {
-		String param = request.getParameter("paramid");
-		if(param != null) {
-			int id = Integer.parseInt(param);
-			new CityDAO().removeCity(id);
-%>
-		<div class="panel panel-default">
-			        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
-		        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-		        		<center>City deleted successfully...!</center>
-		        	</div>
-		</div>
-<%
-		}
-	}
-%>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
     <c:import url="stub_admin_sidebar.jsp"></c:import>
@@ -89,7 +71,24 @@
 				}
 				session.removeAttribute("success");
 			%>
-        
+			<%
+				String str = request.getParameter("delete");
+				if(str != null && str.equals("true")) {
+					String param = request.getParameter("paramid");
+					if(param != null) {
+						int id = Integer.parseInt(param);
+						new CityDAO().removeCity(id);
+			%>
+					<div class="panel panel-default">
+						        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+					        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+					        		<center>City deleted successfully...!</center>
+					        	</div>
+					</div>
+			<%
+					}
+				}
+			%>        
 			<div class="btn-toolbar list-toolbar">
 			    <a href="insert_city.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New City</a>
 			  <div class="btn-group">
