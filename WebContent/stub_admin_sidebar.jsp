@@ -13,7 +13,7 @@
 	    <li>
 	       	<ul class="area-menu nav nav-list collapse">
 	       		<li ><a href="manage_city.jsp"><span class="fa fa-caret-right"></span> Manage City</a></li>
-	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Manage Area</a></li>
+	       		<li ><a href="manage_area.jsp"><span class="fa fa-caret-right"></span> Manage Area</a></li>
 	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Manage Checkposts</a></li>
 				<li ><a href="insert_checkpost.jsp"><span class="fa fa-caret-right"></span> Insert Checkpost</a></li>
 			</ul>

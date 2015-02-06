@@ -171,6 +171,13 @@ public class Controller extends HttpServlet {
 			session.setAttribute("success", true);
 			// TODO: Redirect back to same page
 			response.sendRedirect("manage_officer.jsp");
+		} else if(request.getParameter("submit").equals("Update Area")) {
+			HttpSession session = request.getSession();
+			String newName = request.getParameter("area_name");
+			int id = Integer.parseInt((String) session.getAttribute("area_id"));
+			session.setAttribute("success", true);
+			new CityDAO().updateCity(id, newName);
+			response.sendRedirect("update_area.jsp");
 		}
 	}
 

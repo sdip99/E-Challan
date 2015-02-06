@@ -44,4 +44,9 @@ public class AreaDAO extends GenericDAO {
 		}
 		return ret;
 	}
+	
+	// Area specific delete method
+	public boolean removeArea(int id) {
+		return deleteById(Area.class, id);
+	}
 }
