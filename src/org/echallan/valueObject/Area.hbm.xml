@@ -14,7 +14,7 @@
         <many-to-one name="city" class="org.echallan.valueObject.City" fetch="join">
             <column name="CITYID" />
         </many-to-one>
-        <set name="subarea" table="SUBAREA" inverse="false" lazy="false">
+        <set name="subarea" table="SUBAREA" inverse="false" lazy="false" cascade="all">
             <key>
                 <column name="AREA_ID" />
             </key>
