@@ -82,7 +82,7 @@
 			%>
         
 			<div class="btn-toolbar list-toolbar">
-			    <a href="addRule.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Rule</a>
+			    <a href="add_rule.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Rule</a>
 			  <div class="btn-group">
 			  </div>
 			</div>
