@@ -51,7 +51,7 @@ public class GenericDAO {
 		Session session = getSession();
 		Transaction transaction = session.beginTransaction();
 		Serializable pk = new Integer(id);
-		Object pInstance = session.load(clazz, pk);
+		Object pInstance = session.get(clazz, pk);
 		if(pInstance != null) {
 			session.delete(pInstance);
 			transaction.commit();
