@@ -33,7 +33,7 @@
 		}
         
         function redirectAfterConfirm() {
-			window.location.href = "edit_city.jsp?delete=true&paramid=" + paramid;
+			window.location.href = "manage_city.jsp?delete=true&paramid=" + paramid;
 		}
     </script>
     
