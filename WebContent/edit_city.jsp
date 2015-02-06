@@ -26,7 +26,18 @@
         $(function() {
             $(".knob").knob();
         });
+        
+        // functions for setting delete flags
+        function setParamID(id) {
+           	paramid = id;
+		}
+        
+        function redirectAfterConfirm() {
+			window.location.href = "edit_city.jsp?delete=true&paramid=" + paramid;
+		}
     </script>
+    
+    
 
 
     <link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
