@@ -12,9 +12,9 @@
 	    <li><a href="#" data-target=".area-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Checkposts<i class="fa fa-collapse"></i></a></li>
 	    <li>
 	       	<ul class="area-menu nav nav-list collapse">
-	       		<li ><a href="manage_city.jsp"><span class="fa fa-caret-right"></span> Edit City</a></li>
-	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Edit Area</a></li>
-	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Edit Checkposts</a></li>
+	       		<li ><a href="manage_city.jsp"><span class="fa fa-caret-right"></span> Manage City</a></li>
+	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Manage Area</a></li>
+	       		<li ><a href="list_checkpost.jsp"><span class="fa fa-caret-right"></span> Manage Checkposts</a></li>
 				<li ><a href="insert_checkpost.jsp"><span class="fa fa-caret-right"></span> Insert Checkpost</a></li>
 			</ul>
 		</li>
