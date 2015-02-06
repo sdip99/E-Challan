@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.echallan.dataAccessObject;
 
+import java.io.Serializable;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -39,5 +41,37 @@ public class GenericDAO {
 		session.update(obj);
 		transaction.commit();
 		session.close();
+	}
+	
+	/**
+	 * Removes persistent instance of class from database as
+	 * transient instance fails to remove due to foreign key constraint 
+	 */
+	public boolean deleteById(Class<?> clazz, int id) {
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		Serializable pk = new Integer(id);
+		Object pInstance = session.load(clazz, pk);
+		if(pInstance != null) {
+			session.delete(pInstance);
+			transaction.commit();
+			return true;
+		}
+		session.close();
+		return false;
+	}
+	
+	public boolean deleteById(Class<?> clazz, String id) {
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		Serializable pk = new String(id);
+		Object pInstance = session.load(clazz, pk);
+		if(pInstance != null) {
+			session.delete(pInstance);
+			transaction.commit();
+			return true;
+		}
+		session.close();
+		return false;
 	}
 }
