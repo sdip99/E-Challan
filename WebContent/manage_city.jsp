@@ -9,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>Edit City : e-Challan System</title>
+    <title>Manage City : e-Challan System</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -50,10 +50,10 @@
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">Edit City</h1>
+	        <h1 class="page-title">Manage City</h1>
 	       	<ul class="breadcrumb">
 	            <li><a href="admin_dashboard.jsp">Home</a> </li>
-	            <li class="active">Edit City</li>
+	            <li class="active">Manage City</li>
 	        </ul>
         </div>
         <div class="main-content">
