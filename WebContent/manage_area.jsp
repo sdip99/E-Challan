@@ -65,7 +65,7 @@
 					String param = request.getParameter("paramid");
 					if(param != null) {
 						int id = Integer.parseInt(param);
-						new AreaDAO().removeArea(id);
+						if(new AreaDAO().removeArea(id)) {
 			%>
 					<div class="panel panel-default">
 						        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
@@ -74,6 +74,7 @@
 					        	</div>
 					</div>
 			<%
+						}
 					}
 				}
 			%>        
