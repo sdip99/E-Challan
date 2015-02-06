@@ -57,20 +57,6 @@
 	        </ul>
         </div>
         <div class="main-content">
-        
-	        <%
-				if(session.getAttribute("success") != null) {
-			%>
-			<div class="panel panel-default">
-		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
-	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>Data Updated...!</center>
-	        	</div>
-		    </div>
-		    <%
-				}
-				session.removeAttribute("success");
-			%>
 			<%
 				String str = request.getParameter("delete");
 				if(str != null && str.equals("true")) {
