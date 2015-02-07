@@ -87,7 +87,7 @@
 									List<Area> area = new AreaDAO().getAll();
 									for(Area a : area)
 										out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
-								%>	
+								%>
 								</select>
 							</p>
 							<p>
