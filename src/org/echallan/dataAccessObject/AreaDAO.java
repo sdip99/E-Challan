@@ -49,6 +49,17 @@ public class AreaDAO extends GenericDAO {
 		return ret;
 	}
 	
+	public void updateName(int areaID, String newName) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("UPDATE Area set name='" + newName + "' WHERE area_id='" + areaID + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
+	
 	// Area specific delete method
 	public boolean removeArea(int id) {
 		return deleteById(Area.class, id);

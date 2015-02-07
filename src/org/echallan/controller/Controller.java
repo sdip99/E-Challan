@@ -176,7 +176,7 @@ public class Controller extends HttpServlet {
 			String newName = request.getParameter("area_name");
 			int id = Integer.parseInt((String) session.getAttribute("area_id"));
 			session.setAttribute("success", true);
-			new CityDAO().updateCity(id, newName);
+			new AreaDAO().updateName(id, newName);
 			response.sendRedirect("update_area.jsp");
 		} else if(request.getParameter("submit").equals("Update Checkpost")) {
 			HttpSession session = request.getSession();
