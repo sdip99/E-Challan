@@ -1,3 +1,4 @@
+<%@page import="java.util.Set"%>
 <%@page import="org.echallan.dataAccessObject.AreaDAO"%>
 <%@page import="org.echallan.valueObject.Area"%>
 <%@page import="org.echallan.dataAccessObject.CityDAO"%>
@@ -37,6 +38,11 @@
         function redirectAfterConfirm() {
 			window.location.href = "manage_area.jsp?delete=true&paramid=" + paramid;
 		}
+        
+        function handleFilterEvent() {
+        	var id = document.getElementsByName("city_drop")[0].value;
+        	window.location.href = "manage_area.jsp?filterBy=" + id;
+        }
     </script>
     
     
@@ -79,9 +85,19 @@
 				}
 			%>        
 			<div class="btn-toolbar list-toolbar">
-			    <a href="insert_area.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Area</a>
-			  <div class="btn-group">
-			  </div>
+			    <a href="insert_area.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Area</a><br></br>
+			    <p>
+			    	Filter By:
+			    	<select class="form-control inline-ele-left" name="city_drop"  style="width: 25%;">
+			    		<%
+							List<City> _city = new CityDAO().getAll();
+							for(City c : _city)
+								out.println("<option value='" + c.getCityID() + "'>" + c.getName() + "</option>");
+						%>
+			    	</select>
+			    	<a href="#" class="btn btn-primary btn-toolbar list-toolbar inline-ele-left" style="margin-bottom: 5px;" onclick="javascript: return handleFilterEvent()"> Filter</a>
+			    	<a href="manage_area.jsp" class="btn btn-danger btn-toolbar list-toolbar inline-ele" style="margin-bottom: 5px;"> X</a>
+			    </p>
 			</div>
 			<table class="table">
 			  <thead>
@@ -107,8 +123,17 @@
 			   -->
 			  <%
 			  	int i = 1;
-				List<Area> area = new AreaDAO().getAll();
-			  	for(Area a : area) {
+			  	String _tmp = request.getParameter("filterBy");
+			  	Object[] area;
+			  	if(_tmp != null && _tmp != "") {
+			  		City c = new CityDAO().getCityById(_tmp);
+			  		area = c.getArea().toArray();
+			  	} else {
+			  		// If none filter is specified show all areas
+					area = new AreaDAO().getAll().toArray();
+			  	}
+			  	for(Object obj : area) {
+			  		Area a = (Area) obj;
 			  		out.println("<tr><td>" + i + "</td><td>" + a.getName() + "</td>");
 			  		out.println("<td>" + a.getCity().getName() + "</td>");
 			  		out.println("<td><a href='update_area.jsp?paramid=" + a.getArea_id() + "'><i class='fa fa-pencil'></i></a>");
