@@ -41,4 +41,20 @@ public class SubAreaDAO extends GenericDAO {
 		}
 		return ret;
 	}
+	
+	public void updateName(int id, String newName) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("UPDATE SubArea set name='" + newName + "' WHERE subarea_id='" + id + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
+	
+	// SubArea specific delete method
+	public boolean removeSubArea(int id) {
+		return deleteById(SubArea.class, id);
+	}
 }

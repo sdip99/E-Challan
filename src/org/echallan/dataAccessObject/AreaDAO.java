@@ -17,6 +17,10 @@ import org.hibernate.Transaction;
 @SuppressWarnings("unchecked")
 public class AreaDAO extends GenericDAO {
 	
+	public Area getAreaById(String areaID) {
+		return getAreaById(Integer.parseInt(areaID));
+	}
+	
 	public Area getAreaById(int areaID) {
 		Session session = getSession();
 		Area area = null;
