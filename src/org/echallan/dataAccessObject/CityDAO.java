@@ -34,6 +34,10 @@ public class CityDAO extends GenericDAO {
 		return rCity;
 	}
 	
+	public City getCityById(String cityID) {
+		return getCityById(Integer.parseInt(cityID));
+	}
+	
 	public City getCityById(int cityID) {
 		Session session = getSession();
 		City city = null;
