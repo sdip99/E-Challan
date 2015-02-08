@@ -15,7 +15,6 @@
 	       		<li ><a href="manage_city.jsp"><span class="fa fa-caret-right"></span> Manage City</a></li>
 	       		<li ><a href="manage_area.jsp"><span class="fa fa-caret-right"></span> Manage Area</a></li>
 	       		<li ><a href="manage_checkpost.jsp"><span class="fa fa-caret-right"></span> Manage Checkposts</a></li>
-				<li ><a href="insert_checkpost.jsp"><span class="fa fa-caret-right"></span> Insert Checkpost</a></li>
 			</ul>
 		</li>
 	    <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Complaints<i class="fa fa-collapse"></i></a></li>
