@@ -20,7 +20,7 @@
 	    <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Complaints<i class="fa fa-collapse"></i></a></li>
 	    <li>
 	       	<ul class="legal-menu nav nav-list collapse">
-				<li ><a href="privacy-policy.html"><span class="fa fa-caret-right"></span> View Complaints</a></li>
+				<li ><a href="manage_complaint.jsp"><span class="fa fa-caret-right"></span> Manage Complaints</a></li>
 			</ul>
 		</li>
 	</ul>
