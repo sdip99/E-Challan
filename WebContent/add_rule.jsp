@@ -84,7 +84,7 @@
 							</p>
 							<p>
 								<label>Rule Description: </label>
-								<textarea rows="5" cols="108" name="rule_desc"></textarea>
+								<textarea rows="5" cols="108" name="rule_desc" class="form-control span12"></textarea>
 							</p>
 							<input type="submit" name="submit" class="btn btn-primary form-control" value="Insert Rule" name="submit"/>
 						</div>

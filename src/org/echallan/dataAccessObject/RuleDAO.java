@@ -2,7 +2,7 @@ package org.echallan.dataAccessObject;
 
 import java.util.List;
 
-import org.echallan.valueObject.RuleDetail;
+import org.echallan.valueObject.Rule;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,8 +32,8 @@ public class RuleDAO{
 	
 
 	@SuppressWarnings("unchecked")
-	public List<RuleDetail> getAll() {
-		List<RuleDetail> ret = null;
+	public List<Rule> getAll() {
+		List<Rule> ret = null;
 		Session session = getSession();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
@@ -45,14 +45,14 @@ public class RuleDAO{
 		return ret;
 	}
 	@SuppressWarnings("unchecked")
-	public RuleDetail getRuleById(int Ruleid) {
+	public Rule getRuleById(int Ruleid) {
 		Session session = getSession();
-		RuleDetail rule = null;
+		Rule rule = null;
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
 			Query query = session.createQuery("from RuleDetail where ruleid = '" + Ruleid + "'");
 			transaction.commit();
-			List<RuleDetail> ret = query.list();
+			List<Rule> ret = query.list();
 			if(ret != null && ret.size() > 0)
 				rule = ret.get(0);		
 			session.close();

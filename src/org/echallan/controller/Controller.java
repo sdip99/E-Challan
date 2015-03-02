@@ -199,6 +199,8 @@ public class Controller extends HttpServlet {
 			dao.update(oldComplaint);
 			session.setAttribute("success", true);
 			response.sendRedirect("manage_complaint.jsp");
+		} else if(request.getParameter("submit").equals("Insert Rule")) {
+			
 		}
 	}
 
