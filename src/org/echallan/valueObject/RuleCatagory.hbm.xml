@@ -6,7 +6,7 @@
     <class name="org.echallan.valueObject.RuleCatagory" table="RULECATAGORY">
         <id name="id" type="int">
             <column name="ID" />
-            <generator class="assigned" />
+            <generator class="native" />
         </id>
         <property name="catagoryName" type="java.lang.String">
             <column name="CATAGORYNAME" />
@@ -14,7 +14,7 @@
         <property name="catagoryDesc" type="java.lang.String">
             <column name="CATAGORYDESC" />
         </property>
-        <set name="rules" table="RULE" inverse="false" lazy="true">
+        <set name="rules" table="RULE" inverse="false" lazy="false">
             <key>
                 <column name="ID" />
             </key>

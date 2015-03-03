@@ -39,15 +39,11 @@
 	int oldid=0;
 	String oldname="",olddesc="";
 	int oldfine=0;
-	// If city id is not provided then send to insert city page
+	
 	if(id != null) {
-		oldid = new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleid();
-		oldname = new RuleDAO().getRuleById(Integer.parseInt(id)).getRulename();
-		oldfine = new RuleDAO().getRuleById(Integer.parseInt(id)).getFine();
-		olddesc = new RuleDAO().getRuleById(Integer.parseInt(id)).getRuledesc();
-		// Save city id to session scope for updating record in database
-		session.setAttribute("city_id", id);
-	} else response.sendRedirect("addRule.jsp");
+		oldid = new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleID();
+		session.setAttribute("rule_id", id);
+	} else response.sendRedirect("add_rule.jsp");
 %>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
@@ -55,15 +51,15 @@
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">Update City</h1>
+	        <h1 class="page-title">Update Rule</h1>
 	       	<ul class="breadcrumb">
 	            <li><a href="admin_dashboard.jsp">Home</a> </li>
-	            <li class="active">Update City</li>
+	            <li class="active">Update Rule</li>
 	        </ul>
         </div>
         <div class="main-content">			
 			<div class="panel panel-default">
-			    <div class="panel-heading no-collapse">Edit City: <% out.print(oldname); %></div>
+			    <div class="panel-heading no-collapse">Edit Rule: <% out.print(oldid); %></div>
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">

@@ -9,9 +9,9 @@ package org.echallan.valueObject;
 
 public class Fine {
 	private int id;
-	private float hmvAmount;
-	private float lmvAmount;
-	private float othrAmount;
+	private double hmvAmount;
+	private double lmvAmount;
+	private double othrAmount = 0.0;
 	private Rule rule;
 	public int getId() {
 		return id;
@@ -19,19 +19,19 @@ public class Fine {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public float getHmvAmount() {
+	public double getHmvAmount() {
 		return hmvAmount;
 	}
 	public void setHmvAmount(float hmvAmount) {
 		this.hmvAmount = hmvAmount;
 	}
-	public float getLmvAmount() {
+	public double getLmvAmount() {
 		return lmvAmount;
 	}
 	public void setLmvAmount(float lmvAmount) {
 		this.lmvAmount = lmvAmount;
 	}
-	public float getOthrAmount() {
+	public double getOthrAmount() {
 		return othrAmount;
 	}
 	public void setOthrAmount(float othrAmount) {
@@ -42,5 +42,9 @@ public class Fine {
 	}
 	public void setRule(Rule rule) {
 		this.rule = rule;
+	}
+	@Override
+	public String toString() {
+		return "HMV: " + hmvAmount + "\nLMV: " + lmvAmount + "\nOthers: " + othrAmount;
 	}
 }

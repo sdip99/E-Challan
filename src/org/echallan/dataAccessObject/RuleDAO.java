@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class RuleDAO{
+public class RuleDAO extends GenericDAO {
 
 	@SuppressWarnings("deprecation")
 	public Session getSession() {
@@ -37,7 +37,7 @@ public class RuleDAO{
 		Session session = getSession();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from RuleDetail");
+			Query query = session.createQuery("from Rule");
 			transaction.commit();
 			ret = query.list();
 			session.close();
@@ -50,7 +50,7 @@ public class RuleDAO{
 		Rule rule = null;
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from RuleDetail where ruleid = '" + Ruleid + "'");
+			Query query = session.createQuery("from Rule where ruleID = '" + Ruleid + "'");
 			transaction.commit();
 			List<Rule> ret = query.list();
 			if(ret != null && ret.size() > 0)
@@ -59,25 +59,7 @@ public class RuleDAO{
 		}
 		return rule;
 	}
-	public void removeRule(int Ruleid) {
-		Session session = getSession();
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("DELETE from RuleDetail WHERE Ruleid='" + Ruleid + "'");
-			query.executeUpdate();
-			transaction.commit();
-			session.close();
-		}
-	}
-	
-	public void updateRule(int ruleid, String newName, int fine) {
-		Session session = getSession();
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("UPDATE RuleDetail set rulename='" + newName + "', fine='" + fine + "' WHERE ruleid='" + ruleid + "'");
-			query.executeUpdate();
-			transaction.commit();
-			session.close();
-		}
+	public boolean removeRule(int id) {
+		return deleteById(Rule.class, id);
 	}
 }

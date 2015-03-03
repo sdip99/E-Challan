@@ -5,7 +5,14 @@ public class Rule {
 	private int ruleID;
 	private String ruleDesc;
 	private RuleCatagory ruleCatagory;
-	private Fine fine;
+	private Fine fine;	
+	public Rule() {};
+	public Rule(String name, String desc, RuleCatagory catagory, Fine fine) {
+		this.ruleName = name;
+		this.ruleDesc = desc;
+		this.ruleCatagory = catagory;
+		this.fine = fine;
+	}
 	public String getRuleName() {
 		return ruleName;
 	}

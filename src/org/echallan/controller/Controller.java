@@ -13,12 +13,15 @@ import org.echallan.Common;
 import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.ComplaintDAO;
+import org.echallan.dataAccessObject.RuleCatagoryDAO;
 import org.echallan.dataAccessObject.SubAreaDAO;
 import org.echallan.dataAccessObject.UserDAO;
 import org.echallan.dataAccessObject.UserDetailDAO;
 import org.echallan.valueObject.Area;
 import org.echallan.valueObject.City;
 import org.echallan.valueObject.Complaint;
+import org.echallan.valueObject.Fine;
+import org.echallan.valueObject.RuleCatagory;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
@@ -200,6 +203,8 @@ public class Controller extends HttpServlet {
 			session.setAttribute("success", true);
 			response.sendRedirect("manage_complaint.jsp");
 		} else if(request.getParameter("submit").equals("Insert Rule")) {
+			
+		} else if(request.getParameter("submit").equals("Update Rule")) {
 			
 		}
 	}

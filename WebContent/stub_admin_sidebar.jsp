@@ -21,6 +21,7 @@
 	    <li>
 	       	<ul class="rule-menu nav nav-list collapse">
 				<li ><a href="manage_rule.jsp"><span class="fa fa-caret-right"></span> Manage Rules</a></li>
+				<li ><a href="manage_catagory.jsp"><span class="fa fa-caret-right"></span> Manage Catagory</a></li>
 			</ul>
 		</li>
 	    <li><a href="#" data-target=".legal-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage Complaints<i class="fa fa-collapse"></i></a></li>

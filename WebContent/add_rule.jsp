@@ -63,13 +63,15 @@
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">
-							
-								<label>Category Rule:</label>
-								<select class="form-control " name="catRule_drop">
-									<option value="1">MCV</option>
+							<p>
+								<label>Rule Catagory:</label>
+								<select class="form-control " name="cat_drop">
+									<option value="1">HMV</option>
 									<option value="2">LMV</option>
-									<option value="3">HMV</option>
+									<option value="3">Both</option>
+									<option value="4">Others</option>
 								</select>
+							</p>
 							<p>
 								<label>Rule Name: </label>
 								<input type="text" class="form-control span12" name="rule_name"/>
