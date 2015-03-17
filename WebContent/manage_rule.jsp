@@ -1,17 +1,16 @@
 <%@page import="org.echallan.valueObject.Rule"%>
 <%@page import="org.echallan.dataAccessObject.RuleDAO"%>
-<%@page import="org.echallan.dataAccessObject.CityDAO"%>
-<%@page import="org.echallan.valueObject.City"%>
+<%@page import="org.echallan.dataAccessObject.CatagoryDAO"%>
+<%@page import="org.echallan.valueObject.Catagory"%>
+<%@page import="java.util.Set"%>
 <%@page import="java.util.List"%>
 <%@page import="org.echallan.Common"%>
-<%@page import="org.echallan.valueObject.User"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>Edit City : e-Challan System</title>
+    <title>Manage Rule : e-Challan System</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -28,33 +27,31 @@
         $(function() {
             $(".knob").knob();
         });
+        
+        // functions for setting delete flags
+        function setParamID(id) {
+           	paramid = id;
+		}
+        
+        function redirectAfterConfirm() {
+			window.location.href = "manage_rule.jsp?delete=true&paramid=" + paramid;
+		}
+        
+        function handleFilterEvent() {
+        	var id = document.getElementsByName("cat_drop")[0].value;
+        	window.location.href = "manage_rule.jsp?filterBy=" + id;
+        }
     </script>
+    
+    
 
 
     <link rel="stylesheet" type="text/css" href="stylesheets/theme.css">
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<%
-	String str = request.getParameter("delete");
-	if(str != null && str.equals("true")) {
-		String param = request.getParameter("paramid");
-		if(param != null) {
-			int id = Integer.parseInt(param);
-			new RuleDAO().removeRule(id);
-%>
-		<div class="panel panel-default">
-			        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
-		        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-		        		<center>Rule deleted successfully...!</center>
-		        	</div>
-		</div>
-<%
-		}
-	}
-%>
 <body class=" theme-blue">
-	<c:import url="stub_header.jsp"></c:import>
+	<c:import url="stub_header.jsp"></c:import>    
     <c:import url="stub_admin_sidebar.jsp"></c:import>
 
     <div class="content">
@@ -66,33 +63,47 @@
 	        </ul>
         </div>
         <div class="main-content">
-        
-	        <%
-				if(session.getAttribute("success") != null) {
+			<%
+				String str = request.getParameter("delete");
+				if(str != null && str.equals("true")) {
+					String param = request.getParameter("paramid");
+					if(param != null) {
+						int id = Integer.parseInt(param);
+						if(new RuleDAO().removeRule(id)) {
 			%>
-			<div class="panel panel-default">
-		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
-	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>Data Updated...!</center>
-	        	</div>
-		    </div>
-		    <%
+					<div class="panel panel-default">
+						        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+					        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+					        		<center>Rule deleted successfully...!</center>
+					        	</div>
+					</div>
+			<%
+						}
+					}
 				}
-				session.removeAttribute("success");
-			%>
-        
+			%>        
 			<div class="btn-toolbar list-toolbar">
-			    <a href="add_rule.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Rule</a>
-			  <div class="btn-group">
-			  </div>
+			    <a href="add_rule.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Rule</a><br></br>
+			    <p>
+			    	Filter By:
+			    	<select class="form-control inline-ele-left" name="cat_drop"  style="width: 25%;">
+			    		<%
+							List<Catagory> _cat = new CatagoryDAO().getAll();
+							for(Catagory c : _cat)
+								out.println("<option value='" + c.getCatID() + "'>" + c.getCatName() + "</option>");
+						%>
+			    	</select>
+			    	<a href="#" class="btn btn-primary btn-toolbar list-toolbar inline-ele-left" style="margin-bottom: 5px;" onclick="javascript: return handleFilterEvent()"> Filter</a>
+			    	<a href="manage_rule.jsp" class="btn btn-danger btn-toolbar list-toolbar inline-ele" style="margin-bottom: 5px;"> X</a>
+			    </p>
 			</div>
 			<table class="table">
 			  <thead>
 			    <tr>
 			      <th>Rule Id</th>
 			      <th>Rule Name</th>
-			      <th>Category Name</th>
 			      <th>Fine</th>
+			      <th>Category</th>
 			      <th style="width: 3.5em;"></th>
 			    </tr>
 			  </thead>
@@ -111,11 +122,23 @@
 			   -->
 			  <%
 			  	int i = 1;
-				List<Rule> rule = new RuleDAO().getAll();
-			  	for(Rule c : rule) {
-			  		out.println("<tr><td>" + c.getRuleID() + "</td><td>" + c.getRuleName() + "</td><td>" + c.getRuleCatagory().getCatagoryName() + "</td><td>" + c.getFine().toString() + "</td>");
-			  		out.println("<td><a href='update_rule.jsp?paramid=" + c.getRuleID() + "'><i class='fa fa-pencil'></i></a>");
-			  		out.println("<a href='#myModal' role='button' data-toggle='modal' onclick='setParamID(" + c.getRuleID() + ")'><i class='fa fa-trash-o'></i></a></td></tr>");
+			  	String _tmp = request.getParameter("filterBy");
+			  	Object[] rule;
+			  	if(_tmp != null && _tmp != "") {
+			  		Catagory c = new CatagoryDAO().getCatagoryById(_tmp);
+			  		rule = c.getRule().toArray();
+			  	} else {
+			  		// If none filter is specified show all areas
+					rule = new RuleDAO().getAll().toArray();
+			  	}
+			  	for(Object obj : rule) {
+			  		
+			  		Rule r = (Rule)obj;
+			  		out.println("<tr><td>" + r.getRuleId() + "</td><td>" + r.getRuleName() + "</td>");
+			  		out.println("<td>" + r.getFine() + "</td>");
+			  		out.println("<td>" + r.getCat().getCatName() + "</td>");
+			  		out.println("<td><a href='update_rule.jsp?paramid=" + r.getRuleId() + "'><i class='fa fa-pencil'></i></a>");
+			  		out.println("<a href='#myModal' role='button' data-toggle='modal' onclick='setParamID(" + r.getRuleId() + ")'><i class='fa fa-trash-o'></i></a></td></tr>");
 			  		i++;
 			  	}
 			  %>
@@ -142,7 +165,7 @@
 			            <h3 id="myModalLabel">Delete Confirmation</h3>
 			        </div>
 			        <div class="modal-body">
-			            <p class="error-text"><i class="fa fa-warning modal-icon"></i>Are you sure you want to delete the rule?<br>This cannot be undone.</p>
+			            <p class="error-text"><i class="fa fa-warning modal-icon"></i> Are you sure you want to delete the Rule?</p>
 			        </div>
 			        <div class="modal-footer">
 			            <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Cancel</button>

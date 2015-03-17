@@ -1,22 +1,24 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Mar 3, 2015 9:30:27 AM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Jan 24, 2015 5:53:52 PM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
     <class name="org.echallan.valueObject.Rule" table="RULE">
-        <id name="ruleID" type="int">
-            <column name="RULEID" />
-            <generator class="native" />
+        <id name="ruleId" type="int">
+            <column name="RULE_ID" />
+            
         </id>
         <property name="ruleName" type="java.lang.String">
-            <column name="RULENAME" />
+            <column name="NAME" />
         </property>
-        <property name="ruleDesc" type="java.lang.String">
-            <column name="RULEDESC" />
+		<property name="ruleDesc" type="java.lang.String">
+            <column name="DESCRIPTION" />
         </property>
-        <many-to-one name="ruleCatagory" class="org.echallan.valueObject.RuleCatagory" fetch="join">
-            <column name="RULECATAGORY" />
-        </many-to-one>
-        <one-to-one name="fine" class="org.echallan.valueObject.Fine"></one-to-one>
+		<property name="fine" type="int">
+            <column name="FINE" />
+        </property>
+        <many-to-one name="cat" class="org.echallan.valueObject.Catagory" fetch="join" lazy="false">
+            <column name="CATID" />
+        </many-to-one>        
     </class>
 </hibernate-mapping>

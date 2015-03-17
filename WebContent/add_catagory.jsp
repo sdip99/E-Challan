@@ -1,14 +1,12 @@
-<%@page import="org.echallan.dataAccessObject.CatagoryDAO"%>
-<%@page import="org.echallan.valueObject.Catagory"%>
-<%@page import="java.util.List"%>
 <%@page import="org.echallan.Common"%>
+<%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>Add Rule : e-Challan System</title>
+    <title>Insert City : e-Challan System</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -33,15 +31,15 @@
 
 </head>
 <body class=" theme-blue">
-	<c:import url="stub_header.jsp"></c:import>
+	<c:import url="stub_header.jsp"></c:import>    
     <c:import url="stub_admin_sidebar.jsp"></c:import>
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">Add Rule</h1>
+	        <h1 class="page-title">Add Category</h1>
 	       	<ul class="breadcrumb">
 	            <li><a href="admin_dashboard.jsp">Home</a> </li>
-	            <li class="active">Add Rule</li>
+	            <li class="active">Add Category</li>
 	        </ul>
         </div>
         <div class="main-content">
@@ -52,7 +50,7 @@
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
 	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>Rule Added Successfully...!</center>
+	        		<center>Category Added Successfully...!</center>
 	        	</div>
 		    </div>
 		    <%
@@ -61,39 +59,20 @@
 			%>
         
 			<div class="panel panel-default">
-			    <div class="panel-heading no-collapse">Add Rule</div>
+			    <div class="panel-heading no-collapse">Add Category</div>
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">
-							<p class="inline-field">
-								<label>Rule Category:</label>
-								<select class="form-control " name="cat_name">
-								<%
-									CatagoryDAO dao =  new CatagoryDAO();
-									List<Catagory> cat = dao.getAll();
-									for(Catagory c : cat)
-										out.println("<option value='" + c.getCatID()+ "'>" + c.getCatName() + "</option>");
-								%>
-								</select>
+							<p>
+								<label>Category Name:</label>
+								<input type="text" class="form-control span12" name="cat_name"/>
 							</p>
 							<p>
-								<label>Rule Id: </label>
-								<input type="text" class="form-control span12" name="rule_id"/>
+								<label>Category Description:</label>
+								<textarea rows="5" cols="108" name="cat_desc" class="form-control span12"></textarea>
 							</p>
-							<p>
-								<label>Rule Name: </label>
-								<input type="text" class="form-control span12" name="rule_name"/>
-							</p>
-							<p>
-								<label>Fine: </label>
-								<input type="text" class="form-control span12" name="fine"/>
-							</p>
-							<p>
-								<label>Rule Description:</label>
-								<textarea rows="5" cols="108" name="rule_desc" class="form-control span12"></textarea>
-							</p>
-						<input type="submit" name="submit" class="btn btn-primary form-control" value="Insert Rule" name="submit"/>
-					</div>
+							<input type="submit" name="submit" class="btn btn-primary form-control" value="Add Category" name="submit"/>
+						</div>
 						<div class="clearfix"></div>
 					</form>
 				</div>

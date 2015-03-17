@@ -1,14 +1,17 @@
 <%@page import="org.echallan.valueObject.Catagory"%>
 <%@page import="org.echallan.dataAccessObject.CatagoryDAO"%>
-<%@page import="org.echallan.dataAccessObject.RuleDAO"%>
+<%@page import="org.echallan.dataAccessObject.CityDAO"%>
+<%@page import="org.echallan.valueObject.City"%>
 <%@page import="java.util.List"%>
 <%@page import="org.echallan.Common"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page import="org.echallan.valueObject.User"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>Update Rule : e-Challan System</title>
+    <title>Update Category : e-Challan System</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -34,18 +37,18 @@
 </head>
 <%
 	String id = request.getParameter("paramid");
-	int oldid=0;
-	String oldname="",olddesc="",oldcatname="";
-	int oldfine=0;
+	String oldName = "";
+	String oldDesc = "";
 	
+	// If category id is not provided then send to insert city page
 	if(id != null) {
-		oldid = new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleId();
-		oldname= new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleName();
-		oldfine= new RuleDAO().getRuleById(Integer.parseInt(id)).getFine();
-		olddesc= new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleDesc();
-		oldcatname= new RuleDAO().getRuleById(Integer.parseInt(id)).getCat().getCatName();
-		session.setAttribute("rule_id", id);
-	} else response.sendRedirect("add_rule.jsp");
+		CatagoryDAO dao = new CatagoryDAO();
+		Catagory cat = dao.getCatagoryById(Integer.parseInt(id));
+		oldName = cat.getCatName();
+		oldDesc = cat.getCatDesc();
+		// Save cat id to session scope for updating record in database
+		session.setAttribute("cat_id", id);
+	} else response.sendRedirect("manage_catagory.jsp");
 %>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
@@ -53,47 +56,27 @@
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">Update Rule</h1>
+	        <h1 class="page-title">Update Category</h1>
 	       	<ul class="breadcrumb">
 	            <li><a href="admin_dashboard.jsp">Home</a> </li>
-	            <li class="active">Update Rule</li>
+	            <li class="active">Update Category</li>
 	        </ul>
         </div>
         <div class="main-content">			
 			<div class="panel panel-default">
-			    <div class="panel-heading no-collapse">Edit Rule: <% out.print(oldid); %></div>
+			    <div class="panel-heading no-collapse">Edit Category: <% out.print(oldName); %></div>
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">
-							<p class="inline-field">
-								<label>Enter new Rule Category:</label>
-								<select class="form-control " name="cat_name">
-								<%
-									CatagoryDAO dao =  new CatagoryDAO();
-									List<Catagory> cat = dao.getAll();
-									for(Catagory c : cat){
-										out.println("<option value='" + c.getCatID()+ "'selected='selected'>" + oldcatname + "</option>");
-										out.println("<option value='" + c.getCatID()+ "'>" + c.getCatName() + "</option>");
-									}	%>
-								</select>
+							<p>
+								<label>Enter new Category Name:</label>
+								<input type="text" class="form-control span12" name="cat_name" value="<% out.print(oldName); %>"/>
 							</p>
 							<p>
-								<label>Enter new Rule Id:</label>
-								<input type="text" class="form-control span12" name="rule_id" value="<% out.print(oldid); %>"/>
+								<label>Enter new Category Description:</label>
+								<textarea rows="5" cols="108" name="cat_desc" class="form-control span12"/><% out.print(oldDesc); %></textarea>
 							</p>
-							<p>
-								<label>Enter new Rule Name:</label>
-								<input type="text" class="form-control span12" name="rule_name" value="<% out.print(oldname); %>"/>
-							</p>
-							<p>
-								<label>Enter new Rule Fine:</label>
-								<input type="text" class="form-control span12" name="rule_fine" value="<% out.print(oldfine); %>"/>
-							</p>
-							<p>
-								<label>Enter new Rule Description:</label>
-								<textarea rows="5" cols="108" name="rule_desc" class="form-control span12" ><% out.print(olddesc); %></textarea>
-							</p>
-						<input type="submit" name="submit" class="btn btn-primary form-control" value="Update Rule" name="submit"/>
+							<input type="submit" name="submit" class="btn btn-primary form-control" value="Update Category" name="submit"/>
 						</div>
 						<div class="clearfix"></div>
 					</form>
