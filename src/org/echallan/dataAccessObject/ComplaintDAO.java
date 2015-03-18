@@ -26,20 +26,9 @@ public class ComplaintDAO extends GenericDAO {
 		return getComplaintById(Integer.parseInt(id));
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Complaint getComplaintById(int id) {
-		Session session = getSession();
-		Complaint complaint = null;
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from Complaint where id = '" + id + "'");
-			transaction.commit();
-			List<Complaint> ret = query.list();
-			if(ret != null && ret.size() > 0)
-				complaint = ret.get(0);
-			session.close();
-		}
-		return complaint;
+		Object ret = getById(Complaint.class, id);
+		return (Complaint) ret;
 	}
 	
 	// Complaint specific delete method

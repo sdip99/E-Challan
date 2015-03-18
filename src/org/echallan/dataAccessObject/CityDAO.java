@@ -39,18 +39,8 @@ public class CityDAO extends GenericDAO {
 	}
 	
 	public City getCityById(int cityID) {
-		Session session = getSession();
-		City city = null;
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from City where cityID = '" + cityID + "'");
-			transaction.commit();
-			List<City> ret = query.list();
-			if(ret != null && ret.size() > 0)
-				city = ret.get(0);		// City name has unique constraint so there must be only one result
-			session.close();
-		}
-		return city;
+		Object ret = getById(City.class, cityID);
+		return (City) ret;
 	}
 	
 	public List<City> getAll() {

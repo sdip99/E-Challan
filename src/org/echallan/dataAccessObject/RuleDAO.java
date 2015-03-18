@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 public class RuleDAO extends GenericDAO {
 	
+	@SuppressWarnings("unchecked")
 	public List<Rule> getAll() {
 		List<Rule> ret = null;
 		Session session = getSession();
@@ -20,23 +21,11 @@ public class RuleDAO extends GenericDAO {
 			session.close();
 		}
 		return ret;
-}
-	public Rule getRuleById(String ruleID) {
-		return getRuleById(Integer.parseInt(ruleID));
 	}
+	
 	public Rule getRuleById(int ruleID) {
-		Session session = getSession();
-		Rule rul = null;
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from Rule where ruleId = '" + ruleID + "'");
-			transaction.commit();
-			List<Rule> ret = query.list();
-			if(ret != null && ret.size() > 0)
-				rul = ret.get(0);		
-			session.close();
-		}
-		return rul;
+		Object ret = getById(Rule.class, ruleID);
+		return (Rule) ret;
 	}
 	public void updateRule(int catID, String newName, String newDesc, int newId, int newfine) {
 		Session session = getSession();

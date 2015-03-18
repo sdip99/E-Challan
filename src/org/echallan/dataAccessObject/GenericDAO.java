@@ -38,6 +38,13 @@ public class GenericDAO {
 		session.close();
 	}
 	
+	public Object getById(Class<?> clazz, Serializable id) {
+		Session session = getSession();
+		Object obj = session.get(clazz, id);
+		session.close();
+		return obj;
+	}
+	
 	public void update(Object obj) {
 		Session session = getSession();
 		Transaction transaction = session.beginTransaction();

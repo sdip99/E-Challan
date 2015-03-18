@@ -54,15 +54,7 @@ public class UserDAO extends GenericDAO {
 	}
 	
 	public User getUser(String id) {
-		User ret = null;
-		Session session = getSession();
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from User where userID_pkey=" + id);
-			transaction.commit();
-			ret = (User) query.list().get(0);
-			session.close();
-		}
-		return ret;
+		Object ret = getById(User.class, id);
+		return (User) ret;
 	}
 }
