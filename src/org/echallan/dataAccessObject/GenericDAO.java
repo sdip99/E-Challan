@@ -17,13 +17,16 @@ import org.hibernate.cfg.Configuration;
 @SuppressWarnings("deprecation")
 public class GenericDAO {
 	
+	static SessionFactory factory = null;
+	
 	public Session getSession() {
-		SessionFactory factory = null;
 		Session session = null;
-		try {
-			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
-		} catch (Exception ex) { System.err.println(ex); }
+		if(factory == null) {
+			try {
+				factory = new Configuration().configure().buildSessionFactory();
+			} catch (Exception ex) { System.err.println(ex); }
+		}
+		session = factory.openSession();
 		return session;
 	}
 	
