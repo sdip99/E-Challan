@@ -2,6 +2,7 @@ package org.echallan.controller;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -275,6 +276,9 @@ public class Controller extends HttpServlet {
 					session.setAttribute("wrongInput", true);
 					response.sendRedirect("generate_challan_get_license_no.jsp");
 					return;
+				} else {
+					// We got license no from user which is valid so just send to generation
+					response.sendRedirect("generate_challan.jsp?licenseno=" + licenseNo);
 				}
 			} else {
 				// We need to find license number on our own :P
@@ -286,8 +290,8 @@ public class Controller extends HttpServlet {
 				String year = request.getParameter("year");
 				int pcode = Integer.parseInt(request.getParameter("pincode"));
 				String bGroup = request.getParameter("blood_group");
-				String lno = new LicenseDAO().getLicenseNo(fname, lname, mname, pcode, bGroup, month, date, year);
-				if(lno == null) {
+				List<String> lno = new LicenseDAO().getLicenseNo(fname, lname, mname, pcode, bGroup, month, date, year);
+				if(lno == null || lno.size() == 0) {
 					// We couldn't find license in database
 					session.setAttribute("noMatch", true);
 					response.sendRedirect("generate_challan_get_license_no.jsp");
@@ -295,7 +299,7 @@ public class Controller extends HttpServlet {
 				}
 				// We found user's license no, so navigate to challan generation
 				session.setAttribute("license_no", lno);
-				response.sendRedirect("generate_challan.jsp");
+				response.sendRedirect("generate_challan_view_result.jsp");
 			}
 		}
 	}

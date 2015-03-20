@@ -7,6 +7,8 @@
  *******************************************************************************/
 package org.echallan.dataAccessObject;
 
+import java.util.List;
+
 import org.echallan.valueObject.License;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -19,15 +21,14 @@ public class LicenseDAO extends GenericDAO {
 		return (License) ret;
 	}
 	
-	public String getLicenseNo(String fname, String lname, String mName, int pcode, String bgrp, String month, String date, String year) {
-		String ret = null;
+	public List<String> getLicenseNo(String fname, String lname, String mName, int pcode, String bgrp, String month, String date, String year) {
+		List<String> ret = null;
 		Session session = getSession();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
 			Query query = session.createQuery("select lincenNo from License where fName='" + fname + "' and lName='" + lname + "' and mName='" + mName + "' and pincode=" + pcode + " and bGroup='" + bgrp + "' and birthDate like '" + year + "-" + month + "-" + date + "'");
 			transaction.commit();
-			if(query.list().size() > 0)
-				ret = (String) query.list().get(0);
+			ret = query.list();
 			session.close();
 		}
 		return ret;

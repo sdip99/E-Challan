@@ -38,7 +38,7 @@
         <div class="header">
 	        <h1 class="page-title">Generate Challan</h1>
 	       	<ul class="breadcrumb">
-	            <li><a href="admin_dashboard.jsp">Home</a> </li>
+	            <li><a href="police_dashboard.jsp">Home</a> </li>
 	            <li class="active">Generate Challan</li>
 	        </ul>
         </div>
