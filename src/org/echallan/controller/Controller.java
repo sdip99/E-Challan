@@ -1,6 +1,7 @@
 package org.echallan.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CatagoryDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.ComplaintDAO;
+import org.echallan.dataAccessObject.LicenseDAO;
 import org.echallan.dataAccessObject.RuleDAO;
 import org.echallan.dataAccessObject.SubAreaDAO;
 import org.echallan.dataAccessObject.UserDAO;
@@ -21,9 +23,8 @@ import org.echallan.dataAccessObject.UserDetailDAO;
 import org.echallan.valueObject.Area;
 import org.echallan.valueObject.Catagory;
 import org.echallan.valueObject.City;
-
-
 import org.echallan.valueObject.Complaint;
+import org.echallan.valueObject.License;
 import org.echallan.valueObject.Rule;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
@@ -254,16 +255,56 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("add_catagory.jsp");
 			
 		} else if(request.getParameter("submit").equals("Update Category")) {
-				HttpSession session = request.getSession();
-				String name = request.getParameter("cat_name");
-				String desc = request.getParameter("cat_desc");
-				int id = Integer.parseInt((String) session.getAttribute("cat_id"));
-				session.setAttribute("success", true);
-				CatagoryDAO dao = new CatagoryDAO();
-				dao.updateCatagory(id, name, desc);
-				response.sendRedirect("update_catagory.jsp");
-			
+			HttpSession session = request.getSession();
+			String name = request.getParameter("cat_name");
+			String desc = request.getParameter("cat_desc");
+			int id = Integer.parseInt((String) session.getAttribute("cat_id"));
+			session.setAttribute("success", true);
+			CatagoryDAO dao = new CatagoryDAO();
+			dao.updateCatagory(id, name, desc);
+			response.sendRedirect("update_catagory.jsp");
+		} else if(request.getParameter("submit").equals("Search License")) {
+			HttpSession session = request.getSession();
+			String licenseNo = request.getParameter("license_no");
+			if(!licenseNo.equals("")) {
+				// User has inserted license no so search for it
+				LicenseDAO lDAO = new LicenseDAO();
+				License holder = lDAO.getLicenseByNo(licenseNo);
+				if(holder == null) {
+					// User didn't enter correct license no
+					session.setAttribute("wrongInput", true);
+					response.sendRedirect("generate_challan_get_license_no.jsp");
+					return;
+				}
+			} else {
+				// We need to find license number on our own :P
+				String fname = request.getParameter("first_name");
+				String lname = request.getParameter("last_name");
+				String mname = request.getParameter("middle_name");
+				String date = request.getParameter("date");
+				String month = request.getParameter("month");
+				String year = request.getParameter("year");
+				int pcode = Integer.parseInt(request.getParameter("pincode"));
+				String bGroup = request.getParameter("blood_group");
+				String lno = new LicenseDAO().getLicenseNo(fname, lname, mname, pcode, bGroup, month, date, year);
+				if(lno == null) {
+					// We couldn't find license in database
+					session.setAttribute("noMatch", true);
+					response.sendRedirect("generate_challan_get_license_no.jsp");
+					return;
+				}
+				// We found user's license no, so navigate to challan generation
+				session.setAttribute("license_no", lno);
+				response.sendRedirect("generate_challan.jsp");
 			}
+		}
+	}
+	
+	@SuppressWarnings({ "unused", "deprecation" })
+	private boolean isSameDate(Date d1, Date d2) {
+		if(d1.getYear() == d2.getYear() && d1.getMonth() == d2.getMonth() && d1.getDate() == d2.getDate())
+			return true;
+		return false;
 	}
 
 }

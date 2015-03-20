@@ -17,5 +17,6 @@
   <mapping resource="org/echallan/valueObject/Complaint.hbm.xml"/>
   <mapping resource="org/echallan/valueObject/Rule.hbm.xml"/>
   <mapping resource="org/echallan/valueObject/Catagory.hbm.xml"/>
+  <mapping resource="org/echallan/valueObject/License.hbm.xml"/>
  </session-factory>
 </hibernate-configuration>
