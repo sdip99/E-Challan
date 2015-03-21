@@ -54,6 +54,11 @@ public class UserDAO extends GenericDAO {
 	}
 	
 	public User getUser(String id) {
+		Object ret = getById(User.class, Integer.parseInt(id));
+		return (User) ret;
+	}
+	
+	public User getUser(int id) {
 		Object ret = getById(User.class, id);
 		return (User) ret;
 	}
