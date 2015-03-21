@@ -21,6 +21,7 @@ public class LicenseDAO extends GenericDAO {
 		return (License) ret;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<String> getLicenseNo(String fname, String lname, String mName, int pcode, String bgrp, String month, String date, String year) {
 		List<String> ret = null;
 		Session session = getSession();
