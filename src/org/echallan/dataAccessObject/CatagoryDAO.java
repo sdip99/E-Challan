@@ -23,18 +23,6 @@ public class CatagoryDAO extends GenericDAO {
 		return ret;
 	}
 	
-	public void updateCatagory(int catID, String newName, String newDesc) {
-		Session session = getSession();
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("UPDATE Catagory set catName='" + newName + "' catDesc='" + newDesc + "' WHERE catID='" + catID + "'");
-			
-			query.executeUpdate();
-			transaction.commit();
-			session.close();
-		}
-	}
-	
 	public Catagory getCatagoryById(String catID) {
 		Object ret = getById(Catagory.class, Integer.parseInt(catID));
 		return (Catagory) ret;

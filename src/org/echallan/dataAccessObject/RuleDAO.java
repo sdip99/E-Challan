@@ -27,16 +27,7 @@ public class RuleDAO extends GenericDAO {
 		Object ret = getById(Rule.class, ruleID);
 		return (Rule) ret;
 	}
-	public void updateRule(int catID, String newName, String newDesc, int newId, int newfine) {
-		Session session = getSession();
-		if(session != null) {
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("UPDATE Rule set ruleName='" + newName + "' ruleDesc='" + newDesc + "' fine='" + newfine + "' WHERE ruleID='" + newId + "'");
-			query.executeUpdate();
-			transaction.commit();
-			session.close();
-		}
-	}
+	
 	public boolean removeRule(int id) {
 		return deleteById(Rule.class, id);
 	}	

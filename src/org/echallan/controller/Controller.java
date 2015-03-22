@@ -217,15 +217,21 @@ public class Controller extends HttpServlet {
 			HttpSession session = request.getSession();
 			String ruleName = request.getParameter("rule_name");
 			int ruleId = Integer.parseInt(request.getParameter("rule_id"));
-			int fine = Integer.parseInt(request.getParameter("fine"));
+			int fine = Integer.parseInt(request.getParameter("rule_fine"));
 			String ruleDesc = request.getParameter("rule_desc");
 			int catId = Integer.parseInt(request.getParameter("cat_name"));
 			
-			
 			RuleDAO dao = new RuleDAO();
-			dao.updateRule(catId, ruleName, ruleDesc, ruleId, fine);
-			session.setAttribute("success", true);
-			response.sendRedirect("add_rule.jsp");
+			CatagoryDAO catDAO = new CatagoryDAO();
+			Rule newRule = dao.getRuleById(ruleId);
+			newRule.setFine(fine);
+			newRule.setRuleDesc(ruleDesc);
+			newRule.setRuleId(ruleId);
+			newRule.setRuleName(ruleName);
+			newRule.setCat(catDAO.getCatagoryById(catId));
+			dao.update(newRule);
+			session.setAttribute("rule_update_success", true);
+			response.sendRedirect("manage_rule.jsp");
 			
 			
 		} else if(request.getParameter("submit").equals("Insert Rule")) {
@@ -260,10 +266,14 @@ public class Controller extends HttpServlet {
 			String name = request.getParameter("cat_name");
 			String desc = request.getParameter("cat_desc");
 			int id = Integer.parseInt((String) session.getAttribute("cat_id"));
-			session.setAttribute("success", true);
 			CatagoryDAO dao = new CatagoryDAO();
-			dao.updateCatagory(id, name, desc);
-			response.sendRedirect("update_catagory.jsp");
+			Catagory cat = dao.getCatagoryById(id);
+			cat.setCatName(name);
+			cat.setCatDesc(desc);
+			dao.update(cat);
+			session.setAttribute("update_cat_success", true);
+			response.sendRedirect("manage_catagory.jsp");
+			
 		} else if(request.getParameter("submit").equals("Search License")) {
 			HttpSession session = request.getSession();
 			String licenseNo = request.getParameter("license_no");

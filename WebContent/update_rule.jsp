@@ -1,3 +1,4 @@
+<%@page import="org.echallan.valueObject.Rule"%>
 <%@page import="org.echallan.valueObject.Catagory"%>
 <%@page import="org.echallan.dataAccessObject.CatagoryDAO"%>
 <%@page import="org.echallan.dataAccessObject.RuleDAO"%>
@@ -39,11 +40,12 @@
 	int oldfine=0;
 	
 	if(id != null) {
-		oldid = new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleId();
-		oldname= new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleName();
-		oldfine= new RuleDAO().getRuleById(Integer.parseInt(id)).getFine();
-		olddesc= new RuleDAO().getRuleById(Integer.parseInt(id)).getRuleDesc();
-		oldcatname= new RuleDAO().getRuleById(Integer.parseInt(id)).getCat().getCatName();
+		Rule rule = new RuleDAO().getRuleById(Integer.parseInt(id));
+		oldid = rule.getRuleId();
+		oldname= rule.getRuleName();
+		oldfine= rule.getFine();
+		olddesc= rule.getRuleDesc();
+		oldcatname= rule.getCat().getCatName();
 		session.setAttribute("rule_id", id);
 	} else response.sendRedirect("add_rule.jsp");
 %>
@@ -72,8 +74,10 @@
 									CatagoryDAO dao =  new CatagoryDAO();
 									List<Catagory> cat = dao.getAll();
 									for(Catagory c : cat){
-										out.println("<option value='" + c.getCatID()+ "'selected='selected'>" + oldcatname + "</option>");
-										out.println("<option value='" + c.getCatID()+ "'>" + c.getCatName() + "</option>");
+										if(c.getCatName().equals(oldcatname))
+											out.println("<option value='" + c.getCatID()+ "'selected='selected'>" + c.getCatName() + "</option>");
+										else
+											out.println("<option value='" + c.getCatID()+ "'>" + c.getCatName() + "</option>");
 									}	%>
 								</select>
 							</p>
