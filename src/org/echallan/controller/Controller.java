@@ -113,12 +113,14 @@ public class Controller extends HttpServlet {
 		} else if(request.getParameter("submit").equals("Insert City")) {
 			HttpSession session = request.getSession();
 			String name = request.getParameter("city_name");
-			City city = new City(name);
-			CityDAO dao = new CityDAO();
-			dao.insert(city);
-			session.setAttribute("success", true);
+			if(name != null && !name.equals("")) {
+				City city = new City(name);
+				CityDAO dao = new CityDAO();
+				dao.insert(city);
+				session.setAttribute("city_update_status", true);
+			} else session.setAttribute("city_update_status", false);
 			response.sendRedirect("insert_city.jsp");
-		
+			
 		} else if(request.getParameter("submit").equals("Insert Area")) {
 			HttpSession session = request.getSession();
 			String name = request.getParameter("area_name");

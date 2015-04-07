@@ -45,7 +45,8 @@
         <div class="main-content">
         
 	        <%
-				if(session.getAttribute("success") != null) {
+				if(session.getAttribute("city_update_status") != null) {
+					if((Boolean) session.getAttribute("city_update_status")) { 
 			%>
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
@@ -53,9 +54,19 @@
 	        		<center>Data Updated...!</center>
 	        	</div>
 		    </div>
-		    <%
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Update failed...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("city_update_status");
 				}
-				session.removeAttribute("success");
 			%>
         
 			<div class="panel panel-default">
