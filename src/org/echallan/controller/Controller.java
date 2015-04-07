@@ -317,6 +317,7 @@ public class Controller extends HttpServlet {
 			HttpSession session = request.getSession();
 			String maxChallan = request.getParameter(Common.PREF_MAX_CHALLAN_PER_DAY);
 			String maxComp = request.getParameter(Common.PREF_MAX_COMPLAINT_PER_DAY);
+			session.setAttribute("pref_update_success", true);
 			if(maxChallan != null && maxComp != null) {
 				try {
 					// Check if entered string is valid number
@@ -331,10 +332,9 @@ public class Controller extends HttpServlet {
 					prefManager.update(prefMxComp);
 					prefManager.update(prefMxChallan);
 				} catch(NumberFormatException ex) {
-					response.sendRedirect("error_page.jsp");
+					session.setAttribute("pref_update_success", false);
 				}
-			} else response.sendRedirect("error_page.jsp");
-			session.setAttribute("pref_update_success", true);
+			}
 			response.sendRedirect("system_setting.jsp");
 		}
 	}

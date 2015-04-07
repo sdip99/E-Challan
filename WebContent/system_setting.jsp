@@ -67,6 +67,7 @@
         <div class="main-content">
         	<%
 				if(session.getAttribute("pref_update_success") != null) {
+					if(((Boolean) session.getAttribute("pref_update_success"))) {
 			%>
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
@@ -75,9 +76,20 @@
 	        	</div>
 		    </div>
 		    <%
-					session.removeAttribute("pref_update_success");
-				}
+						session.removeAttribute("pref_update_success");
+					} else {
 			%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Update failed...!<br />Please enter valid number.</center></span>
+	        	</div>
+		    </div>
+		    <%	
+		    			session.removeAttribute("pref_update_success");
+		    		}
+				}
+		    %>
         	<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">System Settings</div>
 				<div id="widget1container" class="panel-body collapse in">
