@@ -33,6 +33,12 @@
 				<li ><a href="manage_complaint.jsp"><span class="fa fa-caret-right"></span> Manage Complaints</a></li>
 			</ul>
 		</li>
+		<li><a href="#" data-target=".sys-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Manage System<i class="fa fa-collapse"></i></a></li>
+	    <li>
+	       	<ul class="sys-menu nav nav-list collapse">
+				<li ><a href="system_setting.jsp"><span class="fa fa-caret-right"></span> System Settings</a></li>
+			</ul>
+		</li>
 		
 	    
 	</ul>

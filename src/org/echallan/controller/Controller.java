@@ -17,6 +17,7 @@ import org.echallan.dataAccessObject.CatagoryDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.ComplaintDAO;
 import org.echallan.dataAccessObject.LicenseDAO;
+import org.echallan.dataAccessObject.PreferenceManager;
 import org.echallan.dataAccessObject.RuleDAO;
 import org.echallan.dataAccessObject.SubAreaDAO;
 import org.echallan.dataAccessObject.UserDAO;
@@ -26,6 +27,7 @@ import org.echallan.valueObject.Catagory;
 import org.echallan.valueObject.City;
 import org.echallan.valueObject.Complaint;
 import org.echallan.valueObject.License;
+import org.echallan.valueObject.Preference;
 import org.echallan.valueObject.Rule;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
@@ -311,6 +313,29 @@ public class Controller extends HttpServlet {
 				session.setAttribute("license_no", lno);
 				response.sendRedirect("generate_challan_view_result.jsp");
 			}
+		} else if(request.getParameter("submit").equals("Update Settings")) {
+			HttpSession session = request.getSession();
+			String maxChallan = request.getParameter(Common.PREF_MAX_CHALLAN_PER_DAY);
+			String maxComp = request.getParameter(Common.PREF_MAX_COMPLAINT_PER_DAY);
+			if(maxChallan != null && maxComp != null) {
+				try {
+					// Check if entered string is valid number
+					Integer.parseInt(maxChallan);
+					Integer.parseInt(maxComp);
+					
+					PreferenceManager prefManager = new PreferenceManager();
+					Preference prefMxChallan = prefManager.getPreference(Common.PREF_MAX_CHALLAN_PER_DAY);
+					Preference prefMxComp = prefManager.getPreference(Common.PREF_MAX_COMPLAINT_PER_DAY);
+					prefMxChallan.setValue(maxChallan);
+					prefMxComp.setValue(maxComp);
+					prefManager.update(prefMxComp);
+					prefManager.update(prefMxChallan);
+				} catch(NumberFormatException ex) {
+					response.sendRedirect("error_page.jsp");
+				}
+			} else response.sendRedirect("error_page.jsp");
+			session.setAttribute("pref_update_success", true);
+			response.sendRedirect("system_setting.jsp");
 		}
 	}
 	

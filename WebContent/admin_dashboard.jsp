@@ -1,3 +1,5 @@
+<%@page import="org.echallan.valueObject.Preference"%>
+<%@page import="org.echallan.dataAccessObject.PreferenceManager"%>
 <%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -30,6 +32,27 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
+<%
+	String maxChallanVal = Common.MAX_CHALLAN_PER_DAY;
+	String maxCompVal = Common.MAX_COMPLAINT_PER_DAY;
+	PreferenceManager prefManager = new PreferenceManager();
+	Preference mxChallan = prefManager.getPreference(Common.PREF_MAX_CHALLAN_PER_DAY);
+	Preference mxComp = prefManager.getPreference(Common.PREF_MAX_COMPLAINT_PER_DAY);
+	
+	// If preference doesn't exist, add it
+	if(mxChallan == null) {
+		Preference newMxChallan = new Preference();
+		newMxChallan.setName(Common.PREF_MAX_CHALLAN_PER_DAY);
+		newMxChallan.setValue(maxChallanVal);
+		prefManager.insert(newMxChallan);
+	} else maxChallanVal = mxChallan.getValue();
+	if(mxComp == null) {
+		Preference newMxComp = new Preference();
+		newMxComp.setName(Common.PREF_MAX_COMPLAINT_PER_DAY);
+		newMxComp.setValue(maxCompVal);
+		prefManager.insert(newMxComp);
+	} else maxCompVal = mxComp.getValue();
+%>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
 	<c:import url="stub_admin_sidebar.jsp"></c:import>
@@ -59,13 +82,13 @@
 		                    <div class="row">
 		                        <div class="col-md-3 col-sm-6">
 		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="3000" data-displayPrevious="true" value="2500" data-fgColor="#92A3C2" data-readOnly=true;>
+		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxChallanVal); %>" data-displayPrevious="true" value="2500" data-fgColor="#92A3C2" data-readOnly=true;>
 		                                <h3 class="text-muted text-center">Challan Generated</h3>
 		                            </div>
 		                        </div>
 		                        <div class="col-md-3 col-sm-6">
 		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="4500" data-displayPrevious="true" value="3299" data-fgColor="#92A3C2" data-readOnly=true;>
+		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxCompVal); %>" data-displayPrevious="true" value="3299" data-fgColor="#92A3C2" data-readOnly=true;>
 		                                <h3 class="text-muted text-center">Complaints Received</h3>
 		                            </div>
 		                        </div>

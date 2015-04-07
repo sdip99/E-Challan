@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 25, 2014 10:46:23 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.Preference" table="PREFERENCE">
+        <id name="name" type="java.lang.String">
+            <column name="NAME" />
+        </id>
+        <property name="value" type="java.lang.String">
+            <column name="VALUE" />
+        </property>
+     </class>
+</hibernate-mapping>
