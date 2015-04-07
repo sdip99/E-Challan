@@ -91,6 +91,7 @@ public class Controller extends HttpServlet {
 		
 		} else if(request.getParameter("submit").equals("Insert Officer")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("add_officer_status", true);
 			String fname = request.getParameter("first_name");
 			String lname = request.getParameter("last_name");
 			String mobileNo = request.getParameter("mobile_no");
@@ -99,15 +100,27 @@ public class Controller extends HttpServlet {
 			String city = request.getParameter("city");
 			String email = request.getParameter("email");
 			String pass = request.getParameter("password");
-			int pincode = Integer.parseInt(request.getParameter("pincode"));
-			int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
-			UserDetail userDetail = new UserDetail(fname, lname, subAreaAssign, mobileNo, street, city, state, pincode);
-			User user = new User(email, pass, 0);
-			user.setUserDetail(userDetail);
-			userDetail.setUser(user);
-			UserDAO dao = new UserDAO();
-			dao.insert(user);
-			session.setAttribute("success", true);
+			if(fname != null && !fname.equals("") &&
+					lname != null && !lname.equals("") &&
+					mobileNo != null && !mobileNo.equals("") &&
+					street != null && !street.equals("") &&
+					state != null && !state.equals("") &&
+					city != null && !city.equals("") &&
+					email != null && !email.equals("") &&
+					pass != null && !pass.equals("")) {
+				try {
+					int pincode = Integer.parseInt(request.getParameter("pincode"));
+					int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
+					UserDetail userDetail = new UserDetail(fname, lname, subAreaAssign, mobileNo, street, city, state, pincode);
+					User user = new User(email, pass, 0);
+					user.setUserDetail(userDetail);
+					userDetail.setUser(user);
+					UserDAO dao = new UserDAO();
+					dao.insert(user);
+				} catch(NumberFormatException ex) {
+					session.setAttribute("add_officer_status", false);
+				}
+			} else session.setAttribute("add_officer_status", false);
 			response.sendRedirect("add_officer.jsp");
 		
 		} else if(request.getParameter("submit").equals("Insert City")) {

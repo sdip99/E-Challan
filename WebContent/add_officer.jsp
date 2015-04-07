@@ -52,17 +52,28 @@
         <div class="main-content">
         
 	        <%
-				if(session.getAttribute("success") != null) {
+				if(session.getAttribute("add_officer_status") != null) {
+					if((Boolean) session.getAttribute("add_officer_status")) { 
 			%>
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
 	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>User Added Successfully...!</center>
+	        		<center>User added successfully...!</center>
 	        	</div>
 		    </div>
-		    <%
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Cannot add User...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("add_officer_status");
 				}
-				session.removeAttribute("success");
 			%>
         
 			<div class="panel panel-default">
