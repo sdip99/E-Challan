@@ -33,7 +33,7 @@
 <%
 	// terminate session when logout flag is set
 	if(request.getParameter("logout") != null)
-		session.removeAttribute("user_info");
+		session.invalidate();
 %>
 <body class=" theme-blue">
     
