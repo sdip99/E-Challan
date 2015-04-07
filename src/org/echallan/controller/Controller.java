@@ -136,37 +136,51 @@ public class Controller extends HttpServlet {
 			
 		} else if(request.getParameter("submit").equals("Insert Area")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("area_insert_status", true);
 			String name = request.getParameter("area_name");
-			int cityID = Integer.parseInt(request.getParameter("subarea_drop"));
-			City city = new CityDAO().getCityById(cityID);
-			Area area = new Area();
-			area.setName(name);
-			area.setCity(city);
-			city.getArea().add(area);
-			new AreaDAO().insert(area);
-			session.setAttribute("success", true);
+			if(name != null && !name.equals("")) {
+				try {
+					int cityID = Integer.parseInt(request.getParameter("subarea_drop"));
+					City city = new CityDAO().getCityById(cityID);
+					Area area = new Area();
+					area.setName(name);
+					area.setCity(city);
+					city.getArea().add(area);
+					new AreaDAO().insert(area);
+				} catch(NumberFormatException ex) {
+					session.setAttribute("area_insert_status", false);
+				}
+			} else session.setAttribute("area_insert_status", false);
 			response.sendRedirect("insert_area.jsp");
 		
 		} else if(request.getParameter("submit").equals("Insert CheckPost")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("insert_chkpost_status", true);
 			String name = request.getParameter("subarea_name");
-			int areaID = Integer.parseInt(request.getParameter("area_drop"));
-			Area area = new AreaDAO().getAreaById(areaID);
-			SubArea subArea = new SubArea();
-			subArea.setName(name);
-			subArea.setArea(area);
-			SubAreaDAO dao = new SubAreaDAO();
-			dao.insert(subArea);
-			session.setAttribute("success", true);
+			if(name != null && !name.equals("")) {
+				try {
+					int areaID = Integer.parseInt(request.getParameter("area_drop"));
+					Area area = new AreaDAO().getAreaById(areaID);
+					SubArea subArea = new SubArea();
+					subArea.setName(name);
+					subArea.setArea(area);
+					SubAreaDAO dao = new SubAreaDAO();
+					dao.insert(subArea);
+				} catch(NumberFormatException ex) {
+					session.setAttribute("insert_chkpost_status", false);
+				}
+			} else session.setAttribute("insert_chkpost_status", false);
 			response.sendRedirect("insert_checkpost.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update City")) {
 			HttpSession session = request.getSession();
 			String name = request.getParameter("city_name");
-			int id = Integer.parseInt((String) session.getAttribute("city_id"));
-			session.setAttribute("success", true);
-			new CityDAO().updateCity(id, name);
-			response.sendRedirect("update_city.jsp");
+			session.setAttribute("upd_city", true);
+			if(name != null && !name.equals("")) {
+				int id = Integer.parseInt((String) session.getAttribute("city_id"));
+				new CityDAO().updateCity(id, name);
+			} else session.setAttribute("upd_city", false);
+			response.sendRedirect("manage_city.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Officer")) {
 			HttpSession session = request.getSession();

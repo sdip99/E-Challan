@@ -50,17 +50,28 @@
         <div class="main-content">
         
 	        <%
-				if(session.getAttribute("success") != null) {
+				if(session.getAttribute("insert_chkpost_status") != null) {
+					if((Boolean) session.getAttribute("insert_chkpost_status")) { 
 			%>
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
 	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>Data Updated...!</center>
+	        		<center>CheckPost added successfully...!</center>
 	        	</div>
 		    </div>
-		    <%
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Insert failed...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("insert_chkpost_status");
 				}
-				session.removeAttribute("success");
 			%>
         
 			<div class="panel panel-default">

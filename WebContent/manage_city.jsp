@@ -75,7 +75,31 @@
 						}
 					}
 				}
-			%>        
+			%>
+			<%
+				if(session.getAttribute("upd_city") != null) {
+					if((Boolean) session.getAttribute("upd_city")) { 
+			%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<center>Data Updated...!</center>
+	        	</div>
+		    </div>
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Update failed...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("upd_city");
+				}
+			%>
 			<div class="btn-toolbar list-toolbar">
 			    <a href="insert_city.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New City</a>
 			  <div class="btn-group">
