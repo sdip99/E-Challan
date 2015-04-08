@@ -60,22 +60,29 @@
         </div>
         <div class="main-content">
         	<%
-        		Object obj = session.getAttribute("success");
-        		if(obj != null) {
-	        		boolean success = (Boolean) obj;
-	        		if(success) {
-        	%>
-		        		<div class="panel panel-default">
-							        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
-						        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-						        		<center>Complaint Status Updated...!</center>
-						        	</div>
-						</div>
-        	<%
-        			}
-        		}
-        		session.removeAttribute("success");
-        	%>
+				if(session.getAttribute("upd_comp") != null) {
+					if((Boolean) session.getAttribute("upd_comp")) { 
+			%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<center>Data Updated...!</center>
+	        	</div>
+		    </div>
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Update failed...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("upd_comp");
+				}
+			%>
 			<%
 				String str = request.getParameter("delete");
 				if(str != null && str.equals("true")) {

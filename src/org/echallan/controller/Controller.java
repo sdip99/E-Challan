@@ -184,6 +184,8 @@ public class Controller extends HttpServlet {
 		
 		} else if(request.getParameter("submit").equals("Update Officer")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("upd_off_status", true);
+			
 			String uid = (String) session.getAttribute("uid");
 			String fname = request.getParameter("first_name");
 			String lname = request.getParameter("last_name");
@@ -193,75 +195,115 @@ public class Controller extends HttpServlet {
 			String city = request.getParameter("city");
 			String email = request.getParameter("email");
 			String pass = request.getParameter("password");
-			int pincode = Integer.parseInt(request.getParameter("pincode"));
-			int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
-			User oldUser = new UserDAO().getUser(uid);
-			User user = new User(email, pass, Common.USER_TYPE_NORMAL);
-			user.setUserID_pkey(Integer.parseInt(uid));
-			if(pass != null && pass == "")
-				user.setPassword(oldUser.getPassword());
-			new UserDAO().update(user);
-			UserDetail uDetail = oldUser.getUserDetail();
-			uDetail.setCity(city);
-			uDetail.setCurrentPosting(subAreaAssign);
-			uDetail.setFirstName(fname);
-			uDetail.setLastName(lname);
-			uDetail.setMobileNo(mobileNo);
-			uDetail.setPincode(pincode);
-			uDetail.setState(state);
-			uDetail.setStreet(street);
-			new UserDetailDAO().update(uDetail);
-			session.setAttribute("success", true);
+			if(uid != null && !uid.equals("") &&
+					fname != null && !fname.equals("") &&
+					lname != null && !lname.equals("") &&
+					mobileNo != null && !mobileNo.equals("") &&
+					street != null && !street.equals("") &&
+					state != null && !state.equals("") &&
+					city != null && !city.equals("") &&
+					email != null && !email.equals("") &&
+					pass != null && !pass.equals("")) {
+				try {
+					int pincode = Integer.parseInt(request.getParameter("pincode"));
+					int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
+					User oldUser = new UserDAO().getUser(uid);
+					User user = new User(email, pass, Common.USER_TYPE_NORMAL);
+					user.setUserID_pkey(Integer.parseInt(uid));
+					if(pass != null && pass == "")
+						user.setPassword(oldUser.getPassword());
+					new UserDAO().update(user);
+					UserDetail uDetail = oldUser.getUserDetail();
+					uDetail.setCity(city);
+					uDetail.setCurrentPosting(subAreaAssign);
+					uDetail.setFirstName(fname);
+					uDetail.setLastName(lname);
+					uDetail.setMobileNo(mobileNo);
+					uDetail.setPincode(pincode);
+					uDetail.setState(state);
+					uDetail.setStreet(street);
+					new UserDetailDAO().update(uDetail);
+				} catch(NumberFormatException ex) {
+					session.setAttribute("upd_off_status", false);
+				}
+			} else session.setAttribute("upd_off_status", false);
 			// TODO: Redirect back to same page
 			response.sendRedirect("manage_officer.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Area")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("upd_area", true);
 			String newName = request.getParameter("area_name");
-			int id = Integer.parseInt((String) session.getAttribute("area_id"));
-			session.setAttribute("success", true);
-			new AreaDAO().updateName(id, newName);
-			response.sendRedirect("update_area.jsp");
+			if(newName != null && !newName.equals("")) {
+				try {
+					int id = Integer.parseInt((String) session.getAttribute("area_id"));
+					new AreaDAO().updateName(id, newName);
+				} catch(Exception ex) {
+					session.setAttribute("upd_area", false);
+				}
+			} else session.setAttribute("upd_area", false);
+			response.sendRedirect("manage_area.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Checkpost")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("upd_chkp", true);
 			String newName = request.getParameter("subarea_name");
-			int id = Integer.parseInt((String) session.getAttribute("subarea_id"));
-			session.setAttribute("success", true);
-			new SubAreaDAO().updateName(id, newName);
-			response.sendRedirect("update_checkpost.jsp");
+			if(newName != null && !newName.equals("")) {
+				try {
+					int id = Integer.parseInt((String) session.getAttribute("subarea_id"));
+					new SubAreaDAO().updateName(id, newName);
+				} catch(Exception ex) {
+					session.setAttribute("upd_chkp", false);
+				}
+			} else session.setAttribute("upd_chkp", false);
+			response.sendRedirect("manage_checkpost.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Complaint")) {
 			HttpSession session = request.getSession();
+			session.setAttribute("upd_comp", true);
 			String ack = request.getParameter("status");
 			String res = request.getParameter("response");
-			int id = Integer.parseInt((String) session.getAttribute("paramid"));
-			ComplaintDAO dao = new ComplaintDAO();
-			Complaint oldComplaint = dao.getComplaintById(id);
-			oldComplaint.setAcknowledged(ack != null);
-			oldComplaint.setResponse(res);
-			dao.update(oldComplaint);
-			session.setAttribute("success", true);
+			if(ack != null && !ack.equals("") && res != null && !res.equals("")) {
+				try {
+					int id = Integer.parseInt((String) session.getAttribute("paramid"));
+					ComplaintDAO dao = new ComplaintDAO();
+					Complaint oldComplaint = dao.getComplaintById(id);
+					oldComplaint.setAcknowledged(ack != null);
+					oldComplaint.setResponse(res);
+					dao.update(oldComplaint);
+				} catch(Exception ex) {
+					session.setAttribute("upd_comp", false);
+				}
+			} else session.setAttribute("upd_comp", false);
 			response.sendRedirect("manage_complaint.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Rule")) {
 			HttpSession session = request.getSession();
-			String ruleName = request.getParameter("rule_name");
-			int ruleId = Integer.parseInt(request.getParameter("rule_id"));
-			int fine = Integer.parseInt(request.getParameter("rule_fine"));
-			String ruleDesc = request.getParameter("rule_desc");
-			int catId = Integer.parseInt(request.getParameter("cat_name"));
-			
-			RuleDAO dao = new RuleDAO();
-			CatagoryDAO catDAO = new CatagoryDAO();
-			Rule newRule = dao.getRuleById(ruleId);
-			newRule.setFine(fine);
-			newRule.setRuleDesc(ruleDesc);
-			newRule.setRuleId(ruleId);
-			newRule.setRuleName(ruleName);
-			newRule.setCat(catDAO.getCatagoryById(catId));
-			dao.update(newRule);
 			session.setAttribute("rule_update_success", true);
+			
+			String ruleName = request.getParameter("rule_name");
+			String ruleDesc = request.getParameter("rule_desc");
+			if(ruleName != null && !ruleName.equals("") && ruleDesc != null && !ruleDesc.equals("")) {
+				try {
+					int ruleId = Integer.parseInt(request.getParameter("rule_id"));
+					int fine = Integer.parseInt(request.getParameter("rule_fine"));
+					int catId = Integer.parseInt(request.getParameter("cat_name"));
+					int targetRuleId = Integer.parseInt((String) session.getAttribute("target_id")); 
+					
+					RuleDAO dao = new RuleDAO();
+					CatagoryDAO catDAO = new CatagoryDAO();
+					Rule newRule = dao.getRuleById(targetRuleId);
+					newRule.setFine(fine);
+					newRule.setRuleDesc(ruleDesc);
+					newRule.setRuleId(ruleId);
+					newRule.setRuleName(ruleName);
+					newRule.setCat(catDAO.getCatagoryById(catId));
+					dao.update(newRule);
+				} catch(Exception ex) {
+					ex.printStackTrace();
+					session.setAttribute("rule_update_success", false);
+				}
+			} else session.setAttribute("rule_update_success", false);
 			response.sendRedirect("manage_rule.jsp");
 			
 			

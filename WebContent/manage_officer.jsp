@@ -47,6 +47,30 @@
 	            <li class="active">Manage Officer</li>
 	        </ul>
         </div>
+        <%
+			if(session.getAttribute("upd_off_status") != null) {
+				if((Boolean) session.getAttribute("upd_off_status")) { 
+		%>
+		<div class="panel panel-default">
+		    <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	       	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	       		<center>Data Updated...!</center>
+	       	</div>
+		</div>
+		<%
+				} else {
+		%>
+		<div class="panel panel-default">
+			<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	       	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	       		<span style="color:red;"><center>Update failed...!<br />Please enter valid data.</center></span>
+	       	</div>
+	       </div>
+		<%
+				}
+				session.removeAttribute("upd_off_status");
+			}
+		%>
         <div class="main-content">        
 			<div class="btn-toolbar list-toolbar">
 			    <a href="add_officer.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> Add New</a>

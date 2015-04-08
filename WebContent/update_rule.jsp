@@ -46,7 +46,7 @@
 		oldfine= rule.getFine();
 		olddesc= rule.getRuleDesc();
 		oldcatname= rule.getCat().getCatName();
-		session.setAttribute("rule_id", id);
+		session.setAttribute("target_id", id);
 	} else response.sendRedirect("add_rule.jsp");
 %>
 <body class=" theme-blue">
