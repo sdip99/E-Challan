@@ -285,7 +285,6 @@ public class Controller extends HttpServlet {
 			String ruleDesc = request.getParameter("rule_desc");
 			if(ruleName != null && !ruleName.equals("") && ruleDesc != null && !ruleDesc.equals("")) {
 				try {
-					int ruleId = Integer.parseInt(request.getParameter("rule_id"));
 					int fine = Integer.parseInt(request.getParameter("rule_fine"));
 					int catId = Integer.parseInt(request.getParameter("cat_name"));
 					int targetRuleId = Integer.parseInt((String) session.getAttribute("target_id")); 
@@ -295,7 +294,6 @@ public class Controller extends HttpServlet {
 					Rule newRule = dao.getRuleById(targetRuleId);
 					newRule.setFine(fine);
 					newRule.setRuleDesc(ruleDesc);
-					newRule.setRuleId(ruleId);
 					newRule.setRuleName(ruleName);
 					newRule.setCat(catDAO.getCatagoryById(catId));
 					dao.update(newRule);

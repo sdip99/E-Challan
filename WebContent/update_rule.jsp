@@ -82,10 +82,6 @@
 								</select>
 							</p>
 							<p>
-								<label>Enter new Rule Id:</label>
-								<input type="text" class="form-control span12" name="rule_id" value="<% out.print(oldid); %>"/>
-							</p>
-							<p>
 								<label>Enter new Rule Name:</label>
 								<input type="text" class="form-control span12" name="rule_name" value="<% out.print(oldname); %>"/>
 							</p>
