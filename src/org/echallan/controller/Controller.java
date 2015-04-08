@@ -263,7 +263,7 @@ public class Controller extends HttpServlet {
 			session.setAttribute("upd_comp", true);
 			String ack = request.getParameter("status");
 			String res = request.getParameter("response");
-			if(ack != null && !ack.equals("") && res != null && !res.equals("")) {
+			if(res != null && !res.equals("")) {
 				try {
 					int id = Integer.parseInt((String) session.getAttribute("paramid"));
 					ComplaintDAO dao = new ComplaintDAO();
