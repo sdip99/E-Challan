@@ -1,8 +1,10 @@
 package org.echallan.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -52,7 +54,16 @@ public class Controller extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+    	if(request.getParameter("cat_id") != null) {
+    		CatagoryDAO dao = new CatagoryDAO();
+    		PrintWriter writer = response.getWriter();
+    		Set<Rule> rules = dao.getCatagoryById(request.getParameter("cat_id")).getRule();
+    		writer.write("<select  class='form-control' name='rule_drop'>");
+    		for(Rule r : rules)
+    			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
+    		writer.write("</select>");
+    		writer.close();
+    	}
 	}
 
 	/**

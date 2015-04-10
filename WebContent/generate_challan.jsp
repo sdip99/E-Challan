@@ -1,3 +1,4 @@
+<%@page import="java.util.Set"%>
 <%@page import="org.echallan.dataAccessObject.RuleDAO"%>
 <%@page import="org.echallan.valueObject.Rule"%>
 <%@page import="org.echallan.valueObject.Catagory"%>
@@ -34,6 +35,38 @@
         	allowclear:true
         });
         
+        var request;  
+        function sendInfo()  
+        {
+        	
+	        var v = document.getElementById("cat_name");
+	        
+	        if(window.XMLHttpRequest){  
+	        	request=new XMLHttpRequest();  
+	        }  
+		        else if(window.ActiveXObject){  
+		        request=new ActiveXObject("Microsoft.XMLHTTP");  
+	        }  
+	          
+	        try  
+	        {  
+		        request.onreadystatechange = getInfo;  
+		        request.open("GET", "Controller?cat_id=" + v.value, true);  
+		        request.send();  
+	        }  
+	        catch(e)  
+	        {  
+	        	alert("Unable to connect to server");  
+	        }  
+        }  
+          
+        function getInfo(){  
+	        if(request.readyState==4){  
+		        var val = request.responseText;
+		        document.getElementById("rule_inner").innerHTML = val;
+	        }  
+        }
+        
     </script>
 
 
@@ -53,20 +86,22 @@
 	            <li class="active">Generate Challan</li>
 	        </ul>
         </div>
-        
-			
-		
-		     <div class="main-content">
-        
+		<div class="main-content">
+        <%
+        	String licenseNo = request.getParameter("licenseno");
+        	// do not accept empty string
+        	if(licenseNo.equals(""))
+        		licenseNo = null;
+        %>
 			<div class="panel panel-default">
-			    <div class="panel-heading no-collapse">Search License</div>
+			    <div class="panel-heading no-collapse">Generate Challan</div>
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">
 							
 							<p>
 								<label> License no: </label>
-								<input type="text" class="form-control span12" name="license_no"/>
+								<input type="text" class="form-control span12" name="license_no" <% if(licenseNo != null) out.print("value='" + licenseNo + "'"); %>/>
 							</p>
 							<p>
 								<label>Vehicle no: </label>
@@ -74,7 +109,7 @@
 							</p>
 							<p>
 								<label>vehicle category: </label>
-								<select class="form-control " name="cat_name" >
+								<select class="form-control" id="cat_name" name="cat_name" onChange="return sendInfo();">
 								<%
 									CatagoryDAO dao =  new CatagoryDAO();
 									List<Catagory> cat = dao.getAll();
@@ -85,17 +120,9 @@
 							</p>
 							<p>
 								<label>Rules: </label>
-								<select  class="form-control " id="e4" multiple>
-								 
-								 	<%
-										out.print("<optgroup  lable='rule'>");								 	
-										RuleDAO ru = new RuleDAO();
-								 		List<Rule> rule = ru.getAll();
-								 		for(Rule r : rule)
-								 			out.println("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
-								 		out.print("</optgroup>");
-								 	%>
-								</select>
+								<span id="rule_inner">
+									<select class='form-control' name='rule_drop'></select>
+								</span>
 							</p>
 							
 							<input type="submit" name="submit" class="btn btn-primary form-control" value="Search License" name="submit"/>
