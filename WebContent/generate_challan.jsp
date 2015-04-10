@@ -90,7 +90,7 @@
         <%
         	String licenseNo = request.getParameter("licenseno");
         	// do not accept empty string
-        	if(licenseNo.equals(""))
+        	if(licenseNo != null && licenseNo.equals(""))
         		licenseNo = null;
         %>
 			<div class="panel panel-default">
