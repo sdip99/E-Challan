@@ -49,7 +49,20 @@
   <!--[if (gt IE 9)|!(IE)]><!--> 
    
   <!--<![endif]-->
-
+<%
+	Object obj = session.getAttribute("user_info");
+	String homeURL = "index.jsp";
+	String userName = "";
+	User user;
+	if(obj != null) {
+		user = (User) obj;
+		userName = user.getUserID();
+		if(user.getUserType() == Common.USER_TYPE_ADMIN)
+			homeURL = "admin_dashboard.jsp";
+		else
+			homeURL = "police_dashboard.jsp";
+	}
+%>
     <div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -58,22 +71,16 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="index.jsp"><span class="navbar-brand"><span class="fa fa-paper-plane"></span> e-Challan System</span></a></div>
-		<%
-			Object obj = session.getAttribute("user_info");
-			if(obj != null) {
-		%>
-        <div class="navbar-collapse collapse" style="height: 1px;">
+          <a href=<%out.print("'" + homeURL + "'"); %>><span class="navbar-brand"><span class="fa fa-paper-plane"></span> e-Challan System</span></a>
+        </div>
+        <%
+        	if(obj != null) {
+       	%>
           <ul id="main-menu" class="nav navbar-nav navbar-right">
             <li class="dropdown hidden-xs">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span>
-                    <%
-						User user = (User) obj;
-						out.print(user.getUserID());
-						if(user.getUserType() == Common.USER_TYPE_ADMIN)
-							out.print(" (Administrator)");
-					%>
+                    <% out.print(userName); %>
                     <i class="fa fa-caret-down"></i>
                 </a>
 
@@ -83,9 +90,8 @@
               </ul>
             </li>
           </ul>
-        </div>
         <%
-			}
+        	}
         %>
       </div>
     </div>
