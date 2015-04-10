@@ -63,6 +63,21 @@ public class Controller extends HttpServlet {
     			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
     		writer.write("</select>");
     		writer.close();
+    	} else if(request.getParameter("mng_chk_city_id") != null) {
+    		PrintWriter writer = response.getWriter();
+    		writer.write("<select class='form-control inline-ele-left' name='area_drop' style='width: 25%;'>");
+    		Integer id = null;
+    		try {
+    			id = Integer.parseInt(request.getParameter("mng_chk_city_id"));
+    		} catch(Exception ex) {
+    			writer.write("</select>");
+    			writer.close();
+    			return;
+    		}
+    		Set<Area> areas = new CityDAO().getCityById(id).getArea();
+    		for(Area a : areas)
+    			writer.write("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+    		writer.write("</select>");
     	}
 	}
 

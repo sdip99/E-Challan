@@ -49,6 +49,31 @@
         		id = document.getElementsByName("city_drop")[0].value;
         	window.location.href = "manage_checkpost.jsp?filterBy=" + by + "&id=" + id;
         }
+        
+        var request;  
+        function sendInfo()  
+        {
+        	var v = document.getElementById("city_drop");
+        	if(window.XMLHttpRequest){
+        		request=new XMLHttpRequest();
+        	} else if(window.ActiveXObject) {
+        		request=new ActiveXObject("Microsoft.XMLHTTP");
+        	}
+        	try {
+        		request.onreadystatechange = getInfo;
+        		request.open("GET", "Controller?mng_chk_city_id=" + v.value, true);
+        		request.send();
+        	} catch(e) {
+        		alert("Unable to connect to server");
+        	}
+        }
+
+        function getInfo(){
+        	if(request.readyState==4){
+        		var val = request.responseText;
+        		document.getElementById("area_inner").innerHTML = val;
+        	}
+        }
     </script>
     
     
@@ -117,8 +142,8 @@
 			<div class="btn-toolbar list-toolbar">
 			    <a href="insert_checkpost.jsp" class="btn btn-primary"><i class="fa fa-plus"></i> New Checkpost</a><br></br>
 			    <p>
-			    	Filter By City: 
-			    	<select class="form-control inline-ele-left" name="city_drop"  style="width: 25%; margin-left: 6px;">
+			    	1) Filter By City: 
+			    	<select class="form-control inline-ele-left" id="city_drop" name="city_drop"  style="width: 25%; margin-left: 6px;" onChange="return sendInfo()">
 			    		<%
 							List<City> _city = new CityDAO().getAll();
 							for(City c : _city)
@@ -129,16 +154,18 @@
 			    	<a href="manage_checkpost.jsp" class="btn btn-danger btn-toolbar list-toolbar inline-ele" style="margin-bottom: 5px;"> X</a>
 			    </p>
 			    
-			    <p style="position: relative;left: 200px">OR</p>
+			    <p style="position: relative;left: 200px">AND</p>
 			    <p>
-			    	Filter By Area:
-			    	<select class="form-control inline-ele-left" name="area_drop"  style="width: 25%;">
-			    		<%
-							List<Area> _area = new AreaDAO().getAll();
-							for(Area a : _area)
-								out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
-						%>
-			    	</select>
+			    	2) Filter By Area:
+			    	<span id="area_inner">
+						<select class="form-control inline-ele-left" name="area_drop"  style="width: 25%;">
+							<%
+								Set<Area> _area = _city.get(0).getArea();
+								for(Area a : _area)
+									out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+							%>
+						</select>
+					</span>
 			    	<a href="#" class="btn btn-primary btn-toolbar list-toolbar inline-ele-left" style="margin-bottom: 5px;" onclick="javascript: return handleFilterEvent('a')"> Filter</a>
 			    	<a href="manage_checkpost.jsp" class="btn btn-danger btn-toolbar list-toolbar inline-ele" style="margin-bottom: 5px;"> X</a>
 			    </p>
