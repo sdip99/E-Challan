@@ -1,3 +1,4 @@
+<%@page import="java.util.Set"%>
 <%@page import="org.echallan.dataAccessObject.SubAreaDAO"%>
 <%@page import="org.echallan.valueObject.SubArea"%>
 <%@page import="org.echallan.dataAccessObject.AreaDAO"%>
@@ -32,6 +33,53 @@
         $(function() {
             $(".knob").knob();
         });
+        var request;
+        var v;
+        var target;
+        function sendInfo(type)
+        {
+        	target = type;
+        	if(type == "city") {
+        		v = document.getElementById("city_assigned");
+        		removeOptions(document.getElementById("subarea_drop"));
+        	} else {
+        		v = document.getElementById("area_assigned");
+        	}
+        	if(window.XMLHttpRequest){
+        		request=new XMLHttpRequest();
+        	} else if(window.ActiveXObject) {
+        		request=new ActiveXObject("Microsoft.XMLHTTP");
+        	}
+        	try {
+        		request.onreadystatechange = getInfo;
+        		if(type == "city")
+        			request.open("GET", "Controller?city_id=" + v.value, true);
+        		else
+        			request.open("GET", "Controller?area_id=" + v.value, true);
+        		request.send();
+        	} catch(e) {
+        		alert("Unable to connect to server");
+        	}
+        }
+
+        function getInfo(){
+        	if(request.readyState==4){
+        		var val = request.responseText;
+        		if(target == "city")
+        			document.getElementById("area_inner").innerHTML = val;
+        		else
+        			document.getElementById("sarea_inner").innerHTML = val;
+        	}
+        }
+        
+        function removeOptions(selectbox)
+        {
+            var i;
+            for(i=selectbox.options.length-1;i>=0;i--)
+            {
+                selectbox.remove(i);
+            }
+        }
     </script>
 
 
@@ -110,7 +158,7 @@
 							</p>
 							<p class="inline-field">
 								<label>City Assigned:</label>
-								<select class="form-control " name="city_assigned">
+								<select class="form-control " name="city_assigned" id="city_assigned" onChange="return sendInfo('city');">
 								<%
 									List<City> city = new CityDAO().getAll();
 									for(City c : city)
@@ -120,22 +168,26 @@
 							</p>
 							<p class="inline-field" >
 								<label>Area Assigned:</label>
-								<select class="form-control " name="area_assigned">
-								<%
-									List<Area> area = new AreaDAO().getAll();
-									for(Area a : area)
-										out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
-								%>
-								</select>
+								<span id="area_inner">
+									<select class="form-control " name="area_assigned" id="area_assigned" onChange="return sendInfo('area');">
+									<%
+										Set<Area> area = city.get(0).getArea();
+										for(Area a : area)
+											out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+									%>
+									</select>
+								</span>
 							</p>
 								<label>SubArea Assigned:</label>
-								<select class="form-control " name="subarea_assigned">
-								<%
-									List<SubArea> sarea = new SubAreaDAO().getAll();
-									for(SubArea a : sarea)
-										out.println("<option value='" + a.getSubarea_id() + "'>" + a.getName() + "</option>");
-								%>
-								</select>
+								<span id="sarea_inner">
+									<select class="form-control " name="subarea_assigned" id="subarea_drop">
+									<%
+										Set<SubArea> sarea = area.iterator().next().getSubarea();
+										for(SubArea a : sarea)
+											out.println("<option value='" + a.getSubarea_id() + "'>" + a.getName() + "</option>");
+									%>
+									</select>
+								</span>
 							</p>
 							<input type="submit" name="submit" class="btn btn-primary form-control" value="Update Officer" name="submit"/>
 						</div>

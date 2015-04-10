@@ -78,6 +78,20 @@ public class Controller extends HttpServlet {
     		for(Area a : areas)
     			writer.write("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
     		writer.write("</select>");
+    	} else if(request.getParameter("city_id") != null) {
+    		PrintWriter writer = response.getWriter();
+    		writer.write("<select class=\"form-control\" name=\"area_assigned\" id=\"area_assigned\" onChange=\"return sendInfo('area');\">'");
+    		Set<Area> areas = new CityDAO().getCityById(request.getParameter("city_id")).getArea();
+    		for(Area a : areas)
+    			writer.write("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+    		writer.write("</select>");
+    	} else if(request.getParameter("area_id") != null) {
+    		PrintWriter writer = response.getWriter();
+    		writer.write("<select class='form-control' name='subarea_assigned' id='subarea_drop'>");
+    		Set<SubArea> sareas = new AreaDAO().getAreaById(request.getParameter("area_id")).getSubarea();
+    		for(SubArea s : sareas)
+    			writer.write("<option value='" + s.getSubarea_id() + "'>" + s.getName() + "</option>");
+    		writer.write("</select>");
     	}
 	}
 
