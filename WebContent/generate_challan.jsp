@@ -121,7 +121,13 @@
 							<p>
 								<label>Rules: </label>
 								<span id="rule_inner">
-									<select class='form-control' name='rule_drop'></select>
+									<select class='form-control' name='rule_drop'>
+										<%
+											Set<Rule> rules = cat.get(0).getRule();
+											for(Rule r : rules)
+												out.println("<option value='" + r.getRuleId()+ "'>" + r.getRuleName() + "</option>");
+										%>
+									</select>
 								</span>
 							</p>
 							
