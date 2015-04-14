@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 24, 2015 5:41:17 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.echallan.valueObject.City" table="CITY">
+        <id name="challan_id" type="int">
+            <column name="CHALLAN_ID" />
+            <generator class="native" />
+        </id>
+        <property name="licenseNo" type="java.lang.String">
+            <column name="LICENSE_NO" />
+        </property>
+        <property name="vehicleNo" type="java.lang.String">
+            <column name="VEHICLE_NO" />
+        </property>
+        <set name="rule" table="RULES" inverse="false" lazy="false" cascade="delete">
+            <key>
+                <column name="ruleid_pkey" />
+            </key>
+            <one-to-many class="org.echallan.valueObject.Rules" />
+        </set>
+        <one-to-one name="user" class="org.echallan.valueObject.User" cascade="save-update"></one-to-one>
+    </class>
+</hibernate-mapping>

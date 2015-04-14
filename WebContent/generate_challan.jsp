@@ -23,17 +23,36 @@
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
     <script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
-
+	<script type="text/javascript" src="lib/cool.js"></script>
         <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(function() {
+    var x=0;    
+    var val;
+    var count=0;
+    $(function() {
             $(".knob").knob();
+            
+            $("#btnAdd").bind("click", function () {
+                var div = $("<div />");
+                
+                div.html(GetDynamicTextBox(x));
+                count++;
+                x++;
+            	    
+                $("#newRule").append(div);
+            });
+            $("#btnGet").bind("click", function () {
+                var values = "";
+                $("select[name=DynamicTextBox]").each(function () {
+                    values += $(this).val() + "\n";
+                });
+                
+            });
+            $("body").on("click", ".remove", function () {
+                $(this).closest("div").remove();
+            });
         });
-        $("#e4").select2({
-        	placeholder : "Select Rule",
-        	width: 375,
-        	allowclear:true
-        });
+        
         
         var request;  
         function sendInfo()  
@@ -51,21 +70,38 @@
 	        try  
 	        {  
 		        request.onreadystatechange = getInfo;  
-		        request.open("GET", "Controller?cat_id=" + v.value, true);  
+		        request.open("GET", "Controller?cat_id=" + v.value + "&&count=" + count, true);  
 		        request.send();  
 	        }  
 	        catch(e)  
 	        {  
 	        	alert("Unable to connect to server");  
-	        }  
+	        }
         }  
           
         function getInfo(){  
 	        if(request.readyState==4){  
-		        var val = request.responseText;
-		        document.getElementById("rule_inner").innerHTML = val;
+		     	val = request.responseText;
+		     
+		        var i=0;
+		        
+		        while(i<=x){
+		        	
+		        	document.getElementsByName("rule_inner")[i].innerHTML=val;
+					i++;		        
+		        }
 	        }  
         }
+       
+       
+        function GetDynamicTextBox(value) {
+        	
+        	sendInfo();
+        	
+        	return '<span name="rule_inner" ></span> &nbsp;' +
+                    '<input type="button" value="Remove" class="remove" />'
+        }
+    
         
     </script>
 
@@ -107,6 +143,7 @@
 								<label>Vehicle no: </label>
 								<input type="text" class="form-control span12" name="vehicle_no"/>
 							</p>
+					
 							<p>
 								<label>vehicle category: </label>
 								<select class="form-control" id="cat_name" name="cat_name" onChange="return sendInfo();">
@@ -120,18 +157,22 @@
 							</p>
 							<p>
 								<label>Rules: </label>
-								<span id="rule_inner">
-									<select class='form-control' name='rule_drop'>
-										<%
-											Set<Rule> rules = cat.get(0).getRule();
-											for(Rule r : rules)
-												out.println("<option value='" + r.getRuleId()+ "'>" + r.getRuleName() + "</option>");
-										%>
-									</select>
+								<input id="btnAdd" type="button" value="Add" />
+								<span id="newRule">
+									
 								</span>
 							</p>
+								
+								
+							<p>
+								<label>Suspend Vehicle: </label>
+								<input type="checkbox" name="status" />
+							</p>
+						<div align="center">		
+							<input type="submit" name="submit" class="btn btn-primary" value="Search For Challan" name="submit"/>
+							 
+						</div>
 							
-							<input type="submit" name="submit" class="btn btn-primary form-control" value="Search License" name="submit"/>
 						</div>
 						<div class="clearfix"></div>
 					</form>

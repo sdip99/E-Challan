@@ -17,6 +17,10 @@ public class License {
 	private String mName;
 	private Date birthDate;
 	private int pincode;
+	private String address;
+	public String getAddress() {
+		return address;
+	}
 	private String imgURL;
 	private String bGroup;
 	public String getLincenNo() {

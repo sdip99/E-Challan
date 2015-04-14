@@ -14,6 +14,9 @@
         <property name="lName" type="java.lang.String" access="field">
             <column name="LNAME" />
         </property>
+        <property name="address" type="java.lang.String" access="field">
+            <column name="ADDRESS" />
+        </property>
         <property name="mName" type="java.lang.String" access="field">
             <column name="MNAME" />
         </property>
