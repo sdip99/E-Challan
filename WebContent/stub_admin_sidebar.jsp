@@ -39,6 +39,16 @@
 				<li ><a href="system_setting.jsp"><span class="fa fa-caret-right"></span> System Settings</a></li>
 			</ul>
 		</li>
+		<li><a href="#" data-target=".report-menu" class="nav-header collapsed" data-toggle="collapse"><i class="fa fa-fw fa-arrow-circle-right"></i> Report Generation<i class="fa fa-collapse"></i></a></li>
+	    <li>
+	       	<ul class="report-menu nav nav-list collapse">
+				<li><a href="annual_report.jsp"><span class="fa fa-caret-right"></span> Annual Report</a></li>
+				<li><a href="history_report.jsp"><span class="fa fa-caret-right"></span> Violation History</a></li>
+				<li><a href="history_income.jsp"><span class="fa fa-caret-right"></span> Income History</a></li>
+				<li><a href="stat_city.jsp"><span class="fa fa-caret-right"></span> City-wise Statistics</a></li>
+				<li><a href="stat_area.jsp"><span class="fa fa-caret-right"></span> Area-wise Statistics</a></li>
+			</ul>
+		</li>
 		
 	    
 	</ul>

@@ -457,7 +457,14 @@ public class Controller extends HttpServlet {
 			System.out.println(request.getParameter("rule_drop1"));
 			//System.out.println(request.getParameter("rule_drop1"));
 			
-		}
+		} else if(request.getParameter("hist_city_id") != null) {
+    		PrintWriter writer = response.getWriter();
+    		writer.write("<select class='form-control' name='area_drop' id='area_drop'>");
+    		Set<Area> area = new CityDAO().getCityById(request.getParameter("hist_city_id")).getArea();
+    		for(Area a : area)
+    			writer.write("<option value=" + a.getArea_id() + ">" + a.getName() + "</option>");
+    		writer.write("</select>");
+    	}
 	}
 		/*else if(request.getParameter("submit").equals("Search For Challan")){
 				HttpSession session = request.getSession();
