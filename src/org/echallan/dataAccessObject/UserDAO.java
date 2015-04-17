@@ -34,6 +34,26 @@ public class UserDAO extends GenericDAO {
 	public List<User> getAllUsers() {
 		return getAllUsers(false);
 	}
+	public void updatePass(String uid, String newPass) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("UPDATE User set password='" + newPass + "' WHERE userID='" + uid + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
+	public void updateuid(String uid, String newuid) {
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("UPDATE User set userID='" + newuid + "' WHERE userID='" + uid + "'");
+			query.executeUpdate();
+			transaction.commit();
+			session.close();
+		}
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers(boolean withAdmin) {

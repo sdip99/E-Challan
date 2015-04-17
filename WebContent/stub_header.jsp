@@ -33,7 +33,8 @@
             $('#main-menu').append(uls.clone());
         });
 </script>
-
+ <link rel="stylesheet" type="text/css" href="stylesheets/theme1.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/premium1.css">
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon" href="../assets/ico/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
@@ -56,7 +57,7 @@
 	User user;
 	if(obj != null) {
 		user = (User) obj;
-		userName = user.getUserID();
+		userName = user.getUserDetail().getFirstName()+" "+user.getUserDetail().getLastName();
 		if(user.getUserType() == Common.USER_TYPE_ADMIN)
 			homeURL = "admin_dashboard.jsp";
 		else
@@ -79,14 +80,15 @@
           <ul id="main-menu" class="nav navbar-nav navbar-right">
             <li class="dropdown hidden-xs">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user padding-right-small" style="position:relative;top: 3px;"></span>
+                    <span class="" style="position:relative;top: 3px;"></span>
+                    <img class="user1" src="images/faces/1b.png"></img>
                     <% out.print(userName); %>
                     <i class="fa fa-caret-down"></i>
                 </a>
 
               <ul class="dropdown-menu">
-                <li><a href="./">My Account</a></li>
-                <li><a tabindex="-1" href="index.jsp?logout=1">Logout</a></li>
+                <li><a href="profile.jsp"><span class="text-info fa fa-user fa-fw"></span>My Account</a></li>
+                <li><a tabindex="-1" href="index.jsp?logout=1"><span class="text-info fa fa-sign-out fa-fw"></span>Logout</a></li>
               </ul>
             </li>
           </ul>

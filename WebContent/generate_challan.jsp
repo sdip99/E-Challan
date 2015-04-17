@@ -29,25 +29,18 @@
     var x=0;    
     var val;
     var count=0;
+    var s=0;
     $(function() {
             $(".knob").knob();
             
             $("#btnAdd").bind("click", function () {
-                var div = $("<div />");
-                
+            	var div = $("<div />");
                 div.html(GetDynamicTextBox(x));
-                count++;
-                x++;
-            	    
                 $("#newRule").append(div);
+                x++;
+               
             });
-            $("#btnGet").bind("click", function () {
-                var values = "";
-                $("select[name=DynamicTextBox]").each(function () {
-                    values += $(this).val() + "\n";
-                });
-                
-            });
+            
             $("body").on("click", ".remove", function () {
                 $(this).closest("div").remove();
             });
@@ -70,7 +63,7 @@
 	        try  
 	        {  
 		        request.onreadystatechange = getInfo;  
-		        request.open("GET", "Controller?cat_id=" + v.value + "&&count=" + count, true);  
+		        request.open("GET", "Controller?cat_id=" + v.value, true);  
 		        request.send();  
 	        }  
 	        catch(e)  
@@ -82,9 +75,7 @@
         function getInfo(){  
 	        if(request.readyState==4){  
 		     	val = request.responseText;
-		     
-		        var i=0;
-		        
+		     	var i=0;
 		        while(i<=x){
 		        	
 		        	document.getElementsByName("rule_inner")[i].innerHTML=val;
@@ -97,11 +88,9 @@
         function GetDynamicTextBox(value) {
         	
         	sendInfo();
-        	
         	return '<span name="rule_inner" ></span> &nbsp;' +
                     '<input type="button" value="Remove" class="remove" />'
         }
-    
         
     </script>
 
@@ -158,7 +147,7 @@
 							<p>
 								<label>Rules: </label>
 								<input id="btnAdd" type="button" value="Add" />
-								<span id="newRule">
+								<span id="newRule" >
 									
 								</span>
 							</p>
@@ -169,8 +158,8 @@
 								<input type="checkbox" name="status" />
 							</p>
 						<div align="center">		
-							<input type="submit" name="submit" class="btn btn-primary" value="Search For Challan" name="submit"/>
-							 
+							<input type="submit"  class="btn btn-primary" value="Search For Challan" name="submit" onclick="return valuee();"/>
+						 
 						</div>
 							
 						</div>

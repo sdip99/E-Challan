@@ -1,8 +1,8 @@
 package org.echallan.controller;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.echallan.Common;
 import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CatagoryDAO;
+import org.echallan.dataAccessObject.ChallanDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.ComplaintDAO;
 import org.echallan.dataAccessObject.LicenseDAO;
@@ -26,6 +27,7 @@ import org.echallan.dataAccessObject.UserDAO;
 import org.echallan.dataAccessObject.UserDetailDAO;
 import org.echallan.valueObject.Area;
 import org.echallan.valueObject.Catagory;
+import org.echallan.valueObject.Challan;
 import org.echallan.valueObject.City;
 import org.echallan.valueObject.Complaint;
 import org.echallan.valueObject.License;
@@ -58,9 +60,7 @@ public class Controller extends HttpServlet {
     		CatagoryDAO dao = new CatagoryDAO();
     		PrintWriter writer = response.getWriter();
     		Set<Rule> rules = dao.getCatagoryById(request.getParameter("cat_id")).getRule();
-    		int x = Integer.parseInt(request.getParameter("count"));
-    		System.out.println(x);
-       		writer.write("<select  class='form-control inline-ele-left' style='width: 25%; margin-left: 6px;' name='rule_drop"+ x +"'>");
+    		writer.write("<select  class='form-control inline-ele-left' style='width: 25%; margin-left: 6px;' name='rule_drop'>");
     		for(Rule r : rules)
     			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
     		writer.write("</select>");
@@ -448,51 +448,72 @@ public class Controller extends HttpServlet {
 				}
 			}
 			response.sendRedirect("system_setting.jsp");
-		} else if(request.getParameter("submit").equals("Search For Challan")) {
-			System.out.println("inside");
-			//System.out.println(request.getParameter("rule_drop"));
-			
-			
-			System.out.println(request.getParameter("rule_drop0"));
-			System.out.println(request.getParameter("rule_drop1"));
-			//System.out.println(request.getParameter("rule_drop1"));
-			
-		} else if(request.getParameter("hist_city_id") != null) {
-    		PrintWriter writer = response.getWriter();
-    		writer.write("<select class='form-control' name='area_drop' id='area_drop'>");
-    		Set<Area> area = new CityDAO().getCityById(request.getParameter("hist_city_id")).getArea();
-    		for(Area a : area)
-    			writer.write("<option value=" + a.getArea_id() + ">" + a.getName() + "</option>");
-    		writer.write("</select>");
-    	}
-	}
-		/*else if(request.getParameter("submit").equals("Search For Challan")){
-				HttpSession session = request.getSession();
-				String licenseNo = request.getParameter("license_no");
-				String vehicleNo = request.getParameter("vehicle_no");
-				int ruleId = Integer.parseInt(request.getParameter("rule_drop"));
-				LicenseDAO ldo = new LicenseDAO();
-				License l = ldo.getLicenseByNo(licenseNo);
-				int fine = new RuleDAO().getRuleById(ruleId).getFine();
-				Challan challan = new Challan(licenseNo,vehicleNo);
-				ChallanDAO dao = new ChallanDAO();
-				dao.insert(challan);
-				//session.setAttribute("cat", cat);
-				session.setAttribute("holder", l);
-				session.setAttribute("challan", challan);
-				response.sendRedirect("view_challan.jsp");
-		} else if(request.getParameter("submit").equals("Suspend")){
+		} else if(request.getParameter("submit").equals("Change Password")){
 			HttpSession session = request.getSession();
-			int fine = Integer.parseInt(request.getParameter("s_fine"));
-			String fineDesc = request.getParameter("s_desc");
-			SuspendVehicle sv =new SuspendVehicle();
+			String newPass = request.getParameter("new_pass");
+			String cPass = request.getParameter("c_pass");
+			if(newPass.equals(cPass)  && newPass!=null && !newPass.equals("")&& cPass!=null && !cPass.equals("")){
+				User user = (User) session.getAttribute("user_info");
+				String uid = user.getUserID();
+				new UserDAO().updatePass(uid, newPass);
+				response.sendRedirect("profile.jsp");
+				
+			}else{
+				session.setAttribute("wrong_pass", true);
+				response.sendRedirect("change_pass.jsp");
+			}
+		} else if(request.getParameter("submit").equals("Edit Profile")){
+			HttpSession session = request.getSession();
+			User vo = (User)session.getAttribute("user_info");
+			String oldid = vo.getUserID();
+			int id = vo.getUserDetail().getUserID_pkey();
+			String fname = request.getParameter("first_name");
+			String lname = request.getParameter("last_name");
+			String mobileNo = request.getParameter("mobile_no");
+			String street = request.getParameter("street");
+			String state = request.getParameter("state");
+			String city = request.getParameter("city");
+			String email = request.getParameter("email");
+			int pincode = Integer.parseInt(request.getParameter("pincode"));
+			UserDetail ud = new UserDetailDAO().getUserDetailById(id);
+			ud.setFirstName(fname);
+			ud.setLastName(lname);
+			ud.setMobileNo(mobileNo);
+			ud.setStreet(street);
+			ud.setState(state);
+			ud.setCity(city);
+			ud.setPincode(pincode);
+			new UserDetailDAO().update(ud);
+			new UserDAO().updateuid(oldid, email);
+			response.sendRedirect("index.jsp?logout=1.jsp");
 			
+		}else if(request.getParameter("submit").equals("Search For Challan")) {
+			HttpSession session = request.getSession();
+			String[] name = request.getParameterValues("rule_drop");
+			String licenseNo = request.getParameter("license_no");
+			String vehicleNo = request.getParameter("vehicle_no");
+			User user = (User) session.getAttribute("user_info");
+			String redir = "view_challan.jsp";
+			if(licenseNo == null || vehicleNo == null || user == null) {
+				session.setAttribute("error", true);
+				redir = "generate_challan.jsp";
+			}
+			RuleDAO rudao = new RuleDAO();
+			HashSet<Rule> rules = new HashSet<>();
+			Challan challan = new Challan();
+			for(int i = 0; i < name.length; i++) {
+				rules.add(rudao.getRuleById(Integer.parseInt(name[i])));
+			}
+			challan.setRule(rules);
+			challan.setLicenseNo(licenseNo);
+			challan.setVehicleNo(vehicleNo);
+			challan.setPolice(user);
+			challan.setTimestamp(new Date());
 			
-			
-		}
-		*/
-	
-	
+			new ChallanDAO().insert(challan);
+			response.sendRedirect(redir);
+		}	
+	}
 	@SuppressWarnings({ "unused", "deprecation" })
 	private boolean isSameDate(Date d1, Date d2) {
 		if(d1.getYear() == d2.getYear() && d1.getMonth() == d2.getMonth() && d1.getDate() == d2.getDate())

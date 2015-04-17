@@ -7,7 +7,17 @@
  *******************************************************************************/
 package org.echallan.dataAccessObject;
 
+import org.echallan.valueObject.UserDetail;
+
+
+
 
 public class UserDetailDAO extends GenericDAO {
+	
+	public UserDetail getUserDetailById(int uid) {
+		Object ret = getById(UserDetail.class, uid);
+		return (UserDetail) ret;
+	}
+	
 	
 }
