@@ -499,7 +499,7 @@ public class Controller extends HttpServlet {
 				redir = "generate_challan.jsp";
 			}
 			RuleDAO rudao = new RuleDAO();
-			HashSet<Rule> rules = new HashSet<>();
+			HashSet<Rule> rules = new HashSet<Rule>();
 			Challan challan = new Challan();
 			for(int i = 0; i < name.length; i++) {
 				rules.add(rudao.getRuleById(Integer.parseInt(name[i])));
