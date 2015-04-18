@@ -53,15 +53,17 @@
 <%
 	Object obj = session.getAttribute("user_info");
 	String homeURL = "index.jsp";
-	String userName = "";
+	String userName = null;
 	User user;
 	if(obj != null) {
 		user = (User) obj;
-		userName = user.getUserDetail().getFirstName()+" "+user.getUserDetail().getLastName();
-		if(user.getUserType() == Common.USER_TYPE_ADMIN)
+		if(user.getUserType() == Common.USER_TYPE_ADMIN) {
 			homeURL = "admin_dashboard.jsp";
-		else
+			userName = "Administrator";
+		} else {
 			homeURL = "police_dashboard.jsp";
+			userName = user.getUserDetail().getFirstName() + " " + user.getUserDetail().getLastName();
+		}
 	}
 %>
     <div class="navbar navbar-default" role="navigation">
