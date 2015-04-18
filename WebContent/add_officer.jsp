@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
     <script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
+    <script src="js/validation.js" type="text/javascript"></script>
 
         <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -127,7 +128,7 @@
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Add Officer</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post">
+			        <form action="Controller" method="post" name="add_officer" onsubmit="return validateAddofficer();">
 						<div class="form-group">
 							<p>
 								<label>First Name: </label>
@@ -202,7 +203,7 @@
 									</select>
 								</span>
 							</p>
-							<input type="submit" name="submit" class="btn btn-primary form-control" value="Insert Officer" name="submit"/>
+							<input type="submit" name="submit"  class="btn btn-primary form-control" value="Insert Officer" name="submit"/>
 						</div>
 						<div class="clearfix"></div>
 					</form>

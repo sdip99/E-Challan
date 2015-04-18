@@ -1,3 +1,10 @@
+<%@page import="sun.font.EAttribute"%>
+<%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
+<%@page import="java.util.Set"%>
+<%@page import="org.echallan.valueObject.Rule"%>
+<%@page import="org.echallan.dataAccessObject.ChallanDAO"%>
+<%@page import="org.echallan.dataAccessObject.LicenseDAO"%>
+<%@page import="org.echallan.valueObject.Challan"%>
 <%@page import="java.util.Calendar"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -39,18 +46,30 @@
 
 </head>
 <%
-Object obj = session.getAttribute("holder");
-License _ho = (License)obj;
-String name="", address="", uname="";
-name = _ho.getfName() + " " + _ho.getlName();
-address = _ho.getAddress();
-Object ob = session.getAttribute("user_info");
-User u = (User)ob;
-uname = u.getUserDetail().getFirstName() + " " + u.getUserDetail().getLastName();
-DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-Date date = new Date();
-String strDateFormat = "hh:mm a";
-SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+	String obj = (String)session.getAttribute("holder");
+	License _ho = new LicenseDAO().getLicenseByNo(obj);
+	String name="", address="", uname="";
+	name = _ho.getfName() + " " + _ho.getlName();
+	address = _ho.getAddress();
+	Object ob = session.getAttribute("user_info");
+	User u = (User)ob;
+	uname = u.getUserDetail().getFirstName() + " " + u.getUserDetail().getLastName();
+	Integer i = (Integer)session.getAttribute("chaallan");
+	Challan ch = new ChallanDAO().getChallanById(i);
+	Set<Rule> rule = ch.getRule();
+	int fine=0;
+	if(ch.isIssuspend()){
+		fine = 2000;
+	}
+	else{
+		
+		for(Rule rr : rule){
+			
+			fine += rr.getFine();
+		}
+		
+	}
+
 %>
 
 <body class=" theme-blue">
@@ -74,17 +93,17 @@ SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
 			        <form action="Controller" method="post">
 						<div class="form-group">
 							<table>
-								<tr><td> Date:</td><td style="padding-left: 95px"><%out.print(dateFormat.format(new Date())); %></td></tr>
-								<tr><td> Time:</td><td style="padding-left: 95px"><%out.print(sdf.format(date)); %></td></tr>
+								<tr><td> Date:</td><td style="padding-left: 95px"></td></tr>
+								<tr><td> Time:</td><td style="padding-left: 95px"></td></tr>
 							</table>
 							<table>
-								<tr><td> Vehicle Type: </td><td style="padding-left: 25px"><%out.print(session.getAttribute("category")); %></td></tr>
-								<tr><td> License No: </td><td style="padding-left: 25px"><%out.print(session.getAttribute("license")); %></td></tr>
+								<tr><td> Vehicle Type: </td><td style="padding-left: 25px"><%out.print(""); %></td></tr>
+								<tr><td> License No: </td><td style="padding-left: 25px"><%out.print(ch.getLicenseNo()); %></td></tr>
 								<tr><td> Name: </td><td style="padding-left: 25px"><%out.print(name); %></td></tr>
 								<tr><td> Address: </td><td style="padding-left: 25px"><%out.print(address); %></td></tr>
 								<tr><td> Name of Officer: </td><td style="padding-left: 25px"><%out.print(uname); %></td></tr>
-								<tr><td> Violated Rules: </td><td style="padding-left: 25px"><%out.print(session.getAttribute("rule")); %></td></tr>
-								<tr><td> Total Fine: </td><td style="padding-left: 25px"><%out.print(session.getAttribute("fine")); %></td></tr>
+								<tr><td> Violated Rules: </td><td style="padding-left: 25px"><%for(Rule r : rule){out.print(r.getRuleId()+",");}%></td></tr>
+								<tr><td> Total Fine: </td><td style="padding-left: 25px"><%out.print(fine); %></td></tr>
 							</table>
 							<br/><br/>
 						<div align="center">		

@@ -8,6 +8,15 @@ public class Challan {
 	private String licenseNo;
 	private Date timestamp;
 	private String vehicleNo;
+	private boolean issuspend;
+	public boolean isIssuspend() {
+		return issuspend;
+	}
+
+	public void setIssuspend(boolean issuspend) {
+		this.issuspend = issuspend;
+	}
+
 	private Set<Rule> rule;
 	private User police;
 	

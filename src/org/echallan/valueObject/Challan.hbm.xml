@@ -14,11 +14,14 @@
         <property name="vehicleNo" type="java.lang.String">
             <column name="VEHICLE_NO" />
         </property>
+        <property name="issuspend" type="yes_no">
+            <column name="IS_SUSPEND" />
+        </property>
         <property name="timestamp" type="timestamp">
             <column name="TIMESTAMP" />
         </property>
         <one-to-one name="police" class="org.echallan.valueObject.User" cascade="save-update"></one-to-one>
-        <set name="rule" cascade="save-update" table="CHLN_RULE">
+        <set name="rule" cascade="save-update" table="CHLN_RULE" lazy="false">
 	         <key column="challan_id"/>
 	         <many-to-many column="rule_id" class="org.echallan.valueObject.Rule"/>
       	</set>

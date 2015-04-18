@@ -492,6 +492,7 @@ public class Controller extends HttpServlet {
 			String[] name = request.getParameterValues("rule_drop");
 			String licenseNo = request.getParameter("license_no");
 			String vehicleNo = request.getParameter("vehicle_no");
+			boolean issuspend = request.getParameter("status")== null ? false : true;
 			User user = (User) session.getAttribute("user_info");
 			String redir = "view_challan.jsp";
 			if(licenseNo == null || vehicleNo == null || user == null) {
@@ -507,10 +508,14 @@ public class Controller extends HttpServlet {
 			challan.setRule(rules);
 			challan.setLicenseNo(licenseNo);
 			challan.setVehicleNo(vehicleNo);
+			challan.setIssuspend(issuspend);
+			
 			challan.setPolice(user);
 			challan.setTimestamp(new Date());
+			Integer x = new ChallanDAO().insert(challan);
 			
-			new ChallanDAO().insert(challan);
+			session.setAttribute("chaallan", x);
+			session.setAttribute("holder", licenseNo);
 			response.sendRedirect(redir);
 		}	
 	}
