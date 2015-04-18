@@ -117,7 +117,7 @@
 	                <label>Password</label>
 	                    <input type="password" class="form-controlspan12 form-control" name="password">
 	                </div>
-	                <label class="remember-me"><input type="checkbox"> Remember me</label>
+	                <label class="remember-me"><input type="checkbox" name="chk_rem"> Remember me</label>
 	                <input type="submit" name="submit" value="Sign In" class="btn btn-primary pull-right">
 	                <div class="clearfix"></div>
 	            </form>
