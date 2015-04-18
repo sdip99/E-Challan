@@ -20,7 +20,7 @@
         <property name="timestamp" type="timestamp">
             <column name="TIMESTAMP" />
         </property>
-        <one-to-one name="police" class="org.echallan.valueObject.User" cascade="save-update"></one-to-one>
+        <many-to-one name="police" class="org.echallan.valueObject.User" cascade="save-update" column="police_id" unique="true" not-null="true"/>
         <set name="rule" cascade="save-update" table="CHLN_RULE" lazy="false">
 	         <key column="challan_id"/>
 	         <many-to-many column="rule_id" class="org.echallan.valueObject.Rule"/>

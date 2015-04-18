@@ -509,6 +509,8 @@ public class Controller extends HttpServlet {
 			challan.setLicenseNo(licenseNo);
 			challan.setVehicleNo(vehicleNo);
 			challan.setIssuspend(issuspend);
+			User u = (User)session.getAttribute("user_info");
+			challan.setPolice(u);
 			
 			challan.setPolice(user);
 			challan.setTimestamp(new Date());

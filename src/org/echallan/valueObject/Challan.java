@@ -9,6 +9,8 @@ public class Challan {
 	private Date timestamp;
 	private String vehicleNo;
 	private boolean issuspend;
+	private User police;
+	
 	public boolean isIssuspend() {
 		return issuspend;
 	}
@@ -18,7 +20,7 @@ public class Challan {
 	}
 
 	private Set<Rule> rule;
-	private User police;
+	
 	
 	public Challan() {}
 	

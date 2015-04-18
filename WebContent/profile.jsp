@@ -1,3 +1,4 @@
+<%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.dataAccessObject.SubAreaDAO"%>
 <%@page import="org.echallan.valueObject.SubArea"%>
 <%@page import="org.echallan.valueObject.User"%>
@@ -33,8 +34,18 @@
 </head>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
+	<%
+	User u =(User)session.getAttribute("user_info");
+	if(u.getUserType() == Common.USER_TYPE_NORMAL){
+	%>
     <c:import url="stub_police_sidebar.jsp"></c:import>
-
+	<%
+		}else{
+	%>
+    <c:import url="stub_admin_sidebar.jsp"></c:import>
+    <%
+	}    
+    %>
     <div class="content">
         <div class="header">
 	        <h1 class="page-title">Profile</h1>
