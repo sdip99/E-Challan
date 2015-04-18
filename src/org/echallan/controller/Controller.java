@@ -117,6 +117,9 @@ public class Controller extends HttpServlet {
 				return;
 		} else {
 				if(pass.equals(vo.getPassword())) {
+					// Increase session timeout if remember me is selected
+					if(request.getParameter("chk_rem") != null)
+						session.setMaxInactiveInterval(60 * 60 * 24);	// 24 hrs
 					// Everything ok send to homepage & store user info into session
 					session.setAttribute("user_info", vo);
 					if(vo.getUserType() == Common.USER_TYPE_NORMAL) {
