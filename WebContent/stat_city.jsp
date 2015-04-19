@@ -1,3 +1,4 @@
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
 <%@page import="org.echallan.dataAccessObject.CityDAO"%>
 <%@page import="java.util.Random"%>
 <%@page import="java.util.List"%>
@@ -38,6 +39,7 @@
 	<script type="text/javascript">
 		<%
 			List<City> city = new CityDAO().getAll();
+			StatisticsDAO sd = new StatisticsDAO();
 		%>
 		$(function () {
 		    $('#container').highcharts({
@@ -47,7 +49,7 @@
 		            plotShadow: false
 		        },
 		        title: {
-		            text: 'Total Rules broken by Cities'
+		            text: 'Total Challan generate by Cities'
 		        },
 		        tooltip: {
 		            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -71,9 +73,8 @@
 		            data: [
 		                //['Firefox',   45.0],
 		                <%
-		                	Random r = new Random();
 		                	for(City c : city) {
-		                		out.print("['" + c.getName() + "'," + r.nextInt(5000) + "],");
+		                		out.print("['" + c.getName() + "'," + sd.getChallanCountByCity(c.getCityID()) + "],");
 		                	}
 		                %>
 		            ]

@@ -1,3 +1,4 @@
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
 <%@page import="org.echallan.valueObject.SubArea"%>
 <%@page import="java.util.Set"%>
 <%@page import="org.echallan.dataAccessObject.AreaDAO"%>
@@ -20,6 +21,7 @@
 	City city = null;
 	Area area = null;
 	Set holder = null;
+	StatisticsDAO sd = new StatisticsDAO();
 	if(type == null || id == null)
 		response.sendRedirect("stat_city.jsp");
 	
@@ -85,13 +87,12 @@
 		            data: [
 		                //['Firefox',   45.0],
 		                <%
-		                	Random r = new Random();
 			                if(city != null) {
 			                	for(Object c : holder)
-			                		out.print("['" + ((Area) c).getName() + "'," + r.nextInt(5000) + "],");
+			                		out.print("['" + ((Area) c).getName() + "'," + sd.getChallanCountByArea(((Area) c).getArea_id()) + "],");
 			                } else {
 			                	for(Object c : holder)
-			                		out.print("['" + ((SubArea) c).getName() + "'," + r.nextInt(5000) + "],");
+			                		out.print("['" + ((SubArea) c).getName() + "'," + sd.getChallanCountBySubArea(((SubArea) c).getSubarea_id()) + "],");
 			                }
 		                %>
 		            ]

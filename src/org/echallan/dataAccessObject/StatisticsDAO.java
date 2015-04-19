@@ -13,6 +13,49 @@ import org.hibernate.Transaction;
 @SuppressWarnings("unchecked")
 public class StatisticsDAO extends GenericDAO {
 	
+	public int getChallanCountBySubArea(int id) {
+		int ret = 0;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query subareaList = session.createQuery("select challan_id from Challan where area=" + id);
+			ret = subareaList.list().size();
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getChallanCountByArea(int areaid) {
+		int ret = 0;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			//SQLQuery areaList = session.createSQLQuery("select subarea_id from subarea where area_id=" + areaid);
+			Query areaList = session.createQuery("select subarea_id from SubArea where area_id=" + areaid);
+			for(Object obj : areaList.list()) {
+				ret += session.createQuery("select challan_id from Challan where area=" + (Integer) obj).list().size();
+			}
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getChallanCountByCity(int cityid) {
+		int ret = 0;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query areaList = session.createQuery("select area_id from Area where cityid=" + cityid);
+			for(Object obj : areaList.list())
+				ret += getChallanCountByArea((Integer) obj);
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
 	public int getIncomeByYear(int year) {
 		int ret = 0;
 		Session session = getSession();
