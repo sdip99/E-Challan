@@ -5,18 +5,23 @@ import java.io.Serializable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
-@SuppressWarnings("deprecation")
 public class GenericDAO {
 	
 	static SessionFactory factory = null;
+	static ServiceRegistry serviceRegistry = null;
 	
 	public Session getSession() {
 		Session session = null;
 		if(factory == null) {
 			try {
-				factory = new Configuration().configure().buildSessionFactory();
+				Configuration configuration = new Configuration();
+			    configuration.configure();
+			    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
+			    factory = configuration.buildSessionFactory(serviceRegistry);
 			} catch (Exception ex) { System.err.println(ex); }
 		}
 		session = factory.openSession();
