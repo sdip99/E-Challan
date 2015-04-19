@@ -1,12 +1,14 @@
 package org.echallan.dataAccessObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
 
 @SuppressWarnings("unchecked")
 public class StatisticsDAO extends GenericDAO {
@@ -83,21 +85,11 @@ public class StatisticsDAO extends GenericDAO {
 	}
 	
 	public int getMax(List<Integer> list) {
-		int max = 0;
-		for(Integer x : list) {
-			if(x > max)
-				max = x;
-		}
-		return max;
+		return Collections.max(list);
 	}
 	
 	public int getMin(List<Integer> list) {
-		int min = 0;
-		for(Integer x : list) {
-			if(x < min)
-				min = x;
-		}
-		return min;
+		return Collections.min(list);
 	}
 	
 	public int getMinYear() {
