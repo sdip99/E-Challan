@@ -45,30 +45,12 @@
 
 </head>
 <%
-	String obj = (String)session.getAttribute("holder");
-	License _ho = new LicenseDAO().getLicenseByNo(obj);
-	String name="", address="", uname="";
-	name = _ho.getfName() + " " + _ho.getlName();
-	address = _ho.getAddress();
-	Object ob = session.getAttribute("user_info");
-	User u = (User)ob;
-	uname = u.getUserDetail().getFirstName() + " " + u.getUserDetail().getLastName();
-	Integer i = (Integer)session.getAttribute("chaallan");
-	Challan ch = new ChallanDAO().getChallanById(i);
-	Set<Rule> rule = ch.getRule();
-	int fine=0;
-	if(ch.isIssuspend()){
-		fine = 2000;
-	}
-	else{
-		
-		for(Rule rr : rule){
-			
-			fine += rr.getFine();
-		}
-		
-	}
-
+	Integer x = Integer.parseInt(request.getParameter("cid"));
+	Challan ch = new ChallanDAO().getChallanById(x);
+	License holer = new LicenseDAO().getLicenseByNo(ch.getLicenseNo());
+	UserDetail genDetail = ch.getPolice().getUserDetail();
+	Set<Rule> rulez = ch.getRule();
+	int fine = 0;
 %>
 
 <body class=" theme-blue">
@@ -92,22 +74,26 @@
 			        <form action="Controller" method="post">
 						<div class="form-group">
 							<table>
-								<tr><td> Date:</td><td style="padding-left: 95px"></td></tr>
-								<tr><td> Time:</td><td style="padding-left: 95px"></td></tr>
-							</table>
-							<table>
-								<tr><td> Vehicle Type: </td><td style="padding-left: 25px"><%out.print(""); %></td></tr>
+								<tr><td> Challan ID:</td><td style="padding-left: 25px"><%out.print(ch.getChallan_id()); %></td></tr>
+								<tr><td> Date:</td><td style="padding-left: 25px"><%out.print(ch.getTimestamp()); %></td></tr>
+								<tr><td> Vehicle Number: </td><td style="padding-left: 25px"><%out.print(ch.getVehicleNo()); %></td></tr>
 								<tr><td> License No: </td><td style="padding-left: 25px"><%out.print(ch.getLicenseNo()); %></td></tr>
-								<tr><td> Name: </td><td style="padding-left: 25px"><%out.print(name); %></td></tr>
-								<tr><td> Address: </td><td style="padding-left: 25px"><%out.print(address); %></td></tr>
-								<tr><td> Name of Officer: </td><td style="padding-left: 25px"><%out.print(uname); %></td></tr>
-								<tr><td> Violated Rules: </td><td style="padding-left: 25px"><%for(Rule r : rule){out.print(r.getRuleId()+",");}%></td></tr>
-								<tr><td> Total Fine: </td><td style="padding-left: 25px"><%out.print(fine); %></td></tr>
+								<tr><td> Name: </td><td style="padding-left: 25px"><%out.print(holer.getfName() + " " + holer.getlName()); %></td></tr>
+								<tr><td> Name of Officer: </td><td style="padding-left: 25px"><%out.print(genDetail.getFirstName() + " " + genDetail.getLastName()); %></td></tr>
+								<tr><td> Violated Rules: </td><td style="padding-left: 25px">
+										<%
+											for(Rule r : rulez) {
+												out.print("<tr><td></td><td style='padding-left: 25px'>" + r.getRuleId() + "  -  " + r.getRuleName() + "</td></tr>");
+												fine += r.getFine();
+											}
+										%>
+								</td></tr>
+								<tr><td> Total Fine: </td><td style="padding-left: 25px"><%out.print("Rs. " +  fine); %></td></tr>
 							</table>
 							<br/><br/>
 						<div align="center">		
 							
-							<input type="submit" name="submit" class="btn btn-primary" value="Generate Challan" name="submit"/>
+							<input type="submit" name="submit" class="btn btn-primary" value="Print Challan" name="submit"/>
 							
 						</div>	
 						</div>
