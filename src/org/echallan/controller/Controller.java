@@ -105,11 +105,9 @@ public class Controller extends HttpServlet {
 		if(request.getParameter("submit").equals("Sign In")) {
 			HttpSession session = request.getSession();
 			String pass = request.getParameter("password");
-			User vo = new User();
-			vo.setUserID(request.getParameter("username"));
-			vo.setPassword(pass);
+			String uid = request.getParameter("username");
 			UserDAO dao = new UserDAO();
-			vo = dao.search(vo);
+			User vo = dao.getByUserId(uid);
 		if(vo == null) {
 				// Username doesn't exist, don't match password just redirect 
 				session.setAttribute("invalidLogin", true);

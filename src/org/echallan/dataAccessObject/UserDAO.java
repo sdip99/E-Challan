@@ -6,34 +6,36 @@ import org.echallan.Common;
 import org.echallan.valueObject.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 
 public class UserDAO extends GenericDAO {
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
-	public User search(User vo) {
-		SessionFactory factory = null;
-		Session session;
-		User user = null;
-		try {
-			factory = new Configuration().configure().buildSessionFactory();
-			session = factory.openSession();
-			Transaction transaction = session.beginTransaction();
-			Query query = session.createQuery("from User where userID = '" + vo.getUserID() + "'");
-			transaction.commit();
-			List<User> ret = query.list();
-			if(ret != null && ret.size() > 0)
-				user = ret.get(0);
-			session.close();
-		} catch (Exception ex) { System.err.println(ex); }
-		return user;
+	public User getUserById(int id) {
+		Object ret = getById(User.class, id);
+		return (User) ret;
+	}
+	
+	public User getUserById(String id) {
+		return getUserById(Integer.parseInt(id));
 	}
 	
 	public List<User> getAllUsers() {
 		return getAllUsers(false);
 	}
+	
+	public User getByUserId(String id) {
+		User ret = null;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from User where userID='" + id + "'");
+			transaction.commit();
+			ret = (User) query.list().get(0);
+			session.close();
+		}
+		return ret;
+	}
+	
 	public void updatePass(String uid, String newPass) {
 		Session session = getSession();
 		if(session != null) {
@@ -44,6 +46,7 @@ public class UserDAO extends GenericDAO {
 			session.close();
 		}
 	}
+	
 	public void updateuid(String uid, String newuid) {
 		Session session = getSession();
 		if(session != null) {
