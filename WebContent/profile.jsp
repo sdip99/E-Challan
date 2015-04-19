@@ -56,9 +56,9 @@
         </div>
         <div class="main-content">
         
-        	<div class="panel panel-default">
+        	<div class="panel1 panel-default">
         		<div class="panel-body gallery">
-        			<img class="user" src="images/faces/1b.png"></img><br />
+        			<img class="user" src="images/people/<%out.print(u.getUserID() + ".jpg"); %>"></img><br />
         			
         		</div>
         		<center>

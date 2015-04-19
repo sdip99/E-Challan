@@ -290,6 +290,11 @@ footer hr {
 }
 /*Blocks*/
 .panel {
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 3px;
+}
+.panel1 {
   border: 0px solid #ccc;
   background: white;
   border-radius: 3px;
