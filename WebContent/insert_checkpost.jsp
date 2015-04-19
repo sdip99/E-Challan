@@ -28,6 +28,30 @@
         $(function() {
             $(".knob").knob();
         });
+        var request;  
+        function sendInfo()  
+        {
+        	var v = document.getElementsByName("city_drop")[0];
+        	if(window.XMLHttpRequest){
+        		request=new XMLHttpRequest();
+        	} else if(window.ActiveXObject) {
+        		request=new ActiveXObject("Microsoft.XMLHTTP");
+        	}
+        	try {
+        		request.onreadystatechange = getInfo;
+        		request.open("GET", "Controller?ins_chk_city_id=" + v.value, true);
+        		request.send();
+        	} catch(e) {
+        		alert("Unable to connect to server");
+        	}
+        }
+
+        function getInfo(){
+        	if(request.readyState==4){
+        		var val = request.responseText;
+        		document.getElementById("area_inner").innerHTML = val;
+        	}
+        }
     </script>
 
 
@@ -35,7 +59,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<body class=" theme-blue">
+<body class=" theme-blue" onload="sendInfo()">
 	<c:import url="stub_header.jsp"></c:import>    
     <c:import url="stub_admin_sidebar.jsp"></c:import>
 
@@ -82,7 +106,7 @@
 							<p>
 								<p class="pull-right"><a href="insert_city.jsp" style="font-size: 12px">Click here to add new city</a></p>
 								<label>City Assigned:</label>
-								<select class="form-control " name="city_drop">
+								<select class="form-control " name="city_drop" onchange="return sendInfo();">
 								<%
 									List<City> city = new CityDAO().getAll();
 									for(City c : city)
@@ -93,13 +117,9 @@
 							<p>
 								<p class="pull-right"><a href="insert_area.jsp" style="font-size: 12px">Click here to add new area</a></p>
 								<label>Area Assigned:</label>
-								<select class="form-control " name="area_drop">
-								<%
-									List<Area> area = new AreaDAO().getAll();
-									for(Area a : area)
-										out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
-								%>
-								</select>
+								<span id="area_inner">
+									<select class="form-control " name="area_drop"></select>
+								</span>
 							</p>
 							<p>
 								<label>SubArea Name:</label>
