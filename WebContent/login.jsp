@@ -108,7 +108,7 @@
 	    <div class="panel panel-default">
 	        <p class="panel-heading no-collapse">Sign In</p>
 	        <div class="panel-body">
-	            <form action="Controller" method="post" name="admin_login" onsubmit="return validateAdminLogin()">
+	            <form action="Controller" method="post" name="admin_login" onsubmit="return validateAdminLogin();">
 	                <div class="form-group">
 	                    <label>Username</label>
 	                    <input type="text" class="form-control span12" name="username">

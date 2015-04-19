@@ -100,12 +100,14 @@ function validateaddCat(){
 				alert("Please enter Category Description");
 				catdesc.focus();
 				return false;
-			};
+			}
 		 }
-		 function validateaddRule(){
+function validateaddRule(){
 			 
 			 var rname = document.add_rul.rule_name;
 			 var rid = document.add_rul.rule_id;
+			 var ruid = /^[0-9]$/;
+			 var rufine = /^[0-9]$/;
 			 var fine = document.add_rul.fine;
 			 var rdesc = document.add_rul.rule_desc;
 			 if (rname.value == "" || r.name.value == null) {
@@ -113,13 +115,13 @@ function validateaddCat(){
 					rname.focus();
 					return false;
 				}
-			 else if (rid.value == "" || rid.value == null) {
+			 else if (rid.value == "" || rid.value == null || !ruid.test(rid.value)) {
 					alert("Please Rule ID");
 					rid.focus();
 					return false;
 				}
 			 
-			 else if (fine.value == "" || fine.value == null) {
+			 else if (fine.value == "" || fine.value == null || !rufine.test(fine.value)) {
 					alert("Please enter Rule Fine");
 					fine.focus();
 					return false;
@@ -129,4 +131,4 @@ function validateaddCat(){
 					rdesc.focus();
 					return false;
 				}
-			 };
+}
