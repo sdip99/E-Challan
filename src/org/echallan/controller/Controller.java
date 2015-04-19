@@ -5,8 +5,14 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,6 +30,7 @@ import org.echallan.dataAccessObject.CatagoryDAO;
 import org.echallan.dataAccessObject.ChallanDAO;
 import org.echallan.dataAccessObject.CityDAO;
 import org.echallan.dataAccessObject.ComplaintDAO;
+import org.echallan.dataAccessObject.GenericDAO;
 import org.echallan.dataAccessObject.LicenseDAO;
 import org.echallan.dataAccessObject.PreferenceManager;
 import org.echallan.dataAccessObject.RuleDAO;
@@ -41,6 +48,9 @@ import org.echallan.valueObject.Rule;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
 
 /**
  * Servlet implementation class Controller
@@ -605,7 +615,7 @@ public class Controller extends HttpServlet {
 			new UserDAO().updateuid(oldid, email);
 			response.sendRedirect("index.jsp?logout=1.jsp");
 			
-		}else if(request.getParameter("submit").equals("Generate Challan")) {
+		} else if(request.getParameter("submit").equals("Generate Challan")) {
 			HttpSession session = request.getSession();
 			String[] name = request.getParameterValues("rule_drop");
 			//String str = request.getParameter("rule_drop");
@@ -636,7 +646,22 @@ public class Controller extends HttpServlet {
 			challan.setArea(new SubAreaDAO().getSubArea(user.getUserDetail().getCurrentPosting()));
 			Integer x = new ChallanDAO().insert(challan);
 			response.sendRedirect(redir + "?cid=" + x);
-		}	
+		} else if(request.getParameter("submit").equals("Recover Password")) {
+			String email = request.getParameter("username");
+			if(email != null) {
+				GenericDAO dao = new GenericDAO();
+				Session s = dao.getSession();
+				SQLQuery x = s.createSQLQuery("select password from user where userid='" + email + "'");
+				List ret = x.list();
+				System.out.println(ret.get(0));
+				if(ret.size() > 0) {
+					String title = "e-Challan password recovery";
+					String msg = "Your password is: " + ret.get(0);
+					System.out.println("Email found...!");
+					sendMail(email, "admin@echallan.org", "localhost", title, msg, response);
+				} else System.out.println("Email id doesn't exist...!");
+			}
+		}
 	}
 	@SuppressWarnings({ "unused", "deprecation" })
 	private boolean isSameDate(Date d1, Date d2) {
@@ -644,5 +669,55 @@ public class Controller extends HttpServlet {
 			return true;
 		return false;
 	}
+	
+	private void sendMail(String to, String from, String host, String subject, String msg, HttpServletResponse response) {
+	 
+	      // Get system properties
+	      Properties properties = System.getProperties();
+	 
+	      // Setup mail server
+	      properties.setProperty("mail.smtp.host", host);
+	 
+	      // Get the default Session object.
+	      javax.mail.Session session = javax.mail.Session.getDefaultInstance(properties);
+	      
+	      
+		  // Set response content type
+	      response.setContentType("text/html");
+
+	      try{
+	    	  PrintWriter out = response.getWriter();
+	         // Create a default MimeMessage object.
+	         MimeMessage message = new MimeMessage(session);
+	         // Set From: header field of the header.
+	         message.setFrom(new InternetAddress(from));
+	         // Set To: header field of the header.
+	         message.addRecipient(Message.RecipientType.TO,
+	                                  new InternetAddress(to));
+	         // Set Subject: header field
+	         message.setSubject(subject);
+
+	         message.setText(msg);
+	         // Send message
+	         Transport.send(message);
+	         String title = "Send Email";
+	         String res = "Sent message successfully....";
+	         String docType =
+	         "<!doctype html public \"-//w3c//dtd html 4.0 " +
+	         "transitional//en\">\n";
+	         out.println(docType +
+	         "<html>\n" +
+	         "<head><title>" + title + "</title></head>\n" +
+	         "<body bgcolor=\"#f0f0f0\">\n" +
+	         "<h1 align=\"center\">" + title + "</h1>\n" +
+	         "<p align=\"center\">" + res + "</p>\n" +
+	         "</body></html>");
+	      } catch (MessagingException mex) {
+	         mex.printStackTrace();
+	      } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	   }
 
 }
