@@ -1,3 +1,8 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="org.hibernate.Query"%>
+<%@page import="org.echallan.dataAccessObject.GenericDAO"%>
+<%@page import="org.hibernate.Session"%>
 <%@page import="org.echallan.valueObject.Preference"%>
 <%@page import="org.echallan.dataAccessObject.PreferenceManager"%>
 <%@page import="org.echallan.Common"%>
@@ -35,6 +40,8 @@
 <%
 	String maxChallanVal = Common.MAX_CHALLAN_PER_DAY;
 	String maxCompVal = Common.MAX_COMPLAINT_PER_DAY;
+	int challanGenToday = 0;
+	int compGenToday = 0;
 	PreferenceManager prefManager = new PreferenceManager();
 	Preference mxChallan = prefManager.getPreference(Common.PREF_MAX_CHALLAN_PER_DAY);
 	Preference mxComp = prefManager.getPreference(Common.PREF_MAX_COMPLAINT_PER_DAY);
@@ -52,6 +59,16 @@
 		newMxComp.setValue(maxCompVal);
 		prefManager.insert(newMxComp);
 	} else maxCompVal = mxComp.getValue();
+	
+	Session hsession = new GenericDAO().getSession();
+	Calendar calendar = Calendar.getInstance();
+	if(hsession != null) {
+		Query challan = hsession.createQuery("from Challan where YEAR(timestamp)=" + calendar.get(Calendar.YEAR) + " AND MONTH(timestamp)=" + (calendar.get(Calendar.MONTH) + 1) + " AND DAY(timestamp)=" + calendar.get(Calendar.DATE));
+		Query query = hsession.createQuery("from Complaint where YEAR(date)=" + calendar.get(Calendar.YEAR) + " AND MONTH(date)=" + (calendar.get(Calendar.MONTH) + 1) + " AND DAY(date)=" + calendar.get(Calendar.DATE));
+		challanGenToday = challan.list().size();
+		compGenToday = query.list().size();
+		System.out.print(compGenToday + " " + maxCompVal);
+	}
 %>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
@@ -82,13 +99,13 @@
 		                    <div class="row">
 		                        <div class="col-md-3 col-sm-6">
 		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxChallanVal); %>" data-displayPrevious="true" value="2500" data-fgColor="#92A3C2" data-readOnly=true;>
+		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxChallanVal); %>" data-displayPrevious="true" value="<%out.print(challanGenToday); %>" data-fgColor="#92A3C2" data-readOnly=true;>
 		                                <h3 class="text-muted text-center">Challan Generated</h3>
 		                            </div>
 		                        </div>
 		                        <div class="col-md-3 col-sm-6">
 		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxCompVal); %>" data-displayPrevious="true" value="3299" data-fgColor="#92A3C2" data-readOnly=true;>
+		                                <input class="knob" data-width="200" data-min="0" data-max="<%out.print(maxCompVal); %>" data-displayPrevious="true" value="<%out.print(compGenToday); %>" data-fgColor="#92A3C2" data-readOnly=true;>
 		                                <h3 class="text-muted text-center">Complaints Received</h3>
 		                            </div>
 		                        </div>
