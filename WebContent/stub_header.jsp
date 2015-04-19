@@ -33,6 +33,8 @@
             $('#main-menu').append(uls.clone());
         });
 </script>
+<link rel="stylesheet" type="text/css" href="stylesheets/theme1.css">
+ <link rel="stylesheet" type="text/css" href="stylesheets/premium1.css">
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon" href="../assets/ico/favicon.ico">
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
@@ -72,7 +74,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href=<%out.print("'" + homeURL + "'"); %>><span class="navbar-brand"><span class="fa fa-paper-plane"></span> e-Challan System</span></a>
+          <a href=<%out.print("'" + homeURL + "'"); %>><span class="navbar-brand"><img class="user1" src="images/faces/i3.jpg"></img> e-Challan System</span></a>
         </div>
         <%
         	if(obj != null) {
