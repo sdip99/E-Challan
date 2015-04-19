@@ -23,6 +23,9 @@
         <many-to-one name="police" class="org.echallan.valueObject.User" fetch="join">
             <column name="POLICE" />
         </many-to-one>
+        <many-to-one name="area" class="org.echallan.valueObject.SubArea" fetch="join">
+            <column name="AREA" />
+        </many-to-one>
         <set name="rule" cascade="save-update" table="CHLN_RULE" lazy="false">
 	         <key column="challan_id"/>
 	         <many-to-many column="rule_id" class="org.echallan.valueObject.Rule"/>

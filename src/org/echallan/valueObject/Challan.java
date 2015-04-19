@@ -10,7 +10,16 @@ public class Challan {
 	private String vehicleNo;
 	private boolean issuspend;
 	private User police;
+	private SubArea area;
 	
+	public SubArea getArea() {
+		return area;
+	}
+
+	public void setArea(SubArea area) {
+		this.area = area;
+	}
+
 	public boolean isIssuspend() {
 		return issuspend;
 	}
