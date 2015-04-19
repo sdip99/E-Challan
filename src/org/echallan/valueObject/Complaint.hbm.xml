@@ -29,5 +29,8 @@
         <property name="user_name" type="java.lang.String">
             <column name="USER_NAME" />
         </property>
+        <property name="date" type="java.util.Date">
+            <column name="DATE" />
+        </property>
     </class>
 </hibernate-mapping>

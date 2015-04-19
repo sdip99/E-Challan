@@ -1,5 +1,7 @@
 package org.echallan.valueObject;
 
+import java.util.Date;
+
 public class Complaint {
 	private int id;
 	private String email;
@@ -9,6 +11,13 @@ public class Complaint {
 	private String license_no;
 	private boolean acknowledged;
 	private String response;
+	private Date date;
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public int getId() {
 		return id;
 	}
