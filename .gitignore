@@ -38,3 +38,5 @@ WebContent/WEB-INF/lib/*
 
 # eclipse configs
 .classpath
+
+*/*.db
