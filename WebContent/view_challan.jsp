@@ -1,4 +1,3 @@
-<%@page import="sun.font.EAttribute"%>
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
 <%@page import="java.util.Set"%>
 <%@page import="org.echallan.valueObject.Rule"%>
