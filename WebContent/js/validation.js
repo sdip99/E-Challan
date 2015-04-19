@@ -22,7 +22,7 @@ function validateAddofficer(){
 	var st = document.add_officer.state;
 	var pin = document.add_officer.pincode;
 	var mail = document.add_officer.email;
-	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	var mailformat = /^[a-zA-Z0-9_\.\-])+\@(([a-zA-Z])+\.)+([a-zA-Z]{2,4}+$/;
 	var phoneno = /^[0-9]{10}$/;
 	var pass = document.add_officer.password;
 	var pass2 =document.add_officer.password2;
