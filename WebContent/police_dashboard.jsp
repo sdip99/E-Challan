@@ -1,3 +1,4 @@
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
 <%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.valueObject.User"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -62,14 +63,8 @@
 		                    <div class="row">
 		                        <div class="col-md-3 col-sm-6">
 		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="100" data-displayPrevious="true" value="45" data-fgColor="#92A3C2" data-readOnly=true;>
+		                                <input class="knob" data-width="200" data-min="0" data-max="50" data-displayPrevious="true" value="<%out.print(new StatisticsDAO().getChallanCountByUser(user.getUserID_pkey())); %>" data-fgColor="#92A3C2" data-readOnly=true;>
 		                                <h3 class="text-muted text-center">Challan Generated Today</h3>
-		                            </div>
-		                        </div>
-		                        <div class="col-md-3 col-sm-6">
-		                            <div class="knob-container">
-		                                <input class="knob" data-width="200" data-min="0" data-max="4500" data-displayPrevious="true" value="3299" data-fgColor="#92A3C2" data-readOnly=true;>
-		                                <h3 class="text-muted text-center">Complaints Received</h3>
 		                            </div>
 		                        </div>
 		                    </div>
