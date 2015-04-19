@@ -52,7 +52,7 @@
 	Object obj = session.getAttribute("user_info");
 	String homeURL = "index.jsp";
 	String userName = null;
-	User user;
+	User user = null;
 	if(obj != null) {
 		user = (User) obj;
 		if(user.getUserType() == Common.USER_TYPE_ADMIN) {
@@ -81,8 +81,14 @@
             <li class="dropdown hidden-xs">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                     <span class="" style="position:relative;top: 3px;"></span>
-                    <img class="user1" src="images/faces/1b.png" style="max-width:25px;max-height:20px;border-radius:48px"></img>
-                    	<% out.print(userName); %>
+                    <%
+                    	if(user.getUserType() != Common.USER_TYPE_ADMIN) {
+                    %>
+                    <img class="user1" src="images/people/<%out.print(user.getUserID() + ".jpg"); %>" style="max-width:25px;max-height:20px;border-radius:48px"></img>
+                    <%
+                    	}
+                    %>
+                    <% out.print(userName); %>
                     <i class="fa fa-caret-down"></i>
                 </a>
 
