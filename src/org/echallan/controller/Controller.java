@@ -1,4 +1,5 @@
 package org.echallan.controller;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -6,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.echallan.Common;
 import org.echallan.dataAccessObject.AreaDAO;
 import org.echallan.dataAccessObject.CatagoryDAO;
@@ -102,18 +107,114 @@ public class Controller extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if(request.getParameter("submit").equals("Sign In")) {
+		if((request.getContentType().indexOf("multipart/form-data") >= 0)) {
+			// Request is multi-part type
+			String fname = null;
+			String lname = null;
+			String mobileNo = null;
+			String street = null;
+			String state = null;
+			String city = null;
+			String email = null;
+			String pass = null;
+			String tmp1 = null;
+			String tmp2 = null;
+			HttpSession session = request.getSession();
+			System.out.println("multi part");
+			File file ;
+			int maxFileSize = 5 * 1024  * 1024;
+			int maxMemSize = 50 * 1024 * 1024;
+			ServletContext context = request.getServletContext();
+			String filePath = context.getRealPath("");
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			// maximum size that will be stored in memory
+			factory.setSizeThreshold(maxMemSize);
+			// Location to save data that is larger than maxMemSize.
+			File tmpPath = new File(filePath + File.separator + "tmp");
+			if(!tmpPath.exists())
+				tmpPath.mkdirs();
+			System.out.println("tmp: " + tmpPath.getAbsolutePath());
+			factory.setRepository(tmpPath);
+			// Create a new file upload handler
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			// maximum file size to be uploaded.
+			upload.setSizeMax( maxFileSize );
+			try{ 
+				//Parse the request to get file items.
+				List<FileItem> fileItems = upload.parseRequest(request);
+				for(FileItem fi : fileItems) {
+					if(fi.isFormField()) {
+						if(fi.getFieldName().equals("first_name"))
+							fname = fi.getString();
+						else if(fi.getFieldName().equals("last_name"))
+							lname = fi.getString();
+						else if(fi.getFieldName().equals("mobile_no"))
+							mobileNo = fi.getString();
+			            else if(fi.getFieldName().equals("street"))
+			            	street = fi.getString();
+			            else if(fi.getFieldName().equals("state"))
+			            	state = fi.getString();
+			            else if(fi.getFieldName().equals("city"))
+			            	city = fi.getString();
+			            else if(fi.getFieldName().equals("email"))
+			            	email = fi.getString();
+			            else if(fi.getFieldName().equals("password"))
+			            	pass = fi.getString();
+			            else if(fi.getFieldName().equals("pincode"))
+			            	tmp1 = fi.getString();
+			            else if(fi.getFieldName().equals("subarea_assigned"))
+			            	tmp2 = fi.getString();
+					}
+				}
+				for(FileItem fi : fileItems) {
+					if(!fi.isFormField()) {
+						//String fieldName = fi.getFieldName();
+						//String fileName = fi.getName();
+						//boolean isInMemory = fi.isInMemory();
+						//long sizeInBytes = fi.getSize();
+						// Write the file
+						file = new File(filePath + File.separator + "images" + File.separator + "people" + File.separator + email + ".jpg");
+						System.out.println("write: " + file.getAbsolutePath());
+						fi.write(file) ;
+					}
+				}
+				if(fname != null && !fname.equals("") &&
+					lname != null && !lname.equals("") &&
+					mobileNo != null && !mobileNo.equals("") &&
+					street != null && !street.equals("") &&
+					state != null && !state.equals("") &&
+					city != null && !city.equals("") &&
+					email != null && !email.equals("") &&
+					pass != null && !pass.equals("")) {
+					try {
+						int pincode = Integer.parseInt(tmp1);
+						int subAreaAssign = Integer.parseInt(tmp2);
+						UserDetail userDetail = new UserDetail(fname, lname, subAreaAssign, mobileNo, street, city, state, pincode);
+						User user = new User(email, pass, 0);
+						user.setUserDetail(userDetail);
+						userDetail.setUser(user);
+						UserDAO dao = new UserDAO();
+						dao.insert(user);
+					} catch(NumberFormatException ex) {
+						session.setAttribute("add_officer_status", false);
+					}
+				} else session.setAttribute("add_officer_status", false);
+					response.sendRedirect("add_officer.jsp");
+			} catch(Exception ex) {
+				System.out.println(ex);
+			}
+		} else if(request.getParameter("submit").equals("Sign In")) {
 			HttpSession session = request.getSession();
 			String pass = request.getParameter("password");
 			String uid = request.getParameter("username");
 			UserDAO dao = new UserDAO();
 			User vo = dao.getByUserId(uid);
-		if(vo == null) {
+			if(vo == null) {
 				// Username doesn't exist, don't match password just redirect 
 				session.setAttribute("invalidLogin", true);
 				response.sendRedirect("login.jsp");
 				return;
-		} else {
+			} else {
 				if(pass.equals(vo.getPassword())) {
 					// Increase session timeout if remember me is selected
 					if(request.getParameter("chk_rem") != null)
@@ -488,12 +589,12 @@ public class Controller extends HttpServlet {
 			new UserDAO().updateuid(oldid, email);
 			response.sendRedirect("index.jsp?logout=1.jsp");
 			
-		}else if(request.getParameter("submit").equals("Search For Challan")) {
+		}else if(request.getParameter("submit").equals("Generate Challan")) {
 			HttpSession session = request.getSession();
 			String[] name = request.getParameterValues("rule_drop");
 			String licenseNo = request.getParameter("license_no");
 			String vehicleNo = request.getParameter("vehicle_no");
-			boolean issuspend = request.getParameter("status")== null ? false : true;
+			boolean issuspend = (request.getParameter("status") != null);
 			User user = (User) session.getAttribute("user_info");
 			String redir = "view_challan.jsp";
 			if(licenseNo == null || vehicleNo == null || user == null) {
@@ -510,16 +611,13 @@ public class Controller extends HttpServlet {
 			challan.setLicenseNo(licenseNo);
 			challan.setVehicleNo(vehicleNo);
 			challan.setIssuspend(issuspend);
-			User u = (User)session.getAttribute("user_info");
+			User u = (User) session.getAttribute("user_info");
 			challan.setPolice(u);
 			
 			challan.setPolice(user);
 			challan.setTimestamp(new Date());
 			Integer x = new ChallanDAO().insert(challan);
-			
-			session.setAttribute("chaallan", x);
-			session.setAttribute("holder", licenseNo);
-			response.sendRedirect(redir);
+			response.sendRedirect(redir + "?cid=" + x);
 		}	
 	}
 	@SuppressWarnings({ "unused", "deprecation" })
