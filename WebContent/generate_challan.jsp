@@ -158,7 +158,7 @@
 								<input type="checkbox" name="status" />
 							</p>
 						<div align="center">		
-							<input type="submit"  class="btn btn-primary" value="Search For Challan" name="submit" onclick="return valuee();"/>
+							<input type="submit"  class="btn btn-primary" value="Generate Challan" name="submit" onclick="return valuee();"/>
 						 
 						</div>
 							
