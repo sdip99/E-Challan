@@ -119,7 +119,6 @@
 			  			out.println(r.getRuleId()+",");
 			  		out.println("</td>");
 			  		out.println("<td>" + fine +"<td>");
-			  		System.out.print(c.getPolice().getUserID());
 			  		out.println("<td>" + c.getPolice().getUserDetail().getFirstName() +"<td></tr>");
 			  	}
 			  %>

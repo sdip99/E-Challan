@@ -16,13 +16,14 @@ function validateAddofficer(){
 	var fn = document.add_officer.first_name;
 	var ln = document.add_officer.last_name;
 	var mn = document.add_officer.mobile_no;
-	var phoneno = /^\d{10}$/;
+	var zip = /^[0-9]{6}$/;
 	var s = document.add_officer.street;
 	var c = document.add_officer.city;
 	var st = document.add_officer.state;
 	var pin = document.add_officer.pincode;
 	var mail = document.add_officer.email;
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+	var phoneno = /^[0-9]{10}$/;
 	var pass = document.add_officer.password;
 	var pass2 =document.add_officer.password2;
 	if(fn.value == "" || fn.value == null) {
@@ -65,7 +66,7 @@ function validateAddofficer(){
 		alert("Please enter State");
 		st.focus();
 		return false;
-	} else if (pin.value == "" || pin.value == null) {
+	} else if (pin.value == "" || pin.value == null || !zip.test(pin.value)) {
 		alert("Please enter Pincode");
 		pin.focus();
 		return false;
@@ -84,4 +85,48 @@ function validateGeneratechallan()
 		vehicle.focus();
 		return false;
 	}
-}
+}	 
+function validateaddCat(){
+		 
+		 var cat = document.add_cat.cat_name;
+		 var catdesc = document.add_cat.cat_desc;
+		 if (cat.value == "" || cat.value == null) {
+				alert("Please enter Category Name");
+				cat.focus();
+				return false;
+			}
+		 
+		 else if (catdesc.value == "" || catdesc.value == null) {
+				alert("Please enter Category Description");
+				catdesc.focus();
+				return false;
+			};
+		 }
+		 function validateaddRule(){
+			 
+			 var rname = document.add_rul.rule_name;
+			 var rid = document.add_rul.rule_id;
+			 var fine = document.add_rul.fine;
+			 var rdesc = document.add_rul.rule_desc;
+			 if (rname.value == "" || r.name.value == null) {
+					alert("Please enter Rule Name");
+					rname.focus();
+					return false;
+				}
+			 else if (rid.value == "" || rid.value == null) {
+					alert("Please Rule ID");
+					rid.focus();
+					return false;
+				}
+			 
+			 else if (fine.value == "" || fine.value == null) {
+					alert("Please enter Rule Fine");
+					fine.focus();
+					return false;
+				}
+			 else if (rdesc.value == "" || rdesc.value == null) {
+					alert("Please enter Rule Description");
+					rdesc.focus();
+					return false;
+				}
+			 };
