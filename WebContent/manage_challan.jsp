@@ -78,7 +78,7 @@
 			      <th>#Rule ID</th>
 			      <th>#Fine</th>
 			      <th>#Police Name</th>
-			      <th>#Is Suspend</th>
+			      <th>#Vehicle Detained</th>
 			      <th style="width: 3.5em;"></th>
 			    </tr>
 			  </thead>
@@ -98,18 +98,15 @@
 			  <%
 			  	List<Challan> ch = new ChallanDAO().getAll();
 			  	for(Challan c : ch) {
-			  		License l =new LicenseDAO().getLicenseByNo(c.getLicenseNo());
+			  		License l = new LicenseDAO().getLicenseByNo(c.getLicenseNo());
 			  		Set<Rule> ru = c.getRule();
 			  		int fine=0;
-			  		
-			  			
-			  			for(Rule rr : ru){
-			  				
-			  				fine += rr.getFine();
-			  			}
+			  		for(Rule rr : ru){
+			  			fine += rr.getFine();
+			  		}
 			  			
 			  		
-			  		out.println("<tr><td>" + c.getChallan_id() + "</td><td>" + c.getLicenseNo() + "</td>");
+			  		out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + c.getLicenseNo() + "</td>");
 			  		out.println("<td>" + c.getVehicleNo() + "</td>");
 			  		out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
 			  		out.println("<td>");
