@@ -89,6 +89,11 @@
 										%>
 								</td></tr>
 								<tr><td> Total Fine: </td><td style="padding-left: 25px"><%out.print("Rs. " +  fine); %></td></tr>
+							<%
+							if(ch.isIssuspend()){
+							%>
+							<tr><td>Suspended Vehicle:</td><td style="padding-left: 25px"><%out.print(ch.isIssuspend()); %></td>></tr>
+							<%} %>
 							</table>
 							<br/><br/>
 						<div align="center">		

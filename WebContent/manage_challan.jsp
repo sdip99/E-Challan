@@ -78,6 +78,7 @@
 			      <th>#Rule ID</th>
 			      <th>#Fine</th>
 			      <th>#Police Name</th>
+			      <th>#Is Suspend</th>
 			      <th style="width: 3.5em;"></th>
 			    </tr>
 			  </thead>
@@ -100,17 +101,14 @@
 			  		License l =new LicenseDAO().getLicenseByNo(c.getLicenseNo());
 			  		Set<Rule> ru = c.getRule();
 			  		int fine=0;
-			  		if(c.isIssuspend()){
-			  			fine = 2000;
-			  		}
-			  		else{
+			  		
 			  			
 			  			for(Rule rr : ru){
 			  				
 			  				fine += rr.getFine();
 			  			}
 			  			
-			  		}
+			  		
 			  		out.println("<tr><td>" + c.getChallan_id() + "</td><td>" + c.getLicenseNo() + "</td>");
 			  		out.println("<td>" + c.getVehicleNo() + "</td>");
 			  		out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
@@ -118,8 +116,15 @@
 			  		for(Rule r : ru)
 			  			out.println(r.getRuleId()+",");
 			  		out.println("</td>");
-			  		out.println("<td>" + fine +"<td>");
-			  		out.println("<td>" + c.getPolice().getUserDetail().getFirstName() +"<td></tr>");
+			  		out.println("<td>" + fine +"</td>");
+			  		out.println("<td>" + c.getPolice().getUserDetail().getFirstName() +"</td>");
+			  		String va="";
+			  		if(c.isIssuspend()){
+			  			va = "YES";
+			  		}else{
+			  			 va="NO";
+			  		}
+			  		out.println("<td>" + va +"</td></tr>");
 			  	}
 			  %>
 			  </tbody>
