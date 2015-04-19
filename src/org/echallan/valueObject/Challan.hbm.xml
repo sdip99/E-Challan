@@ -1,26 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 24, 2015 5:41:17 PM by Hibernate Tools 3.4.0.CR1 -->
+<!-- Generated Apr 19, 2015 9:03:21 AM by Hibernate Tools 3.4.0.CR1 -->
 <hibernate-mapping>
-    <class name="org.echallan.valueObject.Challan" table="Challan">
+    <class name="org.echallan.valueObject.Challan" table="CHALLAN">
         <id name="challan_id" type="int">
             <column name="CHALLAN_ID" />
             <generator class="native" />
         </id>
         <property name="licenseNo" type="java.lang.String">
-            <column name="LICENSE_NO" />
+            <column name="LICENSENO" />
         </property>
-        <property name="vehicleNo" type="java.lang.String">
-            <column name="VEHICLE_NO" />
-        </property>
-        <property name="issuspend" type="yes_no">
-            <column name="IS_SUSPEND" />
-        </property>
-        <property name="timestamp" type="timestamp">
+        <property name="timestamp" type="java.util.Date">
             <column name="TIMESTAMP" />
         </property>
-        <many-to-one name="police" class="org.echallan.valueObject.User" cascade="save-update" column="police_id" unique="true" not-null="true"/>
+        <property name="vehicleNo" type="java.lang.String">
+            <column name="VEHICLENO" />
+        </property>
+        <property name="issuspend" type="yes_no">
+            <column name="ISSUSPEND" />
+        </property>
+        <many-to-one name="police" class="org.echallan.valueObject.User" fetch="join">
+            <column name="POLICE" />
+        </many-to-one>
         <set name="rule" cascade="save-update" table="CHLN_RULE" lazy="false">
 	         <key column="challan_id"/>
 	         <many-to-many column="rule_id" class="org.echallan.valueObject.Rule"/>
