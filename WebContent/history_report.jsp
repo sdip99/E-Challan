@@ -1,3 +1,5 @@
+<%@page import="java.util.Collections"%>
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
 <%@page import="java.util.Set"%>
 <%@page import="org.echallan.valueObject.Area"%>
 <%@page import="org.echallan.valueObject.City"%>
@@ -29,17 +31,23 @@
 	<script src="lib/modules/exporting.js"></script>
 	<script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
 	<%
-		int from = 0, to = 0;
+		StatisticsDAO sd = new StatisticsDAO();
+		int from = sd.getMinYear(), to = sd.getMaxYear();
+		List<Integer> availYear = sd.getDistinctYear();
+		System.out.print("min " + from + " to " + to);
 		if(request.getParameter("from") != null && request.getParameter("to") != null) {
 			try {
 				from = Integer.parseInt(request.getParameter("from"));
 				to = Integer.parseInt(request.getParameter("to"));
 			} catch (Exception ex) {
-				from = to = 0;
+				from = sd.getMinYear();
+				to = sd.getMaxYear();
 			}
 		}
-		if(to < from)
-			from = to = 0;
+		if(to < from) {
+			from = sd.getMinYear();
+			to = sd.getMaxYear();
+		}
 	%>
     <script type="text/javascript">
         $(function() {
@@ -131,9 +139,8 @@
 		            <%
 		        		out.print("data: [");
 		        		int i = from;
-		        		Random rand = new Random();
 		        		while(i <= to) {
-		        			out.print(rand.nextInt(10000) + ",");
+		        			out.print(sd.getChallanCountForYear(i) + ",");
 		        			i++;
 		        		}
 		        		out.print("]");
@@ -145,7 +152,7 @@
 		        		out.print("data: [");
 		        		int x = from;
 		        		while(x <= to) {
-		        			out.print(rand.nextInt(5000) + ",");
+		        			out.print(sd.getVehicleSusCountForYear(x) + ",");
 		        			x++;
 		        		}
 		        		out.print("]");
@@ -179,11 +186,21 @@
 					<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 					<center>from:
 						<select name="from_val">
-							<option value="2001">2001</option>
+							<%
+								Collections.sort(availYear);
+								for(Integer w : availYear) {
+									out.print("<option value=" + w + ">" + w + "</option>");
+								}
+							%>
 						</select>
 						to:
 						<select name="to_val">
-							<option value="2010">2010</option>
+							<%
+								Collections.reverse(availYear);
+								for(Integer d : availYear) {
+									out.print("<option value=" + d + ">" + d + "</option>");
+								}
+							%>
 						</select>
 						<input type="button" value="Filter" onclick="javascript: return handleFilterEvent()"></input>
 						<br /><label>Click here to show history for : </label> <a href="#cityModal" role='button' data-toggle='modal'> City</a>|| <a href="#myModal" role='button' data-toggle='modal'> Area</a>
