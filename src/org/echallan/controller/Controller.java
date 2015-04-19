@@ -66,6 +66,7 @@ public class Controller extends HttpServlet {
     		PrintWriter writer = response.getWriter();
     		Set<Rule> rules = dao.getCatagoryById(request.getParameter("cat_id")).getRule();
     		writer.write("<select  class='form-control inline-ele-left' style='width: 25%; margin-left: 6px;' name='rule_drop'>");
+    		//writer.write("<select id='rule_drop' class='form-control'>");
     		for(Rule r : rules)
     			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
     		writer.write("</select>");
@@ -77,6 +78,21 @@ public class Controller extends HttpServlet {
     		Integer id = null;
     		try {
     			id = Integer.parseInt(request.getParameter("mng_chk_city_id"));
+    		} catch(Exception ex) {
+    			writer.write("</select>");
+    			writer.close();
+    			return;
+    		}
+    		Set<Area> areas = new CityDAO().getCityById(id).getArea();
+    		for(Area a : areas)
+    			writer.write("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
+    		writer.write("</select>");
+    	} else if(request.getParameter("ins_chk_city_id") != null) {
+    		PrintWriter writer = response.getWriter();
+    		writer.write("<select class='form-control' name='area_drop'>");
+    		Integer id = null;
+    		try {
+    			id = Integer.parseInt(request.getParameter("ins_chk_city_id"));
     		} catch(Exception ex) {
     			writer.write("</select>");
     			writer.close();
@@ -592,6 +608,8 @@ public class Controller extends HttpServlet {
 		}else if(request.getParameter("submit").equals("Generate Challan")) {
 			HttpSession session = request.getSession();
 			String[] name = request.getParameterValues("rule_drop");
+			//String str = request.getParameter("rule_drop");
+			//String[] name = str.split(",");
 			String licenseNo = request.getParameter("license_no");
 			String vehicleNo = request.getParameter("vehicle_no");
 			boolean issuspend = (request.getParameter("status") != null);
