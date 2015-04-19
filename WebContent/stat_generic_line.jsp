@@ -1,3 +1,4 @@
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
 <%@page import="org.echallan.dataAccessObject.AreaDAO"%>
 <%@page import="java.util.Set"%>
 <%@page import="org.echallan.valueObject.Area"%>
@@ -16,8 +17,27 @@
 <%
 	String type = request.getParameter("type");
 	String id = request.getParameter("id");
+	Integer id2 = null;
 	if(type == null || id == null)
 		response.sendRedirect("history_report.jsp");
+	id2 = Integer.parseInt(id);
+	StatisticsDAO sd = new StatisticsDAO();
+	int from = sd.getMinYear(), to = sd.getMaxYear();
+	List<Integer> availYear = sd.getDistinctYear();
+	System.out.print("min " + from + " to " + to);
+	if(request.getParameter("from") != null && request.getParameter("to") != null) {
+		try {
+			from = Integer.parseInt(request.getParameter("from"));
+			to = Integer.parseInt(request.getParameter("to"));
+		} catch (Exception ex) {
+			from = sd.getMinYear();
+			to = sd.getMaxYear();
+		}
+	}
+	if(to < from) {
+		from = sd.getMinYear();
+		to = sd.getMaxYear();
+	}
 %>
 <html lang="en"><head>
     <meta charset="utf-8">
@@ -55,8 +75,6 @@
 		            //categories: ['2001', '2002', '2003']
 		        	<%
 		        		out.print("categories: [");
-		        		int from = 2001;
-		        		int to = 2009;
 		        		int tmp = from;
 		        		while(tmp < to) {
 		        			out.print("'" + tmp + "',");
@@ -85,26 +103,45 @@
 		            name: 'Challan Generated',
 		            //data: [500, 378, 652]
 		            <%
-		        		out.print("data: [");
-		        		int i = from;
-		        		Random rand = new Random();
-		        		while(i <= to) {
-		        			out.print(rand.nextInt(10000) + ",");
-		        			i++;
-		        		}
-		        		out.print("]");
+	        			if(type.equals("city")) {
+			        		out.print("data: [");
+			        		int i = from;
+			        		while(i <= to) {
+			        			out.print(sd.getChallanCountByCityTime(id2 , i) + ",");
+			        			i++;
+			        		}
+			        		out.print("]");
+	        			} else {
+	        				out.print("data: [");
+			        		int i = from;
+			        		while(i <= to) {
+			        			out.print(sd.getChallanCountByAreaTime(id2 , i) + ",");
+			        			i++;
+			        		}
+			        		out.print("]");
+	        			}
 	        		%>
 		        }, {
 		        	name: 'Vehicles Suspended',
 		            //data: [500, 378, 652]
 		            <%
-		        		out.print("data: [");
-		        		int x = from;
-		        		while(x <= to) {
-		        			out.print(rand.nextInt(5000) + ",");
-		        			x++;
-		        		}
-		        		out.print("]");
+		            	if(type.equals("city")) {
+			        		out.print("data: [");
+			        		int x = from;
+			        		while(x <= to) {
+			        			out.print(sd.getSuspendVehictByCityTime(id2, x) + ",");
+			        			x++;
+			        		}
+			        		out.print("]");
+		            	} else {
+		            		out.print("data: [");
+			        		int x = from;
+			        		while(x <= to) {
+			        			out.print(sd.getSuspendVehicByAreaTime(id2, x) + ",");
+			        			x++;
+			        		}
+			        		out.print("]");
+		            	}
 	        		%>
 		        }]
 		    });

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.echallan.valueObject.SubArea;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -69,6 +70,95 @@ public class StatisticsDAO extends GenericDAO {
 					ret += (Integer) d.list().get(0);
 				}
 			}
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getChallanCountByCityTime(int cityid, int year) {
+		int ret = 0;
+		Session session = getSession();
+		List<Integer> sarea = new ArrayList<Integer>();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query areaid = session.createQuery("select area_id from Area where cityid=" + cityid);
+			for(Object obj : areaid.list()) {
+				Query sareaids = session.createQuery("select subarea_id from SubArea where area_id=" + (Integer) obj);
+				for(Object o : sareaids.list())
+					sarea.add((Integer) o);
+			}
+			StringBuffer sb = new StringBuffer();
+			for(Integer x : sarea) {
+				sb.append(x + ",");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			Query q = session.createQuery("from Challan where YEAR(timestamp)=" + year + " AND area in (" + sb.toString() + ")");
+			ret = q.list().size();
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getChallanCountByAreaTime(int areaid, int year) {
+		int ret = 0;
+		Session session = getSession();
+		List<Integer> sarea = new ArrayList<Integer>();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query sareaList = session.createQuery("select subarea_id from Area where area_id=" + areaid);
+			StringBuffer sb = new StringBuffer();
+			for(Object x : sareaList.list()) {
+				sb.append(x + ",");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			Query q = session.createQuery("from Challan where YEAR(timestamp)=" + year + " AND area in (" + sb.toString() + ")");
+			ret = q.list().size();
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getSuspendVehictByCityTime(int cityid, int year) {
+		int ret = 0;
+		Session session = getSession();
+		List<Integer> sarea = new ArrayList<Integer>();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query areaid = session.createQuery("select area_id from Area where cityid=" + cityid);
+			for(Object obj : areaid.list()) {
+				Query sareaids = session.createQuery("select subarea_id from SubArea where area_id=" + (Integer) obj);
+				for(Object o : sareaids.list())
+					sarea.add((Integer) o);
+			}
+			StringBuffer sb = new StringBuffer();
+			for(Integer x : sarea) {
+				sb.append(x + ",");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			Query q = session.createQuery("from Challan where YEAR(timestamp)=" + year + " AND issuspend='y' AND area in (" + sb.toString() + ")");
+			ret = q.list().size();
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
+	
+	public int getSuspendVehicByAreaTime(int areaid, int year) {
+		int ret = 0;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query sareaList = session.createQuery("select subarea_id from Area where area_id=" + areaid);
+			StringBuffer sb = new StringBuffer();
+			for(Object x : sareaList.list()) {
+				sb.append(x + ",");
+			}
+			sb.deleteCharAt(sb.length() - 1);
+			Query q = session.createQuery("from Challan where YEAR(timestamp)=" + year + " AND issuspend='y' AND area in (" + sb.toString() + ")");
+			ret = q.list().size();
 			transaction.commit();
 			session.close();
 		}
