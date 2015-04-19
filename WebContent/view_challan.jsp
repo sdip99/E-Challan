@@ -51,11 +51,21 @@
 	UserDetail genDetail = ch.getPolice().getUserDetail();
 	Set<Rule> rulez = ch.getRule();
 	int fine = 0;
+	User user = null;
+	Object obj = session.getAttribute("user_info");
+	if(obj != null)
+		user = (User) obj;
 %>
 
 <body class=" theme-blue">
-	<c:import url="stub_header.jsp"></c:import>    
+	<c:import url="stub_header.jsp"></c:import>
+	<%    
+		if(user != null && user.getUserType() == Common.USER_TYPE_ADMIN) {
+	%>
+    <c:import url="stub_admin_sidebar.jsp"></c:import>
+    <%	} else { %>
     <c:import url="stub_police_sidebar.jsp"></c:import>
+    <%	} %>
 
     <div class="content">
         <div class="header">
