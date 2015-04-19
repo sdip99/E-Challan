@@ -1,3 +1,7 @@
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.List"%>
+<%@page import="org.echallan.dataAccessObject.StatisticsDAO"%>
+<%@page import="java.util.Calendar"%>
 <%@page import="java.util.Random"%>
 <%@page import="org.echallan.valueObject.Preference"%>
 <%@page import="org.echallan.dataAccessObject.PreferenceManager"%>
@@ -27,7 +31,26 @@
         $(function() {
             $(".knob").knob();
         });
+        
+        function handleFilterEvent() {
+        	var id = document.getElementById("year").value;
+			window.location.href = "annual_report.jsp?year=" + id;
+		}
     </script>
+    <%
+    	int curYear = Calendar.getInstance().get(Calendar.YEAR);
+    	StatisticsDAO sd = new StatisticsDAO();
+    	List<Integer> availYear = sd.getDistinctYear();
+    	Collections.sort(availYear);
+    	int showingYear = curYear;
+    	String paramYear = request.getParameter("year");
+    	if(paramYear != null)
+    		showingYear = Integer.parseInt(paramYear);
+    	int challanGen = sd.getChallanCountForYear(showingYear);
+    	int compCount = sd.getComplaintCountForYear(showingYear);
+    	int vehicSusCount = sd.getVehicleSusCountForYear(showingYear);
+    	int income = sd.getIncomeByYear(showingYear);
+    %>
     <script type="text/javascript">
 		$(function () {
 		    $('#container').highcharts({
@@ -35,7 +58,7 @@
 		            type: 'column'
 		        },
 		        title: {
-		            text: 'Annual Report for year: 2009'
+		            text: 'Annual Report for year: <%out.print(showingYear);%>'
 		        },
 		        subtitle: {
 		            text: 'Source: e-challan.org'
@@ -62,9 +85,9 @@
 		        series: [{
 		            name: 'Count',
 		            data: [
-		                ['Challans', 500],
-		                ['Complaint', 200],
-		                ['Suspended Vehicles', 32]
+		                ['Challans', <%out.print(challanGen);%>],
+		                ['Complaint', <%out.print(compCount);%>],
+		                ['Suspended Vehicles', <%out.print(vehicSusCount);%>]
 		            ],
 		            dataLabels: {
 		                enabled: true,
@@ -105,21 +128,22 @@
 			    <div class="panel-heading no-collapse">Annual Report</div>
 				<div id="widget1container" class="panel-body collapse in">
 					<center><b>Select year:</b>
-						<select name="from_val">
-							<option value="2001">2001</option>
-							<option value="2001">2001</option>
-							<option value="2001">2001</option>
+						<select name="from_val" id="year">
+							<%
+								for(Integer x : availYear)
+									out.print("<option value=" + x + ">" + x + "</option>");
+							%>
 						</select>
 						<input type="button" value="Show" onclick="javascript: return handleFilterEvent()"></input>
 					</center>
 					<table width="100%">
 						<tr>
 							<td style="vertical-align: top;">
-								<b>Annual Report for year : 2009</b><br/>
-								<br />Total Challans Generated: 500
-								<br />Total vehicles suspended: 200
-								<br />Total Complaints Received: 32
-								<br />Total Income: 250000
+								<b>Annual Report for year : <%out.print(showingYear); %></b><br/>
+								<br />Total Challans Generated: <%out.print(challanGen); %>
+								<br />Total Complaints Received: <%out.print(compCount); %>
+								<br />Total vehicles suspended: <%out.print(vehicSusCount); %>
+								<br />Total Income: Rs. <%out.print(income); %>
 								<br />
 							</td>
 							<td><div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></td>
