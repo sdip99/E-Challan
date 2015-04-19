@@ -128,7 +128,7 @@
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Add Officer</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post" name="add_officer" onsubmit="return validateAddofficer();">
+			        <form action="Controller" method="post" name="add_officer" onsubmit="return validateAddofficer();" enctype="multipart/form-data">
 						<div class="form-group">
 							<p>
 								<label>First Name: </label>
@@ -202,6 +202,10 @@
 									%>
 									</select>
 								</span>
+							</p>
+							<p>
+								<label>Upload Image:</label>
+								<input accept="image/jpeg,image/png" type="file" name="file"></input>
 							</p>
 							<input type="submit" name="submit"  class="btn btn-primary form-control" value="Insert Officer" name="submit"/>
 						</div>
