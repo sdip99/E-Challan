@@ -74,7 +74,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href=<%out.print("'" + homeURL + "'"); %>><span class="navbar-brand"><img class="user1" src="images/faces/i3.jpg"></img> e-Challan System</span></a>
+          <a href=<%out.print("'" + homeURL + "'"); %>><span class="navbar-brand"><img class="user1" src="images/faces/i3.jpg" style="max-width:35px;max-height:35px;"></img>  e-Challan System</span></a>
         </div>
         <%
         	if(obj != null) {
@@ -95,7 +95,13 @@
                 </a>
 
               <ul class="dropdown-menu">
+              	<%
+              		if(user.getUserType() == Common.USER_TYPE_NORMAL) {
+              	%>
                 <li><a href="profile.jsp"><span class="text-info fa fa-user fa-fw"></span>My Account</a></li>
+                <%
+              		}
+                %>
                 <li><a tabindex="-1" href="index.jsp?logout=1"><span class="text-info fa fa-sign-out fa-fw"></span>Logout</a></li>
               </ul>
             </li>
