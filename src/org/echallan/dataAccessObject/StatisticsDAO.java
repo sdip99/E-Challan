@@ -1,10 +1,10 @@
 package org.echallan.dataAccessObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import org.echallan.valueObject.SubArea;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -13,6 +13,20 @@ import org.hibernate.Transaction;
 
 @SuppressWarnings("unchecked")
 public class StatisticsDAO extends GenericDAO {
+	
+	public int getChallanCountByUser(int uid) {
+		int ret = 0;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Calendar calendar = Calendar.getInstance();
+			Query subareaList = session.createQuery("from Challan where police=" + uid + " AND YEAR(timestamp)=" + calendar.get(Calendar.YEAR) + " AND MONTH(timestamp)=" + (calendar.get(Calendar.MONTH) + 1) + " AND DAY(timestamp)=" + calendar.get(Calendar.DATE));
+			ret = subareaList.list().size();
+			transaction.commit();
+			session.close();
+		}
+		return ret;
+	}
 	
 	public int getChallanCountBySubArea(int id) {
 		int ret = 0;
@@ -104,7 +118,6 @@ public class StatisticsDAO extends GenericDAO {
 	public int getChallanCountByAreaTime(int areaid, int year) {
 		int ret = 0;
 		Session session = getSession();
-		List<Integer> sarea = new ArrayList<Integer>();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
 			Query sareaList = session.createQuery("select subarea_id from Area where area_id=" + areaid);
@@ -218,11 +231,17 @@ public class StatisticsDAO extends GenericDAO {
 	}
 	
 	public int getMax(List<Integer> list) {
-		return Collections.max(list);
+		if(list.size() > 0)
+			return Collections.max(list);
+		else
+			return 0;
 	}
 	
 	public int getMin(List<Integer> list) {
-		return Collections.min(list);
+		if(list.size() > 0)
+			return Collections.min(list);
+		else
+			return 0;
 	}
 	
 	public int getMinYear() {

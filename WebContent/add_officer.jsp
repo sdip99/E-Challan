@@ -86,7 +86,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<body class=" theme-blue">
+<body class=" theme-blue" onload="sendInfo('city');">
 	<c:import url="stub_header.jsp"></c:import>
     <c:import url="stub_admin_sidebar.jsp"></c:import>
 
@@ -184,22 +184,12 @@
 								<label>Area Assigned:</label>
 								<span id="area_inner">
 									<select class="form-control " name="area_assigned" id="area_assigned" onChange="return sendInfo('area');">
-									<%
-										Set<Area> area = city.get(0).getArea();
-										for(Area a : area)
-											out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
-									%>
 									</select>
 								</span>
 							</p>
 								<label>SubArea Assigned:</label>
 								<span id="sarea_inner">
 									<select class="form-control " name="subarea_assigned" id="subarea_drop">
-									<%
-										Set<SubArea> sarea = area.iterator().next().getSubarea();
-										for(SubArea a : sarea)
-											out.println("<option value='" + a.getSubarea_id() + "'>" + a.getName() + "</option>");
-									%>
 									</select>
 								</span>
 							</p>

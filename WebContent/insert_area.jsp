@@ -54,7 +54,7 @@
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
 	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
-	        		<center>Aread added Successfully...!</center>
+	        		<center>Area added Successfully...!</center>
 	        	</div>
 		    </div>
 		   <%

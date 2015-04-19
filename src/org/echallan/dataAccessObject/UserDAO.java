@@ -23,6 +23,7 @@ public class UserDAO extends GenericDAO {
 		return getAllUsers(false);
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public User getByUserId(String id) {
 		User ret = null;
 		Session session = getSession();
@@ -30,7 +31,9 @@ public class UserDAO extends GenericDAO {
 			Transaction transaction = session.beginTransaction();
 			Query query = session.createQuery("from User where userID='" + id + "'");
 			transaction.commit();
-			ret = (User) query.list().get(0);
+			List tmp = query.list();
+			if(tmp.size() > 0)
+				ret = (User) tmp.get(0);
 			session.close();
 		}
 		return ret;
