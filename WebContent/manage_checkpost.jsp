@@ -160,7 +160,7 @@
 			    	<span id="area_inner">
 						<select class="form-control inline-ele-left" name="area_drop"  style="width: 25%;">
 							<%
-								Set<Area> _area = _city.get(0).getArea();
+								List<Area> _area = new AreaDAO().getAll();
 								for(Area a : _area)
 									out.println("<option value='" + a.getArea_id() + "'>" + a.getName() + "</option>");
 							%>
