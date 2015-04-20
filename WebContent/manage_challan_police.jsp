@@ -46,7 +46,7 @@
 </head>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
-    <c:import url="stub_admin_sidebar.jsp"></c:import>
+    <c:import url="stub_police_sidebar.jsp"></c:import>
 
     <div class="content">
         <div class="header">
