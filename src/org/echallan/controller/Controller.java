@@ -653,7 +653,6 @@ public class Controller extends HttpServlet {
 				Session s = dao.getSession();
 				SQLQuery x = s.createSQLQuery("select password from user where userid='" + email + "'");
 				List ret = x.list();
-				System.out.println(ret.get(0));
 				if(ret.size() > 0) {
 					String title = "e-Challan password recovery";
 					String msg = "Your password is: " + ret.get(0);
