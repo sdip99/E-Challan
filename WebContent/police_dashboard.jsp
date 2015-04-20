@@ -45,6 +45,19 @@
         </div>
         <div class="main-content">
         <%
+			if(session.getAttribute("unAuthAccess") != null) {
+		%>
+		<div class="panel panel-default">
+		    <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	       	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	    	<span style="color:red;"><center>Unauthorized Access !<br>You don't have access to following path: <%out.print((String) session.getAttribute("unAuthAccess")); %></center></span>
+	       	</div>
+		</div>
+		<%
+				session.removeAttribute("unAuthAccess");
+			}
+		%>
+        <%
 			Object obj = session.getAttribute("user_info");
         	User user = (User) obj;
         %>
