@@ -100,7 +100,7 @@
 			  			}
 			  			
 			  		
-			  		out.println("<tr><td>" + c.getChallan_id() + "</td><td>" + c.getLicenseNo() + "</td>");
+			  		out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + c.getLicenseNo() + "</td>");
 			  		out.println("<td>" + c.getVehicleNo() + "</td>");
 			  		out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
 			  		out.println("<td>");
