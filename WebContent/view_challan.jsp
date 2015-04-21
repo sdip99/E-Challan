@@ -48,7 +48,10 @@
 <%
 	Integer x = Integer.parseInt(request.getParameter("cid"));
 	Challan ch = new ChallanDAO().getChallanById(x);
-	License holer = new LicenseDAO().getLicenseByNo(ch.getLicenseNo());
+	String licenseNo = ch.getLicenseNo();
+	License holer = null;
+	if(licenseNo != null)
+		holer = new LicenseDAO().getLicenseByNo(ch.getLicenseNo());
 	UserDetail genDetail = ch.getPolice().getUserDetail();
 	Set<Rule> rulez = ch.getRule();
 	int fine = 0;
@@ -93,9 +96,12 @@
 							</table>
 							<br/><br/>
 							<table>
-								<tr><td>License No	:</td><td style="padding-left: 25px"><%out.print(ch.getLicenseNo()); %></td></tr>
+								<tr><td>License No	:</td><td style="padding-left: 25px"><%out.print(ch.getLicenseNo() == null ? "none" : ch.getLicenseNo()); %></td></tr>
+								<% if(holer != null) { %>
 								<tr><td>Name	:</td><td style="padding-left: 25px"><%out.print(holer.getfName()+" "+holer.getlName()); %></td></tr>
-								<tr><td>Address	:</td><td style="padding-left: 25px"><%out.print(holer.getAddress()); %></td></tr>
+								<% } else { %>
+								<tr><td>Name	:</td><td style="padding-left: 25px"><%out.print(ch.getFname()+" "+ch.getLname()); %></td></tr>
+								<% } %>
 								<tr><td>Name of Officer	:</td><td style="padding-left: 25px"><%out.print(ch.getPolice().getUserDetail().getFirstName()+" "+ch.getPolice().getUserDetail().getLastName()); %></td></tr>
 								<%
 									

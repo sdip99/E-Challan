@@ -74,13 +74,8 @@ function validateAddofficer(){
 }
 function validateGeneratechallan()
 {
-	var lic = document.g_challan.license_no;
 	var vehicle = document.g_challan.vehicle_no;
-	 if (lic.value == "" || lic.value == null) {
-		alert("Please enter License No");
-		lic.focus();
-		return false;
-	}else if (vehicle.value == "" || vehicle.value == null) {
+	if (vehicle.value == "" || vehicle.value == null) {
 		alert("Please enter Vehicle No");
 		vehicle.focus();
 		return false;

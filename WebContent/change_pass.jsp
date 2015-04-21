@@ -42,7 +42,7 @@
         </div>
 		<div class="main-content">
     
-     <%
+     		<%
 				if(session.getAttribute("wrong_pass") != null) {
 					if((Boolean) session.getAttribute("wrong_pass")) { 
 			%>

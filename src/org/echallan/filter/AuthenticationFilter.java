@@ -1,7 +1,6 @@
 package org.echallan.filter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

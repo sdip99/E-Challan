@@ -48,7 +48,6 @@ import org.echallan.valueObject.Rule;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
@@ -625,9 +624,10 @@ public class Controller extends HttpServlet {
 			boolean issuspend = (request.getParameter("status") != null);
 			User user = (User) session.getAttribute("user_info");
 			String redir = "view_challan.jsp";
-			if(licenseNo == null || vehicleNo == null || user == null) {
+			if(vehicleNo == null || user == null || name == null) {
 				session.setAttribute("error", true);
-				redir = "generate_challan.jsp";
+				response.sendRedirect("generate_challan.jsp");
+				return;
 			}
 			RuleDAO rudao = new RuleDAO();
 			HashSet<Rule> rules = new HashSet<Rule>();
@@ -636,7 +636,12 @@ public class Controller extends HttpServlet {
 				rules.add(rudao.getRuleById(Integer.parseInt(name[i])));
 			}
 			challan.setRule(rules);
-			challan.setLicenseNo(licenseNo);
+			if(licenseNo != null && !licenseNo.equals(""))
+				challan.setLicenseNo(licenseNo);
+			else {
+				challan.setFname("first");
+				challan.setLname("last");
+			}
 			challan.setVehicleNo(vehicleNo);
 			challan.setIssuspend(issuspend);
 			challan.setPolice(user);

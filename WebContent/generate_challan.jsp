@@ -117,7 +117,20 @@
         	// do not accept empty string
         	if(licenseNo != null && licenseNo.equals(""))
         		licenseNo = null;
-        %>
+			if(session.getAttribute("error") != null) {
+				if((Boolean) session.getAttribute("error")) { 
+		%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<center><span  style="color:red;">Oops...! Something went wrong.<br />Please enter valid data.</span></center>
+	        	</div>
+		    </div>
+	   <%
+				}
+				session.removeAttribute("error");
+			}
+		%>
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Generate Challan</div>
 				<div id="widget1container" class="panel-body collapse in">

@@ -19,7 +19,7 @@ public class GenericDAO {
 		if(factory == null) {
 			try {
 				Configuration configuration = new Configuration();
-			    configuration.configure();
+				configuration.configure();
 			    serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
 			    factory = configuration.buildSessionFactory(serviceRegistry);
 			} catch (Exception ex) { System.err.println(ex); }
