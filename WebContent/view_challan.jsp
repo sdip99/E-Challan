@@ -117,7 +117,7 @@
 							<%
 							if(ch.isIssuspend()){
 							%>
-							<tr><td>Suspended Vehicle	:</td><td style="padding-left: 25px"><%out.print(ch.isIssuspend()); %></td>></tr>
+							<tr><td>Suspended Vehicle	:</td><td style="padding-left: 25px"><%out.print(ch.isIssuspend() ? "YES" : "NO"); %></td>></tr>
 							<%} %>
 							</table>
 							</td>
