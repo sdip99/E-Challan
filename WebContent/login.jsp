@@ -1,4 +1,6 @@
 <!doctype html>
+<%@page import="org.echallan.Common"%>
+<%@page import="org.echallan.valueObject.User"%>
 <html lang="en"><head>
     <meta charset="utf-8">
     <title>Login : e-Challan System</title>
@@ -19,6 +21,14 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
+<%
+	Object obj = session.getAttribute("user_info");
+	if(obj != null) {
+		User user = (User) obj;
+		String str = (user.getUserType() == Common.USER_TYPE_ADMIN) ? "admin_dashboard.jsp" : "police_dashboard.jsp";
+		response.sendRedirect(str);
+	}
+%>
 <body class=" theme-blue">
 
     <!-- Demo page code -->

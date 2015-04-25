@@ -1,3 +1,4 @@
+<%@page import="org.echallan.dataAccessObject.UserDAO"%>
 <%@page import="java.util.Date"%>
 <%@page import="org.echallan.Common"%>
 <%@page import="org.echallan.valueObject.User"%>
@@ -32,9 +33,19 @@
 
 </head>
 <%
+	Object obj = session.getAttribute("user_info");
+	User user = null;
+	if(obj != null) {
+		user = (User) obj;
+	}
 	// terminate session when logout flag is set
-	if(request.getParameter("logout") != null)
+	if(request.getParameter("logout") != null) {
+		user.setUuid("");
+		new UserDAO().update(user);
 		session.invalidate();
+	} else if(user != null) {
+		response.sendRedirect((user.getUserType() == Common.USER_TYPE_ADMIN) ? "admin_dashboard.jsp" : "police_dashboard.jsp");
+	}
 %>
 <body class=" theme-blue">
     
