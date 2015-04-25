@@ -94,7 +94,6 @@ public class AuthenticationFilter implements Filter {
 		String str = "login.jsp";
 		String uri = ((HttpServletRequest)request).getRequestURI();
 		Object obj = session.getAttribute("user_info");
-		System.out.println("Do filter" + uri);
 		if(uri.contains("/images") || uri.contains("/js") || uri.contains("/lib") || uri.contains("/stylesheets") || allowAccess(uri, nofilterPages)) {
 			chain.doFilter(request, response);
 			return;
