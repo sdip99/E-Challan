@@ -190,8 +190,7 @@
         	String licenseNo = request.getParameter("licenseno");
         	License license = null;
         	// do not accept empty string
-        	if(licenseNo != null && licenseNo.equals("")) {
-        		licenseNo = null;
+        	if(licenseNo != null && !licenseNo.equals("")) {
             	license = new LicenseDAO().getLicenseByNo(licenseNo);
         	}
 			if(session.getAttribute("error") != null) {
