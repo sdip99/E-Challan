@@ -23,34 +23,16 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
-	<script src="js/validation.js" type="text/javascript"></script>
+
     <script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="lib/cool.js"></script>
-    <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
+        <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
     <script type="text/javascript">
-    var x=0;    
-    var val;
-    var val2;
-    var count=0;
-    var s=0;
-    $(function() {
+    	$(function() {
             $(".knob").knob();
-            
-            $("#btnAdd").bind("click", function () {
-            	var div = $("<div />");
-                div.html(GetDynamicTextBox(x));
-                $("#newRule").append(div);
-                x++;
-               
-            });
-            
-            $("body").on("click", ".remove", function () {
-                $(this).closest("div").remove();
-            });
         });
         
-        
-        var request; 
+        var request;  
         var request2;
         function fetchNameUpdate()  
         {
@@ -81,37 +63,26 @@
         function sendInfo()  
         {
         	
-	        var v = document.getElementById("cat_name");
-	        
-	        if(window.XMLHttpRequest){  
-	        	request=new XMLHttpRequest();  
-	        }  
-		        else if(window.ActiveXObject){  
-		        request=new ActiveXObject("Microsoft.XMLHTTP");  
-	        }  
-	          
-	        try  
-	        {  
-		        request.onreadystatechange = getInfo;  
-		        request.open("GET", "Controller?cat_id=" + v.value, true);  
-		        request.send();  
-	        }  
-	        catch(e)  
-	        {  
-	        	alert("Unable to connect to server");  
-	        }
+        	var v = document.getElementById("cat_drop");
+        	if(window.XMLHttpRequest){
+        		request=new XMLHttpRequest();
+        	} else if(window.ActiveXObject) {
+        		request=new ActiveXObject("Microsoft.XMLHTTP");
+        	}
+        	try {
+        		request.onreadystatechange = getInfo;
+        		request.open("GET", "Controller?cat_id=" + v.value, true);
+        		request.send();
+        	} catch(e) {
+        		alert("Unable to connect to server");
+        	}
         }
-          
-        function getInfo(){  
-	        if(request.readyState==4){  
-		     	val = request.responseText;
-		     	var i=0;
-		        while(i<=x){
-		        	
-		        	document.getElementsByName("rule_inner")[i].innerHTML=val;
-					i++;		        
-		        }
-	        }  
+
+        function getInfo(){
+        	if(request.readyState==4){
+        		var val = request.responseText;
+        		document.getElementById("rule-inner").innerHTML = val;
+        	}
         }
         
         function updateNames(){  
@@ -122,14 +93,77 @@
 		     	document.getElementsByName("last_name")[0].value = (delim[1] != null) ? delim[1] : "";
 	        }  
         }
-       
-       
-        function GetDynamicTextBox(value) {
-        	
-        	sendInfo();
-        	return '<span name="rule_inner" ></span> &nbsp;' +
-                    '<input type="button" value="Remove" class="remove" />'
-        }
+        
+	    function addRow(tableID) { 
+	    	var table = document.getElementById(tableID);
+	    	var rowCount = table.rows.length;
+	    	var row = table.insertRow(rowCount);
+	    	if(checkDuplicate(table)) {
+	    		alert('Rule is already added...!');
+	    		return;
+	    	}
+	    	var colCount = table.rows[0].cells.length;
+	    	var newcell = row.insertCell(0);
+	    	newcell.innerHTML = '<p style="margin-top: 12px;"><INPUT type="checkbox" name="chk"/></p>';
+	    	newcell = row.insertCell(1);
+	    	var ruleDrop = document.getElementById("rule_drop");
+	    	newcell.innerHTML = '<p style="margin-top: 12px;">' + $("#rule_drop option:selected").val(); + '</p>';
+	    	newcell = row.insertCell(2);
+	    	newcell.innerHTML = '<p style="margin-top: 12px;">' + $("#rule_drop option:selected").html(); + '</p>';
+	    }
+	    
+	    function checkDuplicate(table) {
+	    	try { 
+				var rowCount = table.rows.length;
+				for(var i=1 ; i < rowCount ; i++) { 
+					var row = table.rows[i];
+					if(row.cells[1].childNodes[0].innerHTML == $("#rule_drop option:selected").val())
+						return true;
+				}
+			} catch(e) { 
+				//alert("exp" + e);
+			}
+			return false;
+	    }
+	    
+		function deleteRow(tableID) {
+			try { 
+				var table = document.getElementById(tableID);
+				var rowCount = table.rows.length;
+				for(var i=1 ; i < rowCount ; i++) { 
+					var row = table.rows[i];
+					var chkbox = row.cells[0].childNodes[0].childNodes[0];
+					if(null != chkbox && true == chkbox.checked) { 
+						if(rowCount<=1) {
+							alert("Cannot delete all the rows.");
+							break;
+						}
+						table.deleteRow(i);
+						rowCount--;
+						i--;
+					}
+				}
+			} catch(e) { 
+				alert(e);
+			}
+		}
+		
+		function validateAndSend() {
+			var response = "";
+			var table = document.getElementById('rule_table');
+			var rowCount = table.rows.length;
+			for(var i=1 ; i < rowCount ; i++) {
+				var row = table.rows[i];
+				//alert(row.cells[1].childNodes[0].innerHTML);
+				response += (row.cells[1].childNodes[0].innerHTML + ",");
+			}
+			var input = document.createElement("input");
+			input.type = 'hidden';
+		    input.name = 'rule_drop';
+		    input.value = response;
+			document.getElementsByName("myForm")[0].appendChild(input);
+			return true;
+		}
         
     </script>
 
@@ -138,7 +172,7 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<body class=" theme-blue">
+<body class=" theme-blue" onload="sendInfo();">
 	<c:import url="stub_header.jsp"></c:import>    
     <c:import url="stub_police_sidebar.jsp"></c:import>
 
@@ -155,8 +189,7 @@
         	String licenseNo = request.getParameter("licenseno");
         	License license = null;
         	// do not accept empty string
-        	if(licenseNo != null && licenseNo.equals("")) {
-        		licenseNo = null;
+        	if(licenseNo != null && !licenseNo.equals("")) {
             	license = new LicenseDAO().getLicenseByNo(licenseNo);
         	}
 			if(session.getAttribute("error") != null) {
@@ -176,7 +209,7 @@
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Generate Challan</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post" name="g_challan" onsubmit="return validateGeneratechallan();">
+			        <form action="Controller" name="myForm" method="post" onsubmit="return validateAndSend();">
 						<div class="form-group">
 							
 							<p>
@@ -195,31 +228,39 @@
 								<label>Last Name: </label>
 								<input type="text" class="form-control span12" name="last_name" <% if(license != null) out.print("value='" + license.getlName() + "'"); %>/>
 							</p>
-					
-							<p>
-								<label>vehicle category: </label>
-								<select class="form-control" id="cat_name" name="cat_name" onChange="return sendInfo();">
-								<%
-									CatagoryDAO dao =  new CatagoryDAO();
-									List<Catagory> cat = dao.getAll();
-									for(Catagory c : cat)
-										out.println("<option value='" + c.getCatID()+ "'>" + c.getCatName() + "</option>");
-								%>
-								</select>
-							</p>
-							<p>
-								<label>Rules: </label>
-								<input id="btnAdd" type="button" value="Add" />
-								<span id="newRule" >
-									
-								</span>
-							</p>
-								
-								
 							<p>
 								<label>Suspend Vehicle: </label>
 								<input type="checkbox" name="status" />
 							</p>
+							<label>Select Catagory:</label>
+							<select id="cat_drop" class="form-control" onchange="return sendInfo();">
+								<%
+									List<Catagory> cat = new CatagoryDAO().getAll();
+									for(Catagory c : cat)
+										out.print("<option value=" + c.getCatID() + ">" + c.getCatName() + "</option>");
+								%>
+							</select>
+							<label>Select Rule:</label>
+							<span id="rule-inner">
+								<select id="rule_drop" class="form-control">
+								</select>
+							</span>
+							<br />
+							<center>
+								<input type="button" class="form-control inline-ele-left" value="Add" style="width: 25%; background-color: #315E8A; color: #ffffff" onClick="addRow('rule_table');"/>
+								<input type="button" class="form-control inline-ele" value="Delete" style="width: 25%; background-color: #315E8A; color: #ffffff" onClick="deleteRow('rule_table');"/>
+							</center>
+							<table class="table table-bordered table-striped" id="rule_table">
+				              <thead>
+				                <tr>
+				                  <th></th>
+				                  <th>Rule ID</th>
+				                  <th>Rule Name</th>
+				                </tr>
+				              </thead>
+				              <tbody>
+				              </tbody>
+				            </table>
 						<div align="center">		
 							<input type="submit"  class="btn btn-primary" value="Generate Challan" name="submit" onclick="return valuee();"/>
 						 
