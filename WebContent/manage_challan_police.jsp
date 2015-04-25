@@ -69,6 +69,7 @@
 			      <th>#Fine</th>
 			      <th>#Police Name</th>
 			      <th>#Is Suspend</th>
+			      <th>#TimeStamp</th>
 			      <th style="width: 3.5em;"></th>
 			    </tr>
 			  </thead>
@@ -89,33 +90,40 @@
 			  	User u =(User)session.getAttribute("user_info");
 			  	List<Challan> ch = new ChallanDAO().getAllByPid(u.getUserID_pkey());
 			  	for(Challan c : ch) {
-			  		License l =new LicenseDAO().getLicenseByNo(c.getLicenseNo());
+			  		String licenseNo = c.getLicenseNo();
+			  		License l = null;
+			  		if(licenseNo != null)
+			  			l = new LicenseDAO().getLicenseByNo(licenseNo);
 			  		Set<Rule> ru = c.getRule();
 			  		int fine=0;
-			  		
-			  			
-			  			for(Rule rr : ru){
-			  				
-			  				fine += rr.getFine();
-			  			}
-			  			
-			  		
-			  		out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + c.getLicenseNo() + "</td>");
+			  		for(Rule rr : ru){	
+			  			fine += rr.getFine();
+			  		}
+			  		String lno = l == null ? "-" : l.getLincenNo();
+			  		out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + lno + "</td>");
 			  		out.println("<td>" + c.getVehicleNo() + "</td>");
-			  		out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
+			  		if(l != null)
+			  			out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
+			  		else
+			  			out.println("<td>" + c.getFname() +" "+ c.getLname() + "</td>");
 			  		out.println("<td>");
+			  		StringBuffer sb = new StringBuffer();
 			  		for(Rule r : ru)
-			  			out.println(r.getRuleId()+",");
+			  			sb.append(r.getRuleId() + ", ");
+			  		int length = sb.length();
+			  		sb.delete(length - 2, length - 1);
+			  		out.print(sb.toString());
 			  		out.println("</td>");
 			  		out.println("<td>" + fine +"</td>");
 			  		out.println("<td>" + c.getPolice().getUserDetail().getFirstName() +"</td>");
 			  		String va="";
 			  		if(c.isIssuspend()){
 			  			va = "YES";
-			  		}else{
-			  			 va="NO";
+			  		} else {
+			  			va = "NO";
 			  		}
-			  		out.println("<td>" + va +"</td></tr>");
+			  		out.println("<td>" + va +"</td>");
+			  		out.println("<td>" + c.getTimestamp() +"</td></tr>");
 			  	}
 			  %>
 			  </tbody>
