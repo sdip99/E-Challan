@@ -98,17 +98,25 @@
 			  <%
 			  	List<Challan> ch = new ChallanDAO().getAll();
 			  	for(Challan c : ch) {
-			  		License l = new LicenseDAO().getLicenseByNo(c.getLicenseNo());
+			  		String lno = c.getLicenseNo();
+			  		License l = null;
+			  		if(lno != null)
+			  			l = new LicenseDAO().getLicenseByNo(c.getLicenseNo());
 			  		Set<Rule> ru = c.getRule();
 			  		int fine=0;
 			  		for(Rule rr : ru){
 			  			fine += rr.getFine();
 			  		}
 			  			
-			  		
-			  		out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + c.getLicenseNo() + "</td>");
+			  		if(l != null)
+			  			out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>" + c.getLicenseNo() + "</td>");
+			  		else
+			  			out.println("<tr><td><a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a></td><td>none</td>");
 			  		out.println("<td>" + c.getVehicleNo() + "</td>");
-			  		out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
+			  		if(l != null)
+			  			out.println("<td>" + l.getfName() +" "+ l.getlName() + "</td>");
+			  		else
+			  			out.println("<td>" + c.getFname() +" "+ c.getLname() + "</td>");
 			  		out.println("<td>");
 			  		for(Rule r : ru)
 			  			out.println(r.getRuleId()+",");

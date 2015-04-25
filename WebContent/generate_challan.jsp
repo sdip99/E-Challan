@@ -1,3 +1,5 @@
+<%@page import="org.echallan.dataAccessObject.LicenseDAO"%>
+<%@page import="org.echallan.valueObject.License"%>
 <%@page import="java.util.Set"%>
 <%@page import="org.echallan.dataAccessObject.RuleDAO"%>
 <%@page import="org.echallan.valueObject.Rule"%>
@@ -28,6 +30,7 @@
     <script type="text/javascript">
     var x=0;    
     var val;
+    var val2;
     var count=0;
     var s=0;
     $(function() {
@@ -47,7 +50,34 @@
         });
         
         
-        var request;  
+        var request; 
+        var request2;
+        function fetchNameUpdate()  
+        {
+        	
+	        var v = document.getElementsByName("license_no")[0];
+	        if(v.value == "")
+	        	return;
+	        
+	        if(window.XMLHttpRequest){  
+	        	request=new XMLHttpRequest();  
+	        }  
+		        else if(window.ActiveXObject){  
+		        request=new ActiveXObject("Microsoft.XMLHTTP");  
+	        }  
+	          
+	        try  
+	        {  
+		        request.onreadystatechange = updateNames;  
+		        request.open("GET", "Controller?license_fetch_req=" + v.value, true);  
+		        request.send();  
+	        }  
+	        catch(e)  
+	        {  
+	        	alert("Unable to connect to server");  
+	        }
+        }
+        
         function sendInfo()  
         {
         	
@@ -70,7 +100,7 @@
 	        {  
 	        	alert("Unable to connect to server");  
 	        }
-        }  
+        }
           
         function getInfo(){  
 	        if(request.readyState==4){  
@@ -81,6 +111,15 @@
 		        	document.getElementsByName("rule_inner")[i].innerHTML=val;
 					i++;		        
 		        }
+	        }  
+        }
+        
+        function updateNames(){  
+	        if(request.readyState==4){  
+		     	val2 = request.responseText;
+		     	var delim = val2.split(",");
+		     	document.getElementsByName("first_name")[0].value  = (delim[0] != null) ? delim[0] : "";
+		     	document.getElementsByName("last_name")[0].value = (delim[1] != null) ? delim[1] : "";
 	        }  
         }
        
@@ -114,9 +153,12 @@
 		<div class="main-content">
         <%
         	String licenseNo = request.getParameter("licenseno");
+        	License license = null;
         	// do not accept empty string
-        	if(licenseNo != null && licenseNo.equals(""))
+        	if(licenseNo != null && licenseNo.equals("")) {
         		licenseNo = null;
+            	license = new LicenseDAO().getLicenseByNo(licenseNo);
+        	}
 			if(session.getAttribute("error") != null) {
 				if((Boolean) session.getAttribute("error")) { 
 		%>
@@ -139,11 +181,19 @@
 							
 							<p>
 								<label> License no: </label>
-								<input type="text" class="form-control span12" name="license_no" <% if(licenseNo != null) out.print("value='" + licenseNo + "'"); %>/>
+								<input type="text" class="form-control span12" name="license_no" <% if(licenseNo != null) out.print("value='" + licenseNo + "'"); %> onblur="return fetchNameUpdate();"/>
 							</p>
 							<p>
 								<label>Vehicle no: </label>
 								<input type="text" class="form-control span12" name="vehicle_no"/>
+							</p>
+							<p>
+								<label>First Name: </label>
+								<input type="text" class="form-control span12" name="first_name" <% if(license != null) out.print("value='" + license.getfName() + "'"); %>/>
+							</p>
+							<p>
+								<label>Last Name: </label>
+								<input type="text" class="form-control span12" name="last_name" <% if(license != null) out.print("value='" + license.getlName() + "'"); %>/>
 							</p>
 					
 							<p>
