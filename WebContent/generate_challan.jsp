@@ -124,10 +124,11 @@
 	        }
         }
         
-        function notifyVehicleIsStolen(){
+        function notifyVehicleIsStolen() {
         	if(request.readyState==4) {
-        		document.getElementsByName("submit")[0].disabled = true;
         		var val = request.responseText;
+        		if(val != "")
+            		document.getElementsByName("submit")[0].disabled = true;
         		document.getElementById("vehicle_stolen_notify").innerHTML = val;
         		document.getElementById('confirm_but').addEventListener('click', function(evt) {
         			sendVehicleVerified();
