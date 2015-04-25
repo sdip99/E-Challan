@@ -32,8 +32,7 @@
             $(".knob").knob();
         });
         
-        var request;  
-        var request2;
+        var request; 
         function fetchNameUpdate()  
         {
         	
@@ -75,6 +74,40 @@
         		request.send();
         	} catch(e) {
         		alert("Unable to connect to server");
+        	}
+        }
+        
+        function verifyVehicle() {
+        	var v = document.getElementsByName("vehicle_no")[0];
+	        if(v.value == "")
+	        	return;
+	        
+	        if(window.XMLHttpRequest){  
+	        	request=new XMLHttpRequest();  
+	        }  
+		        else if(window.ActiveXObject){  
+		        request=new ActiveXObject("Microsoft.XMLHTTP");  
+	        }  
+	          
+	        try  
+	        {  
+		        request.onreadystatechange = notifyVehicleIsStolen;  
+		        request.open("GET", "Controller?veify_vehicle=" + v.value, true);  
+		        request.send();  
+	        }  
+	        catch(e)  
+	        {  
+	        	alert("Unable to connect to server");  
+	        }
+        }
+        
+        function notifyVehicleIsStolen(){
+        	if(request.readyState==4){
+        		var val = request.responseText;
+        		if(val != "") {
+        			alert(val.substring(val.indexOf(">") + 1, val.lastIndexOf("<")));
+        		}
+        		document.getElementById("vehicle_stolen_notify").innerHTML = val;
         	}
         }
 
@@ -218,7 +251,11 @@
 							</p>
 							<p>
 								<label>Vehicle no: </label>
-								<input type="text" class="form-control span12" name="vehicle_no"/>
+								<input type="text" class="form-control span12" name="vehicle_no" onblur="return verifyVehicle();"/>
+							</p>
+							<p>
+								<span id="vehicle_stolen_notify">
+								</span>
 							</p>
 							<p>
 								<label>First Name: </label>

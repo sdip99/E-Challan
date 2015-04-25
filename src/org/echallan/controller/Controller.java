@@ -139,6 +139,14 @@ public class Controller extends HttpServlet {
     			String lname = license.getlName();
     			writer.write(fname + "," + lname);
     		}
+    	} else if(request.getParameter("veify_vehicle") != null) {
+    		String vno = request.getParameter("veify_vehicle");
+    		PrintWriter writer = response.getWriter();
+    		StolenVehicleDAO dao = new StolenVehicleDAO();
+    		if(vno != null && !vno.equals("")) {
+    			if(dao.isStolenVehicle(vno))
+    				writer.write("<span style='color: red;'>This vehicle is reported as stolen. Please verify owner...!</span>");
+    		}
     	}
 	}
 
