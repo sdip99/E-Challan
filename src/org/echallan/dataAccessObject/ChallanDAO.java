@@ -22,7 +22,8 @@ public class ChallanDAO extends GenericDAO {
 			session.close();
 		}
 		return ret;
-	}public List<Challan> getAllByPid(int id) {
+	}@SuppressWarnings("unchecked")
+	public List<Challan> getAllByPid(int id) {
 		List<Challan> ret = null;
 		Session session = getSession();
 		if(session != null) {

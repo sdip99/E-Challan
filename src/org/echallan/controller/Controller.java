@@ -2,7 +2,6 @@ package org.echallan.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.Format;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -52,9 +51,7 @@ import org.echallan.valueObject.UserDetail;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
-import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -147,6 +144,7 @@ public class Controller extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if((request.getContentType().indexOf("multipart/form-data") >= 0)) {
 			// Request is multi-part type
