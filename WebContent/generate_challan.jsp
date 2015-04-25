@@ -101,13 +101,45 @@
 	        }
         }
         
+        function sendVehicleVerified() {
+        	var v = document.getElementsByName("vehicle_no")[0];
+	        if(v.value == "")
+	        	return;
+	        
+	        if(window.XMLHttpRequest){  
+	        	request=new XMLHttpRequest();  
+	        }  
+		        else if(window.ActiveXObject){  
+		        request=new ActiveXObject("Microsoft.XMLHTTP");  
+	        }  
+	          
+	        try  
+	        {
+		        request.open("GET", "Controller?vehicle_verifed=" + v.value, true);  
+		        request.send();  
+	        }  
+	        catch(e)  
+	        {  
+	        	alert("Unable to connect to server");  
+	        }
+        }
+        
         function notifyVehicleIsStolen(){
-        	if(request.readyState==4){
+        	if(request.readyState==4) {
+        		document.getElementsByName("submit")[0].disabled = true;
         		var val = request.responseText;
-        		if(val != "") {
-        			alert(val.substring(val.indexOf(">") + 1, val.lastIndexOf("<")));
-        		}
         		document.getElementById("vehicle_stolen_notify").innerHTML = val;
+        		document.getElementById('confirm_but').addEventListener('click', function(evt) {
+        			sendVehicleVerified();
+        			document.getElementById("vehicle_stolen_notify").innerHTML = '';
+        			document.getElementsByName("submit")[0].disabled = false;
+        			evt.preventDefault();
+        		}, false);
+        		document.getElementById('cancel_but').addEventListener('click', function(evt) {
+        			document.getElementById("vehicle_stolen_notify").innerHTML = '';
+        			document.getElementsByName("vehicle_no")[0].value = '';
+        			evt.preventDefault();
+        		}, false);
         	}
         }
 

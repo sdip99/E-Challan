@@ -145,7 +145,13 @@ public class Controller extends HttpServlet {
     		StolenVehicleDAO dao = new StolenVehicleDAO();
     		if(vno != null && !vno.equals("")) {
     			if(dao.isStolenVehicle(vno))
-    				writer.write("<span style='color: red;'>This vehicle is reported as stolen. Please verify owner...!</span>");
+    				writer.write("<span style='color: red;'>This vehicle is reported as stolen. Please verify owner...!</span><br /><center><button id='confirm_but' style='margin-right: 10px;'>Verified</button><button id='cancel_but' style='margin-left: 10px;'>Cancel</button></center>");
+    		}
+    	} else if(request.getParameter("vehicle_verifed") != null) {
+    		String vno = request.getParameter("vehicle_verifed");
+    		StolenVehicleDAO dao = new StolenVehicleDAO();
+    		if(!vno.equals("")) {
+    			dao.removeStlnVehic(vno);
     		}
     	}
 	}
