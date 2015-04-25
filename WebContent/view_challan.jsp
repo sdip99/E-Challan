@@ -90,7 +90,7 @@
 							<table style="width: 80%" cellspacing="20px;">
 							<tr><td>
 							<table>
-								
+								<input type="hidden" name="cid" value=<%out.print(x); %> />
 								<tr><td>Date	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("MM-dd-yyyy").format(new Date())); %></td></tr>
 								<tr><td>Time	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("HH:mm a").format(new Date())); %></td></tr>
 							</table>

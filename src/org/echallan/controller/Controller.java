@@ -2,6 +2,7 @@ package org.echallan.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.Format;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -50,6 +51,11 @@ import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Servlet implementation class Controller
@@ -125,6 +131,16 @@ public class Controller extends HttpServlet {
     		for(SubArea s : sareas)
     			writer.write("<option value='" + s.getSubarea_id() + "'>" + s.getName() + "</option>");
     		writer.write("</select>");
+    	} else if(request.getParameter("license_fetch_req") != null) {
+    		PrintWriter writer = response.getWriter();
+    		LicenseDAO dao = new LicenseDAO();
+    		License license = dao.getLicenseByNo(request.getParameter("license_fetch_req"));
+    		if(license != null) {
+    			String fname = license.getfName();
+    			String lname = license.getlName();
+    			System.out.println(fname + "," + lname);
+    			writer.write(fname + "," + lname);
+    		}
     	}
 	}
 
@@ -665,6 +681,43 @@ public class Controller extends HttpServlet {
 					sendMail(email, "admin@echallan.org", "localhost", title, msg, response);
 				} else System.out.println("Email id doesn't exist...!");
 			}
+		} else if(request.getParameter("submit").equals("Print Challan")) {
+			Document document = new Document();
+			String tmp = request.getParameter("cid");
+			Integer cid = null;
+			StringBuffer buffer = new StringBuffer();
+			int fine = 0;
+			if(tmp != null) {
+				cid = Integer.parseInt(tmp);
+				Challan challan = new ChallanDAO().getChallanById(cid);
+				try {
+					response.setContentType("application/pdf");
+					PdfWriter.getInstance(document, response.getOutputStream());
+					String newLine = "\n";
+					document.open();
+					buffer.append("Challan ID: " + challan.getChallan_id() + newLine);
+					buffer.append("Vehicle No: " + challan.getVehicleNo()  + newLine);
+					buffer.append("License No: " + challan.getLicenseNo()  + newLine);
+					buffer.append("Time: " + challan.getTimestamp()  + newLine);
+					buffer.append("Name: " + challan.getFname() + " " + challan.getLname()  + newLine);
+					UserDetail detail = challan.getPolice().getUserDetail();
+					buffer.append("Name of Officer: " + detail.getFirstName() + " " + detail.getLastName()  + newLine);
+					buffer.append("Time: " + challan.getTimestamp()  + newLine);
+					Set<Rule> rules = challan.getRule();
+					for(Rule r : rules) {
+						buffer.append(r.getRuleId() + "  -  " + r.getRuleName() + newLine);
+						fine += r.getFine();
+					}
+					buffer.append("Total Fine: " + fine  + newLine);
+					//document.add(new Paragraph(buffer.toString()));
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
+				document.close();
+			} else {
+				response.sendRedirect("index.jsp");
+			}
+			return;
 		}
 	}
 	@SuppressWarnings({ "unused", "deprecation" })
