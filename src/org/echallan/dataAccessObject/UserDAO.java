@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+@SuppressWarnings("rawtypes")
 public class UserDAO extends GenericDAO {
 	
 	public User getUserById(int id) {
@@ -23,7 +24,21 @@ public class UserDAO extends GenericDAO {
 		return getAllUsers(false);
 	}
 	
-	@SuppressWarnings("rawtypes")
+	public User getUserByUUID(String uuid) {
+		User ret = null;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from User where uuid='" + uuid + "'");
+			transaction.commit();
+			List tmp = query.list();
+			if(tmp.size() > 0)
+				ret = (User) tmp.get(0);
+			session.close();
+		}
+		return ret; 
+	}
+	
 	public User getByUserId(String id) {
 		User ret = null;
 		Session session = getSession();

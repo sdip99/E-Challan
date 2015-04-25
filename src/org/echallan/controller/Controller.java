@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -143,7 +145,7 @@ public class Controller extends HttpServlet {
     		String vno = request.getParameter("veify_vehicle");
     		PrintWriter writer = response.getWriter();
     		StolenVehicleDAO dao = new StolenVehicleDAO();
-    		if(vno != null && !vno.equals("")) {
+    		if(!vno.equals("")) {
     			if(dao.isStolenVehicle(vno))
     				writer.write("<span style='color: red;'>This vehicle is reported as stolen. Please verify owner...!</span><br /><center><button id='confirm_but' style='margin-right: 10px;'>Verified</button><button id='cancel_but' style='margin-left: 10px;'>Cancel</button></center>");
     		}
@@ -161,6 +163,7 @@ public class Controller extends HttpServlet {
 	 */
 	@SuppressWarnings("rawtypes")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		if((request.getContentType().indexOf("multipart/form-data") >= 0)) {
 			// Request is multi-part type
 			String fname = null;
@@ -173,7 +176,6 @@ public class Controller extends HttpServlet {
 			String pass = null;
 			String tmp1 = null;
 			String tmp2 = null;
-			HttpSession session = request.getSession();
 			System.out.println("multi part");
 			File file ;
 			int maxFileSize = 5 * 1024  * 1024;
@@ -258,7 +260,6 @@ public class Controller extends HttpServlet {
 				System.out.println(ex);
 			}
 		} else if(request.getParameter("submit").equals("Sign In")) {
-			HttpSession session = request.getSession();
 			String pass = request.getParameter("password");
 			String uid = request.getParameter("username");
 			UserDAO dao = new UserDAO();
@@ -270,9 +271,15 @@ public class Controller extends HttpServlet {
 				return;
 			} else {
 				if(pass.equals(vo.getPassword())) {
-					// Increase session timeout if remember me is selected
-					if(request.getParameter("chk_rem") != null)
-						session.setMaxInactiveInterval(60 * 60 * 24);	// 24 hrs
+					// Send cookie if remember me is selected
+					if(request.getParameter("chk_rem") != null) {
+						String token = UUID.randomUUID().toString();
+						Cookie cookie = new Cookie("user", token);
+						cookie.setMaxAge(365 * 24 * 60 * 60);	// 1 year
+						response.addCookie(cookie);
+						vo.setUuid(token);
+						dao.update(vo);
+					}
 					// Everything ok send to homepage & store user info into session
 					session.setAttribute("user_info", vo);
 					if(vo.getUserType() == Common.USER_TYPE_NORMAL) {
@@ -289,7 +296,6 @@ public class Controller extends HttpServlet {
 			}
 		
 		} else if(request.getParameter("submit").equals("Insert Officer")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("add_officer_status", true);
 			String fname = request.getParameter("first_name");
 			String lname = request.getParameter("last_name");
@@ -323,7 +329,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("add_officer.jsp");
 		
 		} else if(request.getParameter("submit").equals("Insert City")) {
-			HttpSession session = request.getSession();
 			String name = request.getParameter("city_name");
 			if(name != null && !name.equals("")) {
 				City city = new City(name);
@@ -334,7 +339,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("insert_city.jsp");
 			
 		} else if(request.getParameter("submit").equals("Insert Area")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("area_insert_status", true);
 			String name = request.getParameter("area_name");
 			if(name != null && !name.equals("")) {
@@ -353,7 +357,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("insert_area.jsp");
 		
 		} else if(request.getParameter("submit").equals("Insert CheckPost")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("insert_chkpost_status", true);
 			String name = request.getParameter("subarea_name");
 			if(name != null && !name.equals("")) {
@@ -372,7 +375,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("insert_checkpost.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update City")) {
-			HttpSession session = request.getSession();
 			String name = request.getParameter("city_name");
 			session.setAttribute("upd_city", true);
 			if(name != null && !name.equals("")) {
@@ -382,7 +384,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_city.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Officer")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("upd_off_status", true);
 			
 			String uid = (String) session.getAttribute("uid");
@@ -430,7 +431,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_officer.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Area")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("upd_area", true);
 			String newName = request.getParameter("area_name");
 			if(newName != null && !newName.equals("")) {
@@ -444,7 +444,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_area.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Checkpost")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("upd_chkp", true);
 			String newName = request.getParameter("subarea_name");
 			if(newName != null && !newName.equals("")) {
@@ -458,7 +457,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_checkpost.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Complaint")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("upd_comp", true);
 			String ack = request.getParameter("status");
 			String res = request.getParameter("response");
@@ -477,7 +475,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_complaint.jsp");
 		
 		} else if(request.getParameter("submit").equals("Update Rule")) {
-			HttpSession session = request.getSession();
 			session.setAttribute("rule_update_success", true);
 			
 			String ruleName = request.getParameter("rule_name");
@@ -505,7 +502,6 @@ public class Controller extends HttpServlet {
 			
 			
 		} else if(request.getParameter("submit").equals("Insert Rule")) {
-			HttpSession session = request.getSession();
 			String ruleName = request.getParameter("rule_name");
 			int ruleId = Integer.parseInt(request.getParameter("rule_id"));
 			int fine = Integer.parseInt(request.getParameter("fine"));
@@ -522,7 +518,6 @@ public class Controller extends HttpServlet {
 			
 			
 		} else if(request.getParameter("submit").equals("Add Category")) {
-			HttpSession session = request.getSession();
 			String catName = request.getParameter("cat_name");
 			String catDesc = request.getParameter("cat_desc");
 			Catagory cat = new Catagory(catName, catDesc);
@@ -532,7 +527,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("add_catagory.jsp");
 			
 		} else if(request.getParameter("submit").equals("Update Category")) {
-			HttpSession session = request.getSession();
 			String name = request.getParameter("cat_name");
 			String desc = request.getParameter("cat_desc");
 			int id = Integer.parseInt((String) session.getAttribute("cat_id"));
@@ -545,7 +539,6 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("manage_catagory.jsp");
 			
 		} else if(request.getParameter("submit").equals("Search License")) {
-			HttpSession session = request.getSession();
 			String licenseNo = request.getParameter("license_no");
 			if(!licenseNo.equals("")) {
 				// User has inserted license no so search for it
@@ -582,7 +575,6 @@ public class Controller extends HttpServlet {
 				response.sendRedirect("generate_challan_view_result.jsp");
 			}
 		} else if(request.getParameter("submit").equals("Update Settings")) {
-			HttpSession session = request.getSession();
 			String maxChallan = request.getParameter(Common.PREF_MAX_CHALLAN_PER_DAY);
 			String maxComp = request.getParameter(Common.PREF_MAX_COMPLAINT_PER_DAY);
 			session.setAttribute("pref_update_success", true);
@@ -605,7 +597,6 @@ public class Controller extends HttpServlet {
 			}
 			response.sendRedirect("system_setting.jsp");
 		} else if(request.getParameter("submit").equals("Change Password")){
-			HttpSession session = request.getSession();
 			String newPass = request.getParameter("new_pass");
 			String cPass = request.getParameter("c_pass");
 			if(newPass.equals(cPass)  && newPass!=null && !newPass.equals("")&& cPass!=null && !cPass.equals("")){
@@ -619,7 +610,6 @@ public class Controller extends HttpServlet {
 				response.sendRedirect("change_pass.jsp");
 			}
 		} else if(request.getParameter("submit").equals("Edit Profile")){
-			HttpSession session = request.getSession();
 			User vo = (User)session.getAttribute("user_info");
 			String oldid = vo.getUserID();
 			int id = vo.getUserDetail().getUserID_pkey();
@@ -644,10 +634,8 @@ public class Controller extends HttpServlet {
 			response.sendRedirect("index.jsp?logout=1.jsp");
 			
 		} else if(request.getParameter("submit").equals("Generate Challan")) {
-			HttpSession session = request.getSession();
 			//String[] name = request.getParameterValues("rule_drop");
 			String str = request.getParameter("rule_drop");
-			System.out.println(str);
 			String[] name = str.split(",");
 			String licenseNo = request.getParameter("license_no");
 			String vehicleNo = request.getParameter("vehicle_no");
@@ -733,7 +721,6 @@ public class Controller extends HttpServlet {
 			}
 			return;
 		} else if(request.getParameter("submit").equals("Report Stolen Vehicle")) {
-			HttpSession session = request.getSession();
 			String email = request.getParameter("email");
 			String num = request.getParameter("veh_num");
 			if(email == null || num == null || email.equals("") || num.equals(""))

@@ -14,6 +14,9 @@
         <property name="password" type="java.lang.String">
             <column name="PASSWORD" />
         </property>
+        <property name="uuid" type="java.lang.String">
+            <column name="UUID" />
+        </property>
         <property name="userType" type="int">
             <column name="USERTYPE" />
         </property>

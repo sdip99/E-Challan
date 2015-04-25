@@ -6,6 +6,7 @@ public class User {
 	private String password;
 	private int userType;
 	private UserDetail userDetail;
+	private String uuid;
 	
 	public User() { }
 	
@@ -13,6 +14,14 @@ public class User {
 		this.userID = userID;
 		this.password = pass;
 		this.userType = userType;
+	}
+	
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 	public void setUserID_pkey(int userID_pkey) {

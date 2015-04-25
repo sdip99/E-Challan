@@ -9,11 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.echallan.Common;
+import org.echallan.dataAccessObject.UserDAO;
 import org.echallan.valueObject.User;
 
 /**
@@ -94,12 +96,26 @@ public class AuthenticationFilter implements Filter {
 		String str = "login.jsp";
 		String uri = ((HttpServletRequest)request).getRequestURI();
 		Object obj = session.getAttribute("user_info");
+		if(obj != null)
+			user = (User) obj;
+		else {
+			// Check for cookie
+			Cookie[] cookies = ((HttpServletRequest) request).getCookies();
+			UserDAO dao = new UserDAO();
+			for(Cookie c : cookies) {
+				if(c.getName().equals("user")) {
+					String token = c.getValue();
+					user = dao.getUserByUUID(token);
+					if(user != null)
+						session.setAttribute("user_info", user);
+				}
+			}
+		}
 		if(uri.contains("/images") || uri.contains("/js") || uri.contains("/lib") || uri.contains("/stylesheets") || allowAccess(uri, nofilterPages)) {
 			chain.doFilter(request, response);
 			return;
 		}
-		if(obj != null) {
-			user = (User) obj;
+		if(user != null) {
 			if(allowAccess(uri, commonPages)) {
 				chain.doFilter(request, response);
 				return;
