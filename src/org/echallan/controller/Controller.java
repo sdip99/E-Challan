@@ -34,6 +34,7 @@ import org.echallan.dataAccessObject.GenericDAO;
 import org.echallan.dataAccessObject.LicenseDAO;
 import org.echallan.dataAccessObject.PreferenceManager;
 import org.echallan.dataAccessObject.RuleDAO;
+import org.echallan.dataAccessObject.StolenVehicleDAO;
 import org.echallan.dataAccessObject.SubAreaDAO;
 import org.echallan.dataAccessObject.UserDAO;
 import org.echallan.dataAccessObject.UserDetailDAO;
@@ -45,6 +46,7 @@ import org.echallan.valueObject.Complaint;
 import org.echallan.valueObject.License;
 import org.echallan.valueObject.Preference;
 import org.echallan.valueObject.Rule;
+import org.echallan.valueObject.StolenVehicle;
 import org.echallan.valueObject.SubArea;
 import org.echallan.valueObject.User;
 import org.echallan.valueObject.UserDetail;
@@ -716,6 +718,20 @@ public class Controller extends HttpServlet {
 				response.sendRedirect("index.jsp");
 			}
 			return;
+		} else if(request.getParameter("submit").equals("Report Stolen Vehicle")) {
+			HttpSession session = request.getSession();
+			String email = request.getParameter("email");
+			String num = request.getParameter("veh_num");
+			if(email == null || num == null || email.equals("") || num.equals(""))
+				session.setAttribute("res_stln_vehic", false);
+			else {
+				StolenVehicle vehicle = new StolenVehicle();
+				vehicle.setEmail(email);
+				vehicle.setVehicleNo(num);
+				new StolenVehicleDAO().insert(vehicle);
+				session.setAttribute("res_stln_vehic", true);
+			}
+			response.sendRedirect("report_stolen_vehicle.jsp");
 		}
 	}
 	@SuppressWarnings({ "unused", "deprecation" })
