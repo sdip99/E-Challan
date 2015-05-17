@@ -39,7 +39,7 @@
 		user = (User) obj;
 	}
 	// terminate session when logout flag is set
-	if(request.getParameter("logout") != null) {
+	if(user != null && request.getParameter("logout") != null) {
 		user.setUuid("");
 		new UserDAO().update(user);
 		session.invalidate();
