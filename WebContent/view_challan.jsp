@@ -91,10 +91,10 @@
 							<tr><td>
 							<table>
 								<input type="hidden" name="cid" value=<%out.print(x); %> />
-								<tr><td>Date	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("MM-dd-yyyy").format(new Date())); %></td></tr>
-								<tr><td>Time	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("HH:mm a").format(new Date())); %></td></tr>
+								<tr><td>Date	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("MM-dd-yyyy").format(ch.getTimestamp())); %></td></tr>
+								<tr><td>Time	:</td><td style="padding-left: 105px"><%out.print(new SimpleDateFormat("HH:mm a").format(ch.getTimestamp())); %></td></tr>
 							</table>
-							<br/><br/>
+							<br />
 							<table>
 								<tr><td>License No	:</td><td style="padding-left: 25px"><%out.print(ch.getLicenseNo() == null ? "none" : ch.getLicenseNo()); %></td></tr>
 								<% if(holer != null) { %>
@@ -103,22 +103,15 @@
 								<tr><td>Name	:</td><td style="padding-left: 25px"><%out.print(ch.getFname()+" "+ch.getLname()); %></td></tr>
 								<% } %>
 								<tr><td>Name of Officer	:</td><td style="padding-left: 25px"><%out.print(ch.getPolice().getUserDetail().getFirstName()+" "+ch.getPolice().getUserDetail().getLastName()); %></td></tr>
-								<%
-									
-								%>
 								<tr><td>Act of violation	:</td><td style="padding-left: 25px"></td></tr>
 								<%
-											for(Rule r : rulez) {
-												out.print("<tr><td></td><td style='padding-left: 25px'>" + r.getRuleId() + "  -  " + r.getRuleName() + "</td></tr>");
-												fine += r.getFine();
-											}
-										%>
-										<tr><td> Total Fine	: </td><td style="padding-left: 25px"><%out.print("Rs. " +  fine); %></td></tr>
-							<%
-							if(ch.isIssuspend()){
-							%>
-							<tr><td>Suspended Vehicle	:</td><td style="padding-left: 25px"><%out.print(ch.isIssuspend() ? "YES" : "NO"); %></td>></tr>
-							<%} %>
+									for(Rule r : rulez) {
+										out.print("<tr><td></td><td style='padding-left: 25px'>" + r.getRuleId() + "  -  " + r.getRuleName() + "</td></tr>");
+										fine += r.getFine();
+									}
+								%>
+								<tr><td> Total Fine	: </td><td style="padding-left: 25px"><%out.print("Rs. " +  fine); %></td></tr>
+								<tr><td>Suspended Vehicle	:</td><td style="padding-left: 25px"><%out.print(ch.isIssuspend() ? "YES" : "NO"); %></td></tr>
 							</table>
 							</td>
 							<td>
@@ -126,13 +119,9 @@
 								<tr><td>Challan Id	:</td><td style="padding-left: 25px"><%out.print(ch.getChallan_id()); %></td></tr>
 								<tr><td>Vehicle No	:</td><td style="padding-left: 25px"><%out.print(ch.getVehicleNo()); %></td></tr>
 							
-							</table>
-							
-							
-							
-							
+							</table>							
 							</td>
-							
+							</tr>
 							</table><br/><br/>
 						<div align="center">		
 							
