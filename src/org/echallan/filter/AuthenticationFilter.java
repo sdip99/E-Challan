@@ -78,7 +78,8 @@ public class AuthenticationFilter implements Filter {
 		"stub_sidebar.jsp",
 		"stub_header.jsp",
 		"report_stolen_vehicle.jsp",
-		"Controller"
+		"Controller",
+		"error.jsp"
 	};
 
     public AuthenticationFilter() {
