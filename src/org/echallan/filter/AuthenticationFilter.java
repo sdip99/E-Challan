@@ -102,12 +102,14 @@ public class AuthenticationFilter implements Filter {
 			// Check for cookie
 			Cookie[] cookies = ((HttpServletRequest) request).getCookies();
 			UserDAO dao = new UserDAO();
-			for(Cookie c : cookies) {
-				if(c.getName().equals("user")) {
-					String token = c.getValue();
-					user = dao.getUserByUUID(token);
-					if(user != null)
-						session.setAttribute("user_info", user);
+			if(cookies != null) {
+				for(Cookie c : cookies) {
+					if(c.getName().equals("user")) {
+						String token = c.getValue();
+						user = dao.getUserByUUID(token);
+						if(user != null)
+							session.setAttribute("user_info", user);
+					}
 				}
 			}
 		}
