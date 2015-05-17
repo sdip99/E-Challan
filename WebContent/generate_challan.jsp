@@ -31,7 +31,7 @@
     	$(function() {
             $(".knob").knob();
         });
-        
+        var isVerifiedVehicle = true;
         var request; 
         function fetchNameUpdate()  
         {
@@ -127,10 +127,13 @@
         function notifyVehicleIsStolen() {
         	if(request.readyState==4) {
         		var val = request.responseText;
-        		if(val != "")
+        		if(val != "") {
             		document.getElementsByName("submit")[0].disabled = true;
+            		isVerifiedVehicle = false;
+        		}
         		document.getElementById("vehicle_stolen_notify").innerHTML = val;
         		document.getElementById('confirm_but').addEventListener('click', function(evt) {
+        			isVerifiedVehicle = true;
         			sendVehicleVerified();
         			document.getElementById("vehicle_stolen_notify").innerHTML = '';
         			document.getElementsByName("submit")[0].disabled = false;
@@ -218,6 +221,10 @@
 			var response = "";
 			var table = document.getElementById('rule_table');
 			var rowCount = table.rows.length;
+			if(!isVerifiedVehicle) {
+				alert("Please verify vehicle first...!")
+				return false;
+			}
 			for(var i=1 ; i < rowCount ; i++) {
 				var row = table.rows[i];
 				//alert(row.cells[1].childNodes[0].innerHTML);
