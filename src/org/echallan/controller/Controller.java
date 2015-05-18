@@ -2,6 +2,7 @@ package org.echallan.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -78,16 +79,35 @@ public class Controller extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	if(request.getParameter("cat_id") != null) {
-    		CatagoryDAO dao = new CatagoryDAO();
-    		PrintWriter writer = response.getWriter();
-    		Set<Rule> rules = dao.getCatagoryById(request.getParameter("cat_id")).getRule();
-    		//writer.write("<select  class='form-control inline-ele-left' style='width: 25%; margin-left: 6px;' name='rule_drop'>");
-    		writer.write("<select id='rule_drop' class='form-control'>");
-    		for(Rule r : rules)
-    			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
-    		writer.write("</select>");
-    		
-    		writer.close();
+    		int cat = Integer.parseInt(request.getParameter("cat_id"));
+    		if(request.getParameter("lno") == null || request.getParameter("lno").equals("")) {
+    			// Generic request
+	    		CatagoryDAO dao = new CatagoryDAO();
+	    		PrintWriter writer = response.getWriter();
+	    		Set<Rule> rules = dao.getCatagoryById(cat).getRule();
+	    		//writer.write("<select  class='form-control inline-ele-left' style='width: 25%; margin-left: 6px;' name='rule_drop'>");
+	    		writer.write("<select id='rule_drop' class='form-control'>");
+	    		for(Rule r : rules)
+	    			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
+	    		writer.write("</select>");
+	    		writer.close();
+    		} else {
+    			int lno = Integer.parseInt(request.getParameter("lno"));
+    			List<Challan> challans = new ChallanDAO().getAllByLicenseWithinTimeSpan(lno);
+    			List<Integer> invalid = new ArrayList<Integer>();
+    			for(Challan c : challans)
+    				for(Rule r : c.getRule())
+    					if(r.getCat().getCatID() == cat)
+    						invalid.add(r.getRuleId());
+    			List<Rule> rules = new RuleDAO().getAllFiltered(invalid, cat);
+    			PrintWriter writer = response.getWriter();
+    			writer.write("<select id='rule_drop' class='form-control'>");
+    			if(rules != null)
+		    		for(Rule r : rules)
+		    			writer.write("<option value=" + r.getRuleId()+ " >" + r.getRuleName() + "</option>");
+	    		writer.write("</select>");
+	    		writer.close();
+    		}
     	} else if(request.getParameter("mng_chk_city_id") != null) {
     		PrintWriter writer = response.getWriter();
     		writer.write("<select class='form-control inline-ele-left' name='area_drop' style='width: 25%;'>");

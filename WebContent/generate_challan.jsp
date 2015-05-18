@@ -63,6 +63,7 @@
         {
         	
         	var v = document.getElementById("cat_drop");
+        	var x = document.getElementsByName("license_no")[0];
         	if(window.XMLHttpRequest){
         		request=new XMLHttpRequest();
         	} else if(window.ActiveXObject) {
@@ -70,7 +71,7 @@
         	}
         	try {
         		request.onreadystatechange = getInfo;
-        		request.open("GET", "Controller?cat_id=" + v.value, true);
+        		request.open("GET", "Controller?cat_id=" + v.value + "&lno=" + x.value, true);
         		request.send();
         	} catch(e) {
         		alert("Unable to connect to server");
