@@ -2,6 +2,7 @@ package org.echallan.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -57,6 +58,7 @@ import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 /**
@@ -175,6 +177,18 @@ public class Controller extends HttpServlet {
     		if(!vno.equals("")) {
     			dao.removeStlnVehic(vno);
     		}
+    	} else if(request.getParameter("view_viol_hist") != null) {
+    		String lno = request.getParameter("view_viol_hist");
+    		PrintWriter writer = response.getWriter();
+    		List<Challan> challans = new ChallanDAO().getAllByLicenseNo(lno);
+    		if(challans != null)
+	    		for(Challan c : challans) {
+	    			String suspend = c.isIssuspend() ? "YES" : "NO";
+	    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    			String ts = sdf.format(c.getTimestamp());
+	    			writer.write("<a href='view_challan.jsp?cid=" + c.getChallan_id() + "'>" + c.getChallan_id() + "</a>," + c.getVehicleNo() + "," + suspend + "," + ts + "\n");
+	    		}
+    		writer.close();
     	}
 	}
 
@@ -732,7 +746,7 @@ public class Controller extends HttpServlet {
 							fine += r.getFine();
 						}
 						buffer.append("Total Fine: " + fine  + newLine);
-						//document.add(new Paragraph(buffer.toString()));
+						document.add(new Paragraph(buffer.toString()));
 					} catch(Exception ex) {
 						ex.printStackTrace();
 					}

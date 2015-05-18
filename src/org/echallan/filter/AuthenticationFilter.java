@@ -79,7 +79,9 @@ public class AuthenticationFilter implements Filter {
 		"stub_header.jsp",
 		"report_stolen_vehicle.jsp",
 		"Controller",
-		"error.jsp"
+		"error.jsp",
+		"violation_history.jsp",
+		"view_challan.jsp"
 	};
 
     public AuthenticationFilter() {

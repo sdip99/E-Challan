@@ -39,6 +39,21 @@ public class ChallanDAO extends GenericDAO {
 		return ret;
 	}
 	
+	public List<Challan> getAllByLicenseNo(String no) {
+		List<Challan> ret = null;
+		if(new LicenseDAO().getLicenseByNo(no) == null)
+			return ret;
+		Session session = getSession();
+		if(session != null) {
+			Transaction transaction = session.beginTransaction();
+			Query query = session.createQuery("from Challan where licenseno=" + no);
+			transaction.commit();
+			ret = query.list();
+			session.close();
+		}
+		return ret;
+	}
+	
 	public List<Challan> getAllByLicenseWithinTimeSpan(int lno) {
 		List<Challan> ret = null;
 		Session session = getSession();
