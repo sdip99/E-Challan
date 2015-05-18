@@ -503,10 +503,15 @@ public class Controller extends HttpServlet {
 						oldComplaint.setAcknowledged(ack != null);
 						oldComplaint.setResponse(res);
 						dao.update(oldComplaint);
+						String eid = oldComplaint.getEmail();
+						if( eid != null && !eid.equals("") && oldComplaint.isAcknowledged()) {
+							sendMail(eid, "admin@echallan.org", "localhost", "You complaint has been acknowledged!", oldComplaint.getDescription(), response);
+						}
 					} catch(Exception ex) {
 						session.setAttribute("upd_comp", false);
 					}
 				} else session.setAttribute("upd_comp", false);
+				
 				response.sendRedirect("manage_complaint.jsp");
 			
 			} else if(request.getParameter("submit").equals("Update Rule")) {
@@ -768,6 +773,27 @@ public class Controller extends HttpServlet {
 					session.setAttribute("res_stln_vehic", true);
 				}
 				response.sendRedirect("report_stolen_vehicle.jsp");
+			} else if(request.getParameter("submit").equals("Register Complaint")) {
+				String eid = request.getParameter("email");
+				String lno = request.getParameter("lno");
+				String title = request.getParameter("title");
+				String desc = request.getParameter("desc");
+				boolean status = false;
+				if(lno != null && new LicenseDAO().isValid(lno)) {
+					Complaint complaint = new Complaint();
+					complaint.setAcknowledged(false);
+					complaint.setDate(new Date());
+					complaint.setDescription(desc);
+					if(eid != null)
+						complaint.setEmail(eid);
+					if(lno != null)
+						complaint.setLicense_no(lno);
+					complaint.setTitle(title);
+					new ComplaintDAO().insert(complaint);
+					status = true;
+				}
+				session.setAttribute("reg_comp", status);
+				response.sendRedirect("register_complaint.jsp");
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();

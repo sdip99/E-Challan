@@ -1,11 +1,3 @@
-<%@page import="org.echallan.dataAccessObject.ComplaintDAO"%>
-<%@page import="org.echallan.valueObject.Complaint"%>
-<%@page import="org.echallan.dataAccessObject.SubAreaDAO"%>
-<%@page import="org.echallan.valueObject.SubArea"%>
-<%@page import="org.echallan.dataAccessObject.AreaDAO"%>
-<%@page import="org.echallan.valueObject.Area"%>
-<%@page import="org.echallan.valueObject.UserDetail"%>
-<%@page import="org.echallan.dataAccessObject.UserDAO"%>
 <%@page import="org.echallan.dataAccessObject.CityDAO"%>
 <%@page import="org.echallan.valueObject.City"%>
 <%@page import="java.util.List"%>
@@ -17,7 +9,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en"><head>
     <meta charset="utf-8">
-    <title>View Complaint : e-Challan System</title>
+    <title>Register Complaint : e-Challan System</title>
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -41,51 +33,63 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/premium.css">
 
 </head>
-<%
-	String paramid = request.getParameter("paramid");
-	Complaint complaint = null;
-	if(paramid != null && !paramid.equals(""))
-		complaint = new ComplaintDAO().getComplaintById(paramid);
-	else
-		response.sendRedirect("manage_complaint.jsp");
-	session.setAttribute("paramid", paramid);
-%>
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>    
-    <c:import url="stub_admin_sidebar.jsp"></c:import>
+    <c:import url="stub_sidebar.jsp"></c:import>
 
     <div class="content">
         <div class="header">
-	        <h1 class="page-title">View Complaint</h1>
-	       	<ul class="breadcrumb">
-	            <li><a href="admin_dashboard.jsp">Home</a> </li>
-	            <li><a href="manage_complaint.jsp">Manage Complaints</a> </li>
-	            <li class="active">View Complaint</li>
-	        </ul>
+	        <h1 class="page-title">Register Complaint</h1>
         </div>
         <div class="main-content">
-        
-        	<div class="panel panel-default">
-			    <div class="panel-heading no-collapse">View Complaint</div>
+        	<%
+				if(session.getAttribute("reg_comp") != null) {
+					if((Boolean) session.getAttribute("reg_comp")) { 
+			%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<center>Complaint Registered Successfully...!</center>
+	        	</div>
+		    </div>
+		   <%
+					} else {
+			%>
+			<div class="panel panel-default">
+				<a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-times"></i> Error</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<span style="color:red;"><center>Registration failed...!<br />Please enter valid data.</center></span>
+	        	</div>
+	        </div>
+			<%
+					}
+					session.removeAttribute("reg_comp");
+				}
+			%>
+			<div class="panel panel-default">
+			    <div class="panel-heading no-collapse">Register Complaint</div>
 				<div id="widget1container" class="panel-body collapse in">
 			        <form action="Controller" method="post">
 						<div class="form-group">
-							<table>
-								<tr><td><%out.print("<h2>" + complaint.getTitle() + "</h2>"); %></td></tr>
-								<tr><td><%out.print("<p>" + complaint.getDescription() + "</p>"); %></td></tr>
-							</table>
-							<br />
-							<table>
-								<tr><td>Complaint Number: </td><td style="padding-left: 25px"><%out.print(complaint.getId()); %></td></tr>
-								<tr><td>E-mail ID: </td><td style="padding-left: 25px"><%out.print(complaint.getEmail()); %></td></tr>
-								<tr><td>License Number: </td><td style="padding-left: 25px"><%out.print(complaint.getLicense_no()); %></td></tr>
-								<tr><td>Acknowledged: </td><td style="padding-left: 25px"><input type="checkbox" name="status" <% if(complaint.isAcknowledged()) out.print("checked"); %>/></td></tr>
-							</table>
 							<p>
-								<label>Response:</label>
-								<textarea rows="10" cols="12" class="form-control" name="response"><%out.print(complaint.getResponse() == null ? "" : complaint.getResponse()); %></textarea>
+								<label>E-mail ID:</label>
+								<input type="text"  class="form-control span12" name="email"></input>
 							</p>
-							<input type="submit" name="submit" class="btn btn-primary form-control" value="Update Complaint" name="submit"/>
+							<p>
+								<label>License No:</label>
+								<input type="text"  class="form-control span12" name="lno"></input>
+							</p>
+							<p>
+								<label>Title:</label>
+								<input type="text"  class="form-control span12" name="title"></input>
+							</p>
+							<p>
+								<label>Description:</label>
+								<textarea rows="10" cols="12" class="form-control" name="desc"></textarea>
+							</p>
+							<p>
+								<input type="submit"  class="form-control btn btn-primary" name="submit" value="Register Complaint"></input>
+							</p>
 						</div>
 						<div class="clearfix"></div>
 					</form>

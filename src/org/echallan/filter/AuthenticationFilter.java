@@ -81,7 +81,8 @@ public class AuthenticationFilter implements Filter {
 		"Controller",
 		"error.jsp",
 		"violation_history.jsp",
-		"view_challan.jsp"
+		"view_challan.jsp",
+		"register_complaint.jsp"
 	};
 
     public AuthenticationFilter() {

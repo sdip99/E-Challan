@@ -107,7 +107,7 @@
 			    <tr>
 			      <th>ID</th>
 			      <th>Title</th>
-			      <th>User</th>
+			      <th>License No</th>
 			      <th style="width: 3.5em;">Status</th>
 			    </tr>
 			  </thead>

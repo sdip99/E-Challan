@@ -21,6 +21,10 @@ public class LicenseDAO extends GenericDAO {
 		return (License) ret;
 	}
 	
+	public boolean isValid(String no) {
+		return getById(License.class, no) == null ? false : true;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<String> getLicenseNo(String fname, String lname, String mName, int pcode, String bgrp, String month, String date, String year) {
 		List<String> ret = null;
