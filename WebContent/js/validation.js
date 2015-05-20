@@ -229,6 +229,42 @@ function validateGenChlnLn() {
 		}
 }
 
-function validateInsArea() {
+function validateRegComp() {
+	var eid = document.form.email;
+	var lno = document.form.lno;
+	var title = document.form.title;
+	var desc = document.form.desc;
+	
+	if(eid.value == "" || !mailformat.test(eid.value)) {
+		alert("Please enter valid email id");
+		eid.focus();
+		return false;
+	} else if(lno.value == "") {
+		alert("Please enter license no");
+		lno.focus();
+		return false;
+	} else if(title.value == "") {
+		alert("Please enter title of complaint");
+		title.focus();
+		return false;
+	} else if(desc.value == "") {
+		alert("Please enter description of complaint");
+		desc.focus();
+		return false;
+	}
+}
+
+function validateRepStlnVehi() {
+	var x = document.form.veh_num;
+	var y = document.form.email;
+	if(x.value == "") {
+		alert("Please enter vehicle number");
+		x.focus();
+		return false;	
+	} else if(y.value == "" || !mailformat.test(y.value)) {
+		alert("Please enter valid email id");
+		y.focus();
+		return false;
+	}
 	
 }

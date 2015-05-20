@@ -16,7 +16,7 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
-
+	<script src="js/validation.js" type="text/javascript"></script>
     <script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
 
         <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
@@ -74,7 +74,7 @@
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Report Stolen Vehicle</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post">
+			        <form action="Controller" method="post" name="form" onsubmit="return validateRepStlnVehi();">
 						<div class="form-group">
 							<p>
 								<label>Vehicle No:</label>
