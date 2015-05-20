@@ -703,8 +703,7 @@ public class Controller extends HttpServlet {
 						System.out.println("Email found...!");
 						sendMail(email, "admin@echallan.org", "localhost", title, msg, response);
 					} else {
-						session.setAttribute("noMatch", true);
-						response.sendRedirect("index.jsp");
+						response.sendRedirect("index.jsp?noMatch=true");
 					}
 				}
 			} else if(request.getParameter("submit").equals("Print Challan")) {

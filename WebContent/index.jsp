@@ -58,7 +58,7 @@
         </div>
         <div class="main-content">
         	<%
-				if(session.getAttribute("noMatch") != null) {
+				if(request.getParameter("noMatch") != null) {
 			%>
 			<div class="panel panel-default">
 		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
