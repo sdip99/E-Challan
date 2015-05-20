@@ -5,7 +5,6 @@ import java.util.Date;
 public class Complaint {
 	private int id;
 	private String email;
-	private String user_name;
 	private String title;
 	private String description;
 	private String license_no;
@@ -59,11 +58,5 @@ public class Complaint {
 	}
 	public void setAcknowledged(boolean acknowledged) {
 		this.acknowledged = acknowledged;
-	}
-	public String getUser_name() {
-		return user_name;
-	}
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
 	}
 }

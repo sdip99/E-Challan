@@ -63,13 +63,20 @@
 
 <body class=" theme-blue">
 	<c:import url="stub_header.jsp"></c:import>
-	<%    
-		if(user != null && user.getUserType() == Common.USER_TYPE_ADMIN) {
+	<%
+		if(user == null) {
+	%>
+		<c:import url="stub_sidebar.jsp"></c:import>
+	<%
+		} else {
+			if(user.getUserType() == Common.USER_TYPE_ADMIN) {
 	%>
     <c:import url="stub_admin_sidebar.jsp"></c:import>
-    <%	} else { %>
+    <%		} else { %>
     <c:import url="stub_police_sidebar.jsp"></c:import>
-    <%	} %>
+    <%		}
+		}
+	%>
 
     <div class="content">
         <div class="header">
