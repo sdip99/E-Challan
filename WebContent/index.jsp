@@ -57,7 +57,19 @@
 	        <h1 class="page-title">Welcome</h1>
         </div>
         <div class="main-content">
-        
+        	<%
+				if(session.getAttribute("noMatch") != null) {
+			%>
+			<div class="panel panel-default">
+		        <a href="#page-stats" class="panel-heading" data-toggle="collapse"><i class="fa fa-info-cicle"></i> Information</a>
+	        	<div id="page-stats" class="panel-collapse panel-body collapse in">
+	        		<center>The email id you entered doesn't exist...!</center>
+	        	</div>
+		    </div>
+		   <%
+		   			session.removeAttribute("noMatch");
+				}
+			%>
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Message</div>
 				<div id="widget1container" class="panel-body collapse in">

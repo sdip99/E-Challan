@@ -702,7 +702,10 @@ public class Controller extends HttpServlet {
 						String msg = "Your password is: " + ret.get(0);
 						System.out.println("Email found...!");
 						sendMail(email, "admin@echallan.org", "localhost", title, msg, response);
-					} else System.out.println("Email id doesn't exist...!");
+					} else {
+						session.setAttribute("noMatch", true);
+						response.sendRedirect("index.jsp");
+					}
 				}
 			} else if(request.getParameter("submit").equals("Print Challan")) {
 				Document document = new Document();
