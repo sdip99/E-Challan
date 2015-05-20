@@ -95,7 +95,7 @@
 	    <div class="panel panel-default">
 	        <p class="panel-heading no-collapse">Recover Password</p>
 	        <div class="panel-body">
-	            <form action="Controller" method="post" name="admin_login" onsubmit="return validateAdminLogin()">
+	            <form action="Controller" method="post" name="forgot_pass" onsubmit="return validateAdminLogin()">
 	                <div class="form-group">
 	                    <label>Please enter registered email id & system will send you password:</label>
 	                    <input type="text" class="form-control span12" name="username">

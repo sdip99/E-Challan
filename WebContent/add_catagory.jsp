@@ -61,7 +61,7 @@
 			<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Add Category</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post" name="add_cat" onsubmit="return validateaddCat();">
+			        <form action="Controller" method="post" name="add_cat" onsubmit="javascript:return validateaddCat();">
 						<div class="form-group">
 							<p>
 								<label>Category Name:</label>

@@ -219,9 +219,33 @@
 		}
 		
 		function validateAndSend() {
+			var lno = document.myForm.license_no;
+			var veh = document.myForm.vehicle_no;
+			var fn = document.myForm.first_name;
+			var ln = document.myForm.last_name;
+		
+			if(lno.value == "" && fn.value == "" && ln.value == "") {
+				alert("Please enter either license no or first naem & last name")
+				return false;
+			}
+			
+			if(veh.value == "") {
+				veh.focus();
+				alert("Please enter vehicle number");
+				return false;
+			}
+			
+			
+			
 			var response = "";
 			var table = document.getElementById('rule_table');
 			var rowCount = table.rows.length;
+
+			if(rowCount < 2) {
+				alert("Please enter atleast one rule");
+				return false;
+			}
+
 			if(!isVerifiedVehicle) {
 				alert("Please verify vehicle first...!")
 				return false;

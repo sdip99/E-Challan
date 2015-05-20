@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.css">
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.css">
 
+    <script src="js/validation.js" type="text/javascript"></script>
     <script src="lib/jquery-1.11.1.min.js" type="text/javascript"></script>
 
         <script src="lib/jQuery-Knob/js/jquery.knob.js" type="text/javascript"></script>
@@ -54,7 +55,7 @@ UserDetail u = user.getUserDetail();
         	<div class="panel panel-default">
 			    <div class="panel-heading no-collapse">Edit Profile</div>
 				<div id="widget1container" class="panel-body collapse in">
-			        <form action="Controller" method="post">
+			        <form action="Controller" method="post" name="edit_user_prof" onsubmit="return validateEditUsrProf();">
 						<div class="form-group">
 							<p>
 								<label>First Name: </label>
