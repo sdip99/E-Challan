@@ -64,9 +64,10 @@
         function getInfo(){
         	if(request.readyState==4){
         		var val = request.responseText;
-        		if(target == "city")
+        		if(target == "city") {
         			document.getElementById("area_inner").innerHTML = val;
-        		else
+        			sendInfo("area");
+        		} else
         			document.getElementById("sarea_inner").innerHTML = val;
         	}
         }
