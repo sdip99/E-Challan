@@ -437,8 +437,7 @@ public class Controller extends HttpServlet {
 						street != null && !street.equals("") &&
 						state != null && !state.equals("") &&
 						city != null && !city.equals("") &&
-						email != null && !email.equals("") &&
-						pass != null && !pass.equals("")) {
+						email != null && !email.equals("")) {
 					try {
 						int pincode = Integer.parseInt(request.getParameter("pincode"));
 						int subAreaAssign = Integer.parseInt(request.getParameter("subarea_assigned"));
