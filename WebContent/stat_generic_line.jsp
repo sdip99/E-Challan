@@ -24,7 +24,6 @@
 	StatisticsDAO sd = new StatisticsDAO();
 	int from = sd.getMinYear(), to = sd.getMaxYear();
 	List<Integer> availYear = sd.getDistinctYear();
-	System.out.print("min " + from + " to " + to);
 	if(request.getParameter("from") != null && request.getParameter("to") != null) {
 		try {
 			from = Integer.parseInt(request.getParameter("from"));
