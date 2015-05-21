@@ -120,7 +120,7 @@ public class StatisticsDAO extends GenericDAO {
 		Session session = getSession();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
-			Query sareaList = session.createQuery("select area_id from Area where area_id=" + areaid);
+			Query sareaList = session.createQuery("select subarea_id from SubArea where area_id=" + areaid);
 			StringBuffer sb = new StringBuffer();
 			for(Object x : sareaList.list()) {
 				sb.append(x + ",");
@@ -164,7 +164,7 @@ public class StatisticsDAO extends GenericDAO {
 		Session session = getSession();
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
-			Query sareaList = session.createQuery("select area_id from Area where area_id=" + areaid);
+			Query sareaList = session.createQuery("select subarea_id from SubArea where area_id=" + areaid);
 			StringBuffer sb = new StringBuffer();
 			for(Object x : sareaList.list()) {
 				sb.append(x + ",");
