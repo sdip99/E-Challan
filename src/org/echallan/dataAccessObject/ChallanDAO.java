@@ -58,12 +58,13 @@ public class ChallanDAO extends GenericDAO {
 		List<Challan> ret = null;
 		Session session = getSession();
 		Date date = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String current = sdf.format(date);
 		String start = dateFormat.format(date) + " 00:00:00";
 		if(session != null) {
 			Transaction transaction = session.beginTransaction();
+			System.out.println("from Challan where licenseno=" + lno + " AND timestamp between '" + start + "' AND '" + current + "'");
 			Query query = session.createQuery("from Challan where licenseno=" + lno + " AND timestamp between '" + start + "' AND '" + current + "'");
 			transaction.commit();
 			ret = query.list();
