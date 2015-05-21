@@ -30,7 +30,7 @@ public class AuthenticationFilter implements Filter {
 		"admin_dashboard.jsp",
 		"annual_report.jsp",
 		"history_income.jsp",
-		"history_income.jsp",
+		"history_report.jsp",
 		"insert_area.jsp",
 		"insert_checkpost.jsp",
 		"insert_city.jsp",
