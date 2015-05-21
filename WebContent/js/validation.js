@@ -188,7 +188,9 @@ function validateGenChlnLn() {
 	var month = document.gen_chln_ln.month;
 	var year = document.gen_chln_ln.year;
 	var pc = document.gen_chln_ln.pincode;
-	if((lno.value == null || lno.value == "") && (fn.value == null || fn.value == "")) {
+	if(lno.value != "")
+		return true;
+	if(lno.value == "" && fn.value == "") {
 		alert("Please enter license no");
 		lno.focus();
 		return false;
